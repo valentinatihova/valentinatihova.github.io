@@ -315,6 +315,26 @@ article p {
     text-align: center;
 }
 
+.filters{
+    width: fit-content;
+    display: block;
+    margin: 100px auto;
+}
+
+.filter-btn{
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    text-transform: capitalize;
+    margin: 0 5px 10px;
+    cursor: pointer;
+}
+
+.filter-btn.active{
+    background: #D0B490;
+    color: #fff;
+}
+
 .details_container {
     display: flex;
     flex-wrap: wrap;
