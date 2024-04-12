@@ -335,6 +335,13 @@ article p {
     color: #fff;
 }
 
+.tags {
+    position: absolute;
+    bottom: 20px;
+    opacity: 0.6;
+    width: 90%;
+}
+
 .details_container {
     display: flex;
     flex-wrap: wrap;
