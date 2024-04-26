@@ -372,7 +372,7 @@ article p {
 .filters{
     width: fit-content;
     display: block;
-    margin: 100px auto;
+    margin: 2px auto;
 }
 
 .filter-btn{
@@ -385,7 +385,7 @@ article p {
 }
 
 .filter-btn.active{
-    background: #D0B490;
+    background: linear-gradient(90deg, #6091cc, #ef8ebf);;
     color: #fff;
 }
 
