@@ -24,11 +24,17 @@
                     <img src="./assets/vt_logo.png" alt="Valentina Tihova">
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#proficiencies">Skills</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#other-platforms">Other Platforms</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about" data-text="en">About</a></li>
+                    <li><a href="#proficiencies" data-text="en">Skills</a></li>
+                    <li><a href="#projects" data-text="en">Projects</a></li>
+                    <li><a href="#other-platforms" data-text="en">Other Platforms</a></li>
+                    <li><a href="#contact" data-text="en">Contact</a></li>
+
+                    <li><a href="#about" data-text="ru" style="display: none;">Обо мне</a></li>
+                    <li><a href="#proficiencies" data-text="ru" style="display: none;">Навыки</a></li>
+                    <li><a href="#projects" data-text="ru" style="display: none;">Проекты</a></li>
+                    <li><a href="#other-platforms" data-text="ru" style="display: none;">Другие платформы</a></li>
+                    <li><a href="#contact" data-text="ru" style="display: none;">Контакты</a></li>
                 </ul>
             </div>
         </nav>
@@ -53,6 +59,10 @@
                 </div>
             </div>
         </nav>
+        <select name="language" onchange="changeLanguage(this.value)">
+            <option value="en" selected>Английский</option>
+            <option value="ru">Русский</option>
+        </select>
     </header>
     <main>
         <section id="profile">
@@ -311,5 +321,20 @@
         </footer>
     </main>
    <script src="script.js"></script>
+   <script>
+    function changeLanguage(language) {
+      // Скрыть все текстовые элементы
+      const textElements = document.querySelectorAll("[data-text]");
+      textElements.forEach((element) => {
+        element.style.display = "none";
+      });
+
+      // Показать текстовые элементы с выбранным языком
+      const selectedTextElements = document.querySelectorAll(`[data-text="${language}"]`);
+      selectedTextElements.forEach((element) => {
+        element.style.display = "block";
+      });
+    }
+  </script>
 </body>
 </html>
