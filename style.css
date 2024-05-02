@@ -157,6 +157,16 @@ a:hover {
     transform: none;
 }
 
+select[name="language"] {
+    width: 30px;
+}
+
+select[name="language"] img {
+    width: 24px;
+    height: 24px;
+}
+
+
 /* SECTIONS */
 
 main {
@@ -181,7 +191,7 @@ section {
     justify-content: center;
     align-items: center;
     gap: 5rem;
-    height: 85vh;
+    height: 50vh;
 }
 
 .section_pic_container {
@@ -314,26 +324,27 @@ article p {
     padding: 4rem 0;
     text-align: center;
 }
-.project-container{
+
+.project-container {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
 }
 
-.project-card{
+.project-card {
     position: relative;
     cursor: pointer;
     display: block;
 }
 
-.project-card img{
+.project-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.project-card .content{
+.project-card .content {
     position: absolute;
     top: 0;
     left: 0;
@@ -348,34 +359,34 @@ article p {
     opacity: 0;
 }
 
-.project-name{
+.project-name {
     font-weight: 300;
     font-size: 2.5rem;
     text-align: center;
 }
 
-.tags{
+.tags {
     position: absolute;
     bottom: 20px;
     opacity: 0.6;
     width: 90%;
 }
 
-.project-card:hover .content{
+.project-card:hover .content {
     opacity: 1;
 }
 
-.project-card.hide{
+.project-card.hide {
     display: none;
 }
 
-.filters{
+.filters {
     width: fit-content;
     display: block;
     margin: 2px auto;
 }
 
-.filter-btn{
+.filter-btn {
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
@@ -384,8 +395,9 @@ article p {
     cursor: pointer;
 }
 
-.filter-btn.active{
-    background: linear-gradient(90deg, #6091cc, #ef8ebf);;
+.filter-btn.active {
+    background: linear-gradient(90deg, #6091cc, #ef8ebf);
+    ;
     color: #fff;
 }
 
