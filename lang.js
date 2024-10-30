@@ -48,16 +48,16 @@ const LanguageDataArr = {
     ru: "Навыки",
   },
   "lng-proficiencies-summary": {
-    en: "I can optimize your data for better results, informed decisions and cost savings. My proficiency in technical tools like SQL, Python, HTML, CSS, Power BI and Tableau, combined with strong soft skills, enables me to deliver impactful data solutions.",
-    ru: "Я могу оптимизировать ваши данные для достижения лучших результатов, принятия обоснованных решений и экономии средств. Мое знание технических инструментов, таких как SQL, Python, HTML, CSS, Power BI и Tableau, в сочетании с сильными навыками межличностного общения позволяет мне предлагать эффективные решения для обработки данных и их визуализации.",
+    en: "I can optimize your data for better results, informed decisions and cost savings. My proficiency in technical tools like SQL, Python, DataLens, Datawrapper, Power BI and Tableau, combined with strong soft skills, enables me to deliver impactful data solutions.",
+    ru: "Я могу оптимизировать ваши данные для достижения лучших результатов, принятия обоснованных решений и экономии средств. Мое знание технических инструментов, таких как SQL, Python, DataLens, Datawrapper, Power BI и Tableau, в сочетании с сильными навыками межличностного общения позволяет мне предлагать эффективные решения для обработки данных и их визуализации.",
   },
   "data-analysis-header": {
     en: "Data Analysis",
     ru: "Анализ данных",
   },
   "data-analysis-detail": {
-    en: "Uncover hidden insights and patterns within your data to identify trends, anomalies and opportunities for data-driven decision-making.",
-    ru: "Раскройте скрытые идеи и закономерности в ваших данных, чтобы выявить тенденции, аномалии и возможности для принятия решений на основе данных.",
+    en: "Uncover hidden insights and patterns within data to identify trends, anomalies and opportunities for data-driven decision-making.",
+    ru: "Вижу скрытые идеи и закономерности в данных для выявления тенденции, аномалии и возможности для принятия решений на основе данных.",
   },
   "data-analytics-header": {
     en: "Data Analytics",
@@ -65,7 +65,7 @@ const LanguageDataArr = {
   },
   "data-analytics-detail": {
     en: "Harness the power of advanced analytics, including predictive models and machine learning solutions to forecast outcomes, optimize processes and gain a competitive edge.",
-    ru: "Используйте возможности расширенной аналитики, включая прогнозные модели и решения машинного обучения, для прогнозирования результатов, оптимизации процессов и получения конкурентного преимущества.",
+    ru: "Использую расширенную аналитику, включая прогнозные модели и решения ML для прогнозирования результатов, оптимизации процессов и получения конкурентного преимущества.",
   },
   "data-visualization-header": {
     en: "Data Visualization",
@@ -73,23 +73,23 @@ const LanguageDataArr = {
   },
   "data-visualization-detail": {
     en: "Transform complex data into clear and compelling visual narratives. Create custom dashboards and reports for enhanced data communication and understanding.",
-    ru: "Преобразуйте сложные данные в четкие и убедительные визуальные повествования. Создавайте собственные информационные панели и отчеты для улучшения передачи и понимания данных.",
+    ru: "Преобразовываю сложные данные в четкие и убедительные визуальные повествования. Создаю собственные информационные панели и отчеты для улучшения передачи и понимания данных.",
   },
   "web-development": {
     en: "Web Development",
     ru: "Веб разработка",
   },
-  "web-development-detail": {
-    en: "Craft intuitive web interfaces that deliver information in an accessible format. Design and build data-driven web solutions, seamlessly blending functionality and aesthetics to present data solutions that engage and inform.",
-    ru: "Создавайте интуитивно понятные веб-интерфейсы, предоставляющие информацию в доступном формате. Проектируйте и создавайте веб-решения на основе данных, органично сочетая функциональность и эстетику для представления решений по работе с данными, которые привлекают и информируют.",
-  },
+  // "web-development-detail": {
+  //   en: "Craft intuitive web interfaces that deliver information in an accessible format. Design and build data-driven web solutions, seamlessly blending functionality and aesthetics to present data solutions that engage and inform.",
+  //   ru: "Создаю интуитивно понятные веб-интерфейсы, предоставляющие информацию в доступном формате. Проектируйте и создавайте веб-решения на основе данных, органично сочетая функциональность и эстетику для представления решений по работе с данными, которые привлекают и информируют.",
+  // },
   "back-development": {
     en: "Backend Developmentt",
-    ru: "Бэк разработка",
+    ru: "Бэк-разработка",
   },
   "back-development-detail": {
-    en: "Collaborate seamlessly with your team to integrate data solutions into your business processes. Whether it's short-term projects or ongoing data-driven initiatives, I'm here to support your success.",
-    ru: "Беспрепятственно сотрудничайте со своей командой, чтобы интегрировать решения по обработке данных в свои бизнес-процессы. Будь то краткосрочные проекты или постоянные инициативы, основанные на данных, я здесь, чтобы поддержать ваш успех.",
+    en: "Integrate data solutions into your business processes. Whether it's short-term projects or ongoing data-driven initiatives.",
+    ru: "Интегрирую решения по обработке данных в бизнес-процессы: будь то краткосрочные проекты или постоянные инициативы, основанные на данных.",
   },
   "browse-through-my": {
     en: "Browse Through Myt",
@@ -100,8 +100,8 @@ const LanguageDataArr = {
     ru: "Проектов",
   },
   "projects-summary": {
-    en: "Some of my data analytics and data science projects based on Yandex.Practicum.",
-    ru: "Некоторые из моих проектов по дата-аналитике и ML на основе обучения в Яндекс.Практикуме.",
+    en: "Some of my data analytics and data science projects.",
+    ru: "Некоторые из моих проектов по дата-аналитике и ML.",
   },
   "btn-project": {
     en: "View Project",

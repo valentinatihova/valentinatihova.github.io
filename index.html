@@ -15,7 +15,8 @@
             emailjs.init("W8KK0-Rh9tWIw9Fik");
         })();
         </script>
-    </head>    
+    </head>
+    
 <body>
     <header>
         <nav id="nav">
@@ -30,10 +31,10 @@
                     <li><a href="#other-platforms" class="lng-other-platforms">Other Platforms</a></li>
                     <li><a href="#contact" class="lng-contact">Contact</a></li>
                 </ul>
-                <!-- <select name="langSwitcher" id="langSwitcher">
+                <select name="langSwitcher" id="langSwitcher">
                     <option value="en">en</option>
                     <option value="ru">ru</option>
-                </select> -->
+                </select>
             </div>
         </nav>
         <nav id="hamburger-nav">
@@ -48,11 +49,11 @@
                         <span></span>
                     </div>
                     <div class="menu-links">
-                        <li><a href="#about" onclick="toggleMenu()">About</a></li>
-                        <li><a href="#proficiencies" onclick="toggleMenu()">Proficiencies</a></li>
-                        <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-                        <li><a href="#other-platforms" onclick="toggleMenu()">Other Platforms</a></li>
-                        <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+                        <li><a href="#about" onclick="toggleMenu()" class="lng-about">About</a></li>
+                        <li><a href="#proficiencies" onclick="toggleMenu()" class="lng-skills">Proficiencies</a></li>
+                        <li><a href="#projects" onclick="toggleMenu()" class="lng-projects">Projects</a></li>
+                        <li><a href="#other-platforms" onclick="toggleMenu()" class="lng-other-platforms">Other Platforms</a></li>
+                        <li><a href="#contact" onclick="toggleMenu()" class="lng-contact">Contact</a></li>
                     </div>
                 </div>
             </div>
@@ -66,9 +67,9 @@
             <div class="section_text">
                 <p class="section_text_p1">Hello, I'm</p>
                 <h1 class="title_1">Valentina Tihova</h1>
-                <p class="section_text_p2">Data Analyst</p>
+                <p class="section_text_p2 lng-contactinfo">Data Analyst</p>
                 <div class="btn_container">
-                    <button class="lng-contactinfo btn_color" onclick="location.href='./#contact'" >
+                    <button class="lng-contactinfo btn_color" onclick="location.href='./#contact'">
                         Contact Info
                     </button>
                 </div>
@@ -110,7 +111,6 @@
                         <p class="lng-data-visualization-detail">Transform complex data into clear and compelling visual narratives. Create custom dashboards and reports for enhanced data communication and understanding.</p>
                     </div>
                 </article>
-
                 <article>
                     <img src="./assets/front-end-web-development.png" alt="Front End Web Development Icon" class="icon"/>
                     <div>
@@ -250,7 +250,7 @@
         </section>
         <section id="other-platforms">
             <p class="section_text_p1">Explore My</p>
-            <h1 class="title_2">Other Platforms</h1>
+            <h1 class="title_2 lng-other-platforms">Other Platforms</h1>
             <div class="details_container">
                 <div class="details_container color_container">
                     <div class="sub-detail_container">
@@ -271,27 +271,27 @@
             </div>
         </section>        
         <section id="contact">
-            <h1 class="title_2">Contact Me</h1>
+            <h1 class="title_2 lng-contact">Contact Me</h1>
             <div class="contact-container">
                 <div class="contact-card">
                     <form class="contact-form">
-                        <div class="form-group">
+                        <div class="form-group lng-name">
                             <label for="name">Name</label>
                             <input type="text" id="name" placeholder="Enter your full name" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group lng-email">
                             <label for="email">Email</label>
                             <input type="email" id="email" placeholder="Enter your email" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group lng-message">
                             <label for="message">Message</label>
                             <textarea id="message" name="message" rows="5" required></textarea>
                         </div>
-                        <button class="submit-button" onclick="sendMail()">Send Message</button>
+                        <button class="submit-button lng-send">Send Message</button>
                     </form>
                 </div>
                 <div class="contact-info">
-                    <h2>Contact Information</h2>
+                    <h2 lng-contact-info>Contact Information</h2>
                     <div class="info-item">
                         <i class="fas fa-user"></i>
                         <p>You can reach me at the email in my GitHub profile. Follow my Socials!</p>
@@ -314,7 +314,22 @@
             <p>Copyright &#169; 2024 Valentina Tihova. All Rights Reserved.</p>
         </footer>
     </main>
-   <script src="script.js"></script>
-   <script src="lang.js"></script>
+    <script src="script.js"></script>
+    <script src="lang.js"></script>
+    <script>
+        const langSwitcher = document.getElementById("langSwitcher");
+        langSwitcher.addEventListener("change", changeLanguage);
+
+        function changeLanguage() {
+            let currentLang = langSwitcher.value;
+
+            for (let key in LanguageDataArr) {
+                const elements = document.querySelectorAll("[class*=" + key + "]");
+                elements.forEach((element) => {
+                    element.innerHTML = LanguageDataArr[key][currentLang];
+                });
+            }
+        }
+    </script>
 </body>
 </html>
