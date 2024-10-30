@@ -2,6 +2,25 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+:root {
+    --main-text-color: #494C52; /* основной текст */
+    --hover-text-color: #CE9F82; /* цвет при наведении */
+    --link-text-color: #B0C1C0; /* текст */
+    --background-color: #EBDCC8; /* фон */
+    --button-bg-color: #E5C5B8; /* цвет кнопок */
+    --button-hover-color: #CE9F82; /* цвет кнопки при наведении */
+    --dark-color: #5E514F; /* темный цвет */
+    --secondary-color: #CAB299; /* вторичный цвет */
+    --border-color: #4B3C40; /* цвет рамки */
+    --contact-text-color: #494C52; /* цвет текста в контактной информации */
+    --info-link-color: #B0C1C0; /* цвет ссылок в контактной информации */
+    --project-overlay-bg: #BC9E91; /* фон оверлея проектов */
+    --box-shadow: 0px 0px 10px #EBEBE3; /* зенковая тень */
+    --hover-box-shadow: 0px 0px 15px #EBEBE3; /* тень при наведении */
+}
+
+/* REST OF YOUR CSS REMAINS UNCHANGED */
+
 * {
     margin: 0;
     padding: 0;
@@ -10,8 +29,6 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
 }
 
 html {
@@ -19,7 +36,7 @@ html {
 }
 
 p {
-    color: #474747; /* текст */
+    color: var(--link-text-color); /* текст */
 }
 
 /* TRANSITION */
@@ -67,16 +84,16 @@ nav ul li {
 }
 
 a {
-    color: #2F2F2F; /* основной текст для ссылок */
+    color: var(--main-text-color); /* основной текст для ссылок */
     text-decoration: none;
-    text-decoration-color: #CAB299;
+    text-decoration-color: var(--secondary-color);
 }
 
 a:hover {
-    color: #E05B56; /* цвет при наведении */
+    color: var(--hover-text-color); /* цвет при наведении */
     text-decoration: underline;
     text-underline-offset: 1rem;
-    text-decoration-color: #824C71;
+    text-decoration-color: var(--border-color);
 }
 
 /* HAMBURGER MENU */
@@ -102,7 +119,7 @@ a:hover {
 .hamburger-icon span {
     width: 100%;
     height: 2px;
-    background-color: #2F2F2F;
+    background-color: var(--main-text-color);
     transition: all 0.3 ease-in-out;
 }
 
@@ -110,7 +127,7 @@ a:hover {
     position: absolute;
     top: 100%;
     right: 0%;
-    background-color: #EBEBE3;
+    background-color: var(--background-color);
     width: fit-content;
     max-height: 0;
     overflow: hidden;
@@ -122,13 +139,13 @@ a:hover {
     padding: 10px;
     text-align: center;
     font-size: 1.2rem;
-    color: #2F2F2F;
+    color: var(--main-text-color);
     text-decoration: none;
     transition: all 0.3 ease-in-out;
 }
 
 .menu-links a:hover {
-    color: #E05B56; /* цвет при наведении на ссылки в меню */
+    color: var(--hover-text-color); /* цвет при наведении на ссылки в меню */
 }
 
 .menu-links li {
@@ -165,7 +182,6 @@ select[name="language"] img {
     width: 24px;
     height: 24px;
 }
-
 
 /* SECTIONS */
 
@@ -230,9 +246,9 @@ section {
 }
 
 .btn_color {
-    background: #8D6B69; /* цвет кнопок */
+    background: var(--button-bg-color); /* цвет кнопок */
     border: none;
-    color: #EBEBE3; /* текст на кнопках */
+    color: var(--background-color); /* текст на кнопках */
     padding: 1rem 1rem;
     font-weight: 600;
     border-radius: 2rem;
@@ -241,7 +257,7 @@ section {
 }
 
 .btn_color:hover {
-    background-color: #E05B56; /* цвет кнопки при наведении */
+    background-color: var(--button-hover-color); /* цвет кнопки при наведении */
     transform: scale(1.05);
 }
 
@@ -254,7 +270,7 @@ section {
 
 .title_2 {
     font-size: 2.5rem;
-    color: #E05B56; /* Заголовок */
+    color: var(--hover-text-color); /* Заголовок */
     position: relative;
 }
 
@@ -266,7 +282,7 @@ section {
     transform: translateX(-50%);
     width: 80px;
     height: 3.5px;
-    background: linear-gradient(90deg, #343D31, #4A2545);
+    background: linear-gradient(90deg, var(--dark-color), #4A2545);
     border-radius: 1px;
 }
 
@@ -275,7 +291,7 @@ section {
 }
 
 .text_container p {
-    color: #2F2F2F; /* текст для раздела "Обо мне" */
+    color: var(--main-text-color); /* текст для раздела "Обо мне" */
     line-height: 1.6;
     text-align: left;
 }
@@ -310,11 +326,11 @@ article .icon {
 
 article h3 {
     font-size: 1.5rem;
-    color: #E05B56;
+    color: var(--hover-text-color);
 }
 
 article p {
-    color: #2F2F2F;
+    color: var(--main-text-color);
     line-height: 1.5;
     text-align: justify;
 }
@@ -351,7 +367,7 @@ article p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--project-overlay-bg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -397,15 +413,8 @@ article p {
 }
 
 .filter-btn.active {
-    background: linear-gradient(90deg, #343D31, #4A2545);
-    color: #E05B56;
-}
-
-.tags {
-    position: absolute;
-    bottom: 20px;
-    opacity: 0.6;
-    width: 90%;
+    background: linear-gradient(50deg, var(--dark-color), #4A2545);
+    color: var(--hover-text-color);
 }
 
 .details_container {
@@ -417,19 +426,19 @@ article p {
 }
 
 .subdetail_container {
-    background-color: #CAB299;
-    border: 1px solid #824C71;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 1.5rem;
     max-width: 380px;
     text-align: left;
-    box-shadow: 0px 0px 10px #1D221C;
+    box-shadow: var(--box-shadow);
     transition: transform 0.2s ease-in-out;
 }
 
 .subdetail_container:hover {
     transform: scale(1.02);
-    box-shadow: 0px 0px 15px #1D221C;
+    box-shadow: var(--hover-box-shadow);
 }
 
 .project_img {
@@ -445,25 +454,24 @@ article p {
 }
 
 .sub-detail_container {
-    background-color: rgb(247, 226, 239);
+    background-color: var(--secondary-color);
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 1.5rem;
     max-width: 340px;
     text-align: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
     transition: transform 0.2s ease-in-out;
 }
 
 .sub-detail_container:hover {
     transform: scale(1.02);
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--hover-box-shadow);
 }
 
 a.platform-link {
-    color: #1D221C;
+    color: var(--dark-color);
     text-decoration: none;
-    text-decoration-color: none;
 }
 
 /* CONTACT SECTION */
@@ -506,7 +514,7 @@ label {
     width: 100%;
     padding: 0.5rem;
     font-size: 1rem;
-    border: 1px solid #BC9E91;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
 }
 
@@ -515,9 +523,9 @@ textarea {
 }
 
 .submit-button {
-    background: linear-gradient(90deg, #343D31, #4A2545);
+    background: linear-gradient(50deg, var(--dark-color), #4A2545);
     border: none;
-    color: #BC9E91;
+    color: var(--contact-text-color);
     padding: 1rem 2rem;
     font-weight: 600;
     border-radius: 5px;
@@ -526,7 +534,7 @@ textarea {
 }
 
 .submit-button:hover {
-    background-color: #824C71;
+    background-color: var(--border-color);
     transform: scale(1.05);
 }
 
@@ -534,7 +542,7 @@ textarea {
     text-align: left;
     flex: 1;
     max-width: 400px;
-    color: #2F2F2F; /* текст в контактной информации */
+    color: var(--main-text-color); /* текст в контактной информации */
 }
 
 .info-item {
@@ -554,12 +562,12 @@ textarea {
 }
 
 .contact-info a {
-    color: #E05B56; /* цвет ссылок в контактной информации */
+    color: var(--info-link-color); /* цвет ссылок в контактной информации */
     text-decoration: none;
 }
 
 .contact-info a:hover {
-    color: rgb(96, 145, 204);
+    color: var(--secondary-color);
 }
 
 /* FOOTER SECTION */
@@ -567,7 +575,7 @@ textarea {
 footer {
     padding: 2rem 0;
     text-align: center;
-    background-color: #EBEBE3; /* Фон футера */
+    background-color: var(--background-color); /* Фон футера */
 }
 
 footer p {
