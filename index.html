@@ -1,234 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Valentina Tihova - Professional Data Analyst Portfolio showcasing data analysis, visualization and analytics projects">
-    <meta name="keywords" content="Data Analyst, Data Analytics, Data Visualization, Portfolio, Valentina Tihova, SQL, Python, Tableau">
-    <meta name="author" content="Valentina Tihova">
-    <meta name="robots" content="index, follow">
-    <title>Valentina Tihova | Data Analyst</title>
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="style.css" as="style">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" as="style">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mediaqueries.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="./assets/square_logo.png" type="image/x-icon">
-    
-    <!-- EmailJS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Valentina Tihova | Data Analyst</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="mediaqueries.css">
+        <link rel="icon" href="./assets/square_logo.png" type="image/x-icon">
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+        </script>
+        <script type="text/javascript">
+        (function(){
             emailjs.init("W8KK0-Rh9tWIw9Fik");
-        });
-    </script>
-</head>
+        })();
+        </script>
+    </head>
 <body>
-    <header class="header">
-        <!-- Desktop Navigation -->
-        <nav id="nav" aria-label="Desktop navigation">
-            <div class="nav-container">
-                <a href="#" class="logo" aria-label="Home">
-                    <img src="./assets/vt_logo.png" alt="Valentina Tihova Logo" width="50" height="50" loading="lazy">
-                </a>
+    <header>
+        <nav id="nav">
+            <div class="header">
+                <div class="logo">
+                    <img src="./assets/vt_logo.png" alt="Valentina Tihova">
+                </div>
                 <ul class="nav-links">
-                    <li><a href="#proficiencies" data-lang="skills">Skills</a></li>
-                    <li><a href="#projects" data-lang="projects">Projects</a></li>
-                    <li><a href="#other-platforms" data-lang="other-platforms">Other Platforms</a></li>
-                    <li><a href="#contact" data-lang="contact">Contact</a></li>
+                    <li><a href="#proficiencies" class="lng-skills">Skills</a></li>
+                    <li><a href="#projects" class="lng-projects">Projects</a></li>
+                    <li><a href="#other-platforms" class="lng-other-platforms">Other Platforms</a></li>
+                    <li><a href="#contact" class="lng-contact">Contact</a></li>
                 </ul>
-                <select name="langSwitcher" id="langSwitcher" aria-label="Language selector">
-                    <option value="en">EN</option>
-                    <option value="ru">RU</option>
+                <select name="langSwitcher" id="langSwitcher">
+                    <option value="en">en</option>
+                    <option value="ru">ru</option>
                 </select>
             </div>
         </nav>
-
-        <!-- Mobile Navigation -->
-        <nav id="hamburger-nav" aria-label="Mobile navigation">
-            <div class="nav-container">
-                <a href="#" class="logo" aria-label="Home">
-                    <img src="./assets/vt_logo.png" alt="Valentina Tihova Logo" width="35" height="35" loading="lazy">
-                </a>
-                <button class="hamburger-icon" onclick="toggleMenu()" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <div class="menu-links" aria-hidden="true">
-                    <ul>
-                        <li><a href="#proficiencies" data-lang="skills">Skills</a></li>
-                        <li><a href="#projects" data-lang="projects">Projects</a></li>
-                        <li><a href="#other-platforms" data-lang="other-platforms">Other Platforms</a></li>
-                        <li><a href="#contact" data-lang="contact">Contact</a></li>
-                    </ul>
+        <nav id="hamburger-nav">
+            <div class="header">
+                <div class="logo">
+                    <img src="./assets/vt_logo.png" alt="Valentina Tihova">
+                </div>
+                <div class="hamburger-menu">
+                    <div class="hamburger-icon" onclick="toggleMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="menu-links">
+                        <li><a href="#proficiencies" onclick="toggleMenu()" class="lng-skills">Proficiencies</a></li>
+                        <li><a href="#projects" onclick="toggleMenu()" class="lng-projects">Projects</a></li>
+                        <li><a href="#other-platforms" onclick="toggleMenu()" class="lng-other-platforms">Other Platforms</a></li>
+                        <li><a href="#contact" onclick="toggleMenu()" class="lng-contact">Contact</a></li>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-
     <main>
-        <!-- Profile Section -->
-        <section id="profile" class="section">
-            <div class="profile-container">
-                <div class="profile-image">
-                    <img src="./assets/profile.jpg" 
-                         alt="Valentina Tihova Profile Picture" 
-                         <!-- width="475" 
-                         height="475" 
-                         loading="lazy"> -->
-                </div>
-                <div class="profile-content">
-                    <p class="subtitle" data-lang="greeting">Hello, I'm</p>
-                    <h1 class="title">Valentina Tihova</h1>
-                    <p class="role" data-lang="who">Data Analyst</p>
-                    <button class="btn-primary" onclick="location.href='#contact'" data-lang="contact-info">
+        <section id="profile">
+            <div class="section_pic_container">
+                <img src="./assets/profile.jpg" alt="Valentina Tihova Profile Picture" />
+            </div>
+            <div class="section_text">
+                <p class="section_text_p1">Hello, I'm</p>
+                <h1 class="title_1">Valentina Tihova</h1>
+                <p class="section_text_p2 lng-who">Data Analyst</p>
+                <div class="btn_container">
+                    <button class="lng-contactinfo btn_color" onclick="location.href='./#contact'">
                         Contact Info
                     </button>
                 </div>
-                <div class="profile-description">
-                    <p data-lang="about-me-1">No matter what projects I work on, data and its analysis come first. I am able to work with large volumes of information and solve complex and non-standard problems. I like to work in a team - it allows me to see the task from different points of view.</p>
-                    <p data-lang="about-me-2">I'm interested in Data Visualization and Data Art, some of my plots are used by customers. Looking for inspiration in Information designers such as Eleanor Lutz, Giorgia Lupi, Nadieh Bremer and many others.</p>
-                </div>
+            </div>
+            <div class="text_container">
+                <p class="lng-about-me-detail_1">No matter what projects I work on, data and its analysis come first. I am able to work with large volumes of information and solve complex and non-standard problems. I like to work in a team - it allows me to see the task from different points of view.</p>
+                <p class="lng-about-me-detail_2">I'm interest of Data Visualization and Data Art, some of my plots are used by customers. Looking for inspiration in Information designer such as Eleanor Lutz, Giorgia Lupi, Nadieh Bremer and many others.</p>
             </div>
         </section>
-
-        <!-- Skills Section -->
-        <section id="proficiencies" class="section">
-            <h2 class="section-title" data-lang="proficiencies">Proficiencies</h2>
-            <div class="skills-container">
-                <article class="skill-card">
-                    <img src="./assets/data-analysis.png" 
-                         alt="Data Analysis Icon" 
-                         class="skill-icon"
-                         width="90" 
-                         height="90" 
-                         loading="lazy">
-                    <h3 data-lang="data-analysis">Data Analysis</h3>
-                    <p data-lang="data-analysis-desc">Uncover hidden insights and patterns within your data to identify trends, anomalies and opportunities for data-driven decision-making.</p>
+        <section id="proficiencies">
+            <p class="section_text_p1 lng-here-are-my">Here Are My</p>
+            <h1 class="title_2 lng-proficiencies">Proficiencies</h1>
+            <div class="text_container">
+                <p class="lng-proficiencies-summary">I can optimize your data for better results, informed decisions and cost savings. My proficiency in technical tools like SQL, Python, HTML, CSS, Power BI and Tableau, combined with strong soft skills, enables me to deliver impactful data solutions.</p>
+            </div>
+            <div class="article_container">
+                <article>
+                    <img src="./assets/data-analysis.png" alt="Data Analysis Icon" class="icon"/>
+                    <div>
+                        <h3 class="lng-data-analysis-header">Data Analysis</h3>
+                        <p class="lng-data-analysis-detail">Uncover hidden insights and patterns within your data to identify trends, anomalies and opportunities for data-driven decision-making.</p>
+                    </div>
                 </article>
                 <article>
-                    <img src="./assets/data-analytics.png" 
-                    alt="Data Analytics Icon" 
-                    class="skill-icon"
-                    width="90" 
-                    height="90" 
-                    loading="lazy">
+                    <img src="./assets/data-analytics.png" alt="Data Analytics Icon" class="icon"/>
                     <div>
                         <h3 class="lng-data-analytics-header">Data Analytics</h3>
                         <p class="lng-data-analytics-detail">Harness the power of advanced analytics, including predictive models and machine learning solutions to forecast outcomes, optimize processes and gain a competitive edge.</p>
                     </div>
                 </article>
                 <article>
-                    <img src="./assets/data-visualization.png" 
-                    alt="Data Visualization Icon" 
-                    class="skill-icon"
-                    width="90" 
-                    height="90" 
-                    loading="lazy">
+                    <img src="./assets/data-visualization.png" alt="Data Visualization Icon" class="icon"/>
                     <div>
                         <h3 class="lng-data-visualization-header">Data Visualization</h3>
                         <p class="lng-data-visualization-detail">Transform complex data into clear and compelling visual narratives. Create custom dashboards and reports for enhanced data communication and understanding.</p>
                     </div>
                 </article>
                 <article>
-                    <img src="./assets/front-end-web-development.png" 
-                    alt="Front End Web Development Icon"
-                    class="skill-icon"
-                    width="90" 
-                    height="90" 
-                    loading="lazy">
+                    <img src="./assets/front-end-web-development.png" alt="Front End Web Development Icon" class="icon"/>
                     <div>
                         <h3 class="lng-web-development">Web Development</h3>
                         <p class="lng-web-development-detail">Craft intuitive web interfaces that deliver information in an accessible format. Design and build data-driven web solutions, seamlessly blending functionality and aesthetics to present data solutions that engage and inform.</p>
                     </div>
                 </article>
                 <article>
-                    <img src="./assets/back-end-development.png" 
-                    alt="Back End Development Icon"
-                    class="skill-icon"
-                    width="90" 
-                    height="90" 
-                    loading="lazy">
+                    <img src="./assets/back-end-development.png" alt="Back End Development Icon" class="icon"/>
                     <div>
                         <h3 class="lng-back-development">Backend Development</h3>
                         <p class="lng-back-development-detail">Collaborate seamlessly with your team to integrate data solutions into your business processes. Whether it's short-term projects or ongoing data-driven initiatives, I'm here to support your success.</p>
                     </div>
                 </article>
-                </div>
-                <div class="btn_container">
-                    <button href="./assets/doc/cv_TihovaV_BA.pdf" class="lng-cv btn_color">
-                        Download CV
-                    </button>
-                </div>
-
+            </div>
+            <div class="btn_container">
+                <button href="./assets/doc/cv_TihovaV_BA.pdf" class="lng-cv btn_color">
+                    Download CV
+                </button>
             </div>
         </section>
-        <!-- Projects Section -->
-        <section id="projects" class="section">
-            <h2 class="section-title" data-lang="projects">Projects</h2>
-            <div class="projects-filter">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="analysis">Analysis</button>
-                <button class="filter-btn" data-filter="visualization">Visualization</button>
+        <section id="projects">
+            <p class="section_text_p1 lng-browse-through-my">Browse Through My</p>
+            <h1 class="title_2 lng-projects">Projects</h1>
+            <div class="text_container">
+                <p class="lng-projects-summary">Some of my data analytics and data science projects based on Yandex.Practicum.</p>
             </div>
-            <div class="projects-grid">
-                <!-- Project cards with data attributes for filtering -->
-                <article class="project-card" data-tags="analysis,python">
-                    <img src="./assets/projects/project1.png" 
-                         alt="Project 1" 
-                         loading="lazy">
-                    <div class="project-overlay">
-                        <h3 data-lang="project-1-title">Bank Churn Prediction</h3>
-                        <p data-lang="project-1-desc">Analysis of the outflow of clients from the bank to select a strategy (retaining old clients or attracting new clients).</p>
-                        <a href="#" class="btn-secondary" data-lang="view-project">View Project</a>
+            <div class="details_container">
+                <div class="filters">
+                    <button class="filter-btn active" id="all">all</button>
+                    <button class="filter-btn" id="Apache Airflow">Apache Airflow</button>
+                    <button class="filter-btn" id="backend">backend</button>
+                    <button class="filter-btn" id="data analysis">data analysis</button>
+                    <button class="filter-btn" id="data visualization">data visualization</button>
+                    <button class="filter-btn" id="ML">ML</button>
+                    <button class="filter-btn" id="python">python</button>
+                </div>
+                <div class="details_container color_container">
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project11.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_11">Advertising company for computer games</h2>
+                        <p class="lng-project_11">Development of an advertising company for an online store for computer games, taking into account regional distribution.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://colab.research.google.com/github/valentinatihova/DA_projects/blob/master/market_of_games/market_of_games_v01.ipynb'">View Project</button>
+                        </div>
                     </div>
-                </article>
-                <article class="project-card" data-tags="analysis,python">
-                    <img src="./assets/projects/project2.png" 
-                         alt="Project 2" 
-                         loading="lazy">
-                    <div class="project-overlay">
-                        <h3 data-lang="project-2-title">Mobile app users</h3>
-                        <p data-lang="project-2-desc">A/a/b-test, calculation of sales funnel.</p>
-                        <a href="#" class="btn-secondary" data-lang="view-project">View Project</a>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project10.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_10">Сreating an automatic Tableau report</h2>
+                        <p class="lng-project_10">Tableau dashboard for Yandex.Zen.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://public.tableau.com/app/profile/valentina/viz/yandex_dash/Dashboard1'">View Project</button>
+                        </div>
                     </div>
-                </article>
-            </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project9.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_9">Marketing costs optimization according to Yandex.Afisha data</h2>
+                        <p class="lng-project_9">Optimization of marketing costs based on an assessment of the customer retention rate, average check and LTV, the cost of attracting one customer CAC, ROMI. Create PowerBI dash.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://colab.research.google.com/github/valentinatihova/DA_projects/blob/master/marketing_costs/marketing_costs.ipynb'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project8.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_8">Analysis of business metrics</h2>
+                        <p class="lng-project_8">Analysis of app customer acquisition costs Yandex.Afisha.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://colab.research.google.com/github/valentinatihova/DA_projects/blob/master/analysis_of_bus_metrics/analysis_of_bus_metrics.ipynb'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project1.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_1">Bank churn prediction</h2>
+                        <p class="lng-project_1">Analysis of the outflow of clients from the bank to select a strategy (retaining old clients or attracting new clients).</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://github.com/valentinatihova/DS_projects/blob/main/bank_churn_prediction'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project2.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_2">Mobile app users</h2>
+                        <p class="lng-project_2">A/a/b-test, calculation of sales funnel.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://colab.research.google.com/github/valentinatihova/DA_projects/blob/master/mobile_app_users/mobile_app_users.ipynb'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project3.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_3">Tracking User behaviour for Mobile App</h2>
+                        <p class="lng-project_3">Tracking User behaviour for Mobile App, a\b-test, sql-project.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://github.com/valentinatihova/DA_projects/tree/master/final_project'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project4.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_4">The creditworthiness of bank's clients</h2>
+                        <p class="lng-project_4">Research dependence of the Family Background and Amount of Children to the clients creditworthiness.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://github.com/valentinatihova/DA_projects/tree/master/final_project'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project5.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_5">The fair market value of property (FMV)</h2>
+                        <p class="lng-project_5">St. Petersburg real estate market analysis according to Realty service data.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://github.com/valentinatihova/DA_projects/tree/master/final_project'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project6.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_6">Analysis of Mobile Phone Plan Choices</h2>
+                        <p class="lng-project_6">Developing a new tariff plan of a telecommunications company taking into Clients behavior.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project" 
+                            onclick="location.href='https://github.com/valentinatihova/DA_projects/tree/master/final_project'">View Project</button>
+                        </div>
+                    </div>
+                    <div class="subdetail_container">
+                        <img src="./assets/projects/project7.png" class="project_img"/>
+                        <h2 class="projects_subtitle lng-project_subtitle_7">Making of business decision</h2>
+                        <p class="lng-project_7">Prioritization of marketing hypotheses, a\b-test.</p> 
+                        <div class="btn_container">
+                            <button class="btn btn_color project_btn lng-btn-project"
+                            onclick="location.href='https://github.com/valentinatihova/DA_projects/tree/master/final_project'">View Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>      
         </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section">
-            <h2 class="section-title" data-lang="contact">Contact</h2>
+        <section id="other-platforms">
+            <p class="section_text_p1">Explore My</p>
+            <h1 class="title_2 lng-other-platforms">Other Platforms</h1>
+            <div class="details_container">
+                <div class="details_container color_container">
+                    <div class="sub-detail_container">
+                        <a href="https://github.com/valentinatihova" class="platform-link">
+                            <img src="./assets/platforms/github.jpg" class="project_img" />
+                            <h2 class="projects_subtitle">Github</h2>
+                            <p>All my data science and data analytics repos</p>
+                        </a>
+                    </div>
+                    <div class="sub-detail_container">
+                        <a href="https://public.tableau.com/app/profile/valentina/vizzes" class="platform-link">
+                            <img src="./assets/platforms/tableau.jpg" class="project_img" />
+                            <h2 class="projects_subtitle">Tableau</h2>
+                            <p>Check out my data vizzes</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>        
+        <section id="contact">
+            <h1 class="title_2 lng-contact">Contact Me</h1>
             <div class="contact-container">
-                <form class="contact-form" onsubmit="sendMail(event)">
-                    <div class="form-group">
-                        <label for="name" data-lang="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                <div class="contact-card">
+                    <form class="contact-form">
+                        <div class="form-group lng-name">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group lng-email">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group lng-message">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button class="submit-button lng-send">Send Message</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <h2 lng-contact-info>Contact Information</h2>
+                    <div class="info-item">
+                        <i class="fas fa-user"></i>
+                        <p>You can reach me at the email in my GitHub profile. Follow my Socials!</p>
                     </div>
-                    <div class="form-group">
-                        <label for="email" data-lang="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                    <div class="info-item">
+                        <a href="https://linkedin.com/in/valentina-tikhova/" target="_blank">
+                            <img src="./assets/socials/linkedin.png" height="40em" alt="Follow my LinkedIn" title="Follow me on LinkedIn" class="icon contact-icon" />
+                        </a>
+                        <a href="https://t.me/Tikhova_Valentina" target="_blank">
+                            <img src="./assets/socials/telegram.png" height="40em" alt="Follow my Telegram" title="Follow me on Telegram" class="icon contact-icon" />
+                        </a>
+                        <a href="https://instagram.com/valentina.tihova" target="_blank">
+                            <img src="./assets/socials/instagram.png" height="40em" alt="Follow my Instagram" title="Follow me on Instagram" class="icon contact-icon" />
+                        </a>
                     </div>
-                    <div class="form-group">
-                        <label for="message" data-lang="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
-                    <button class="btn-primary" type="submit" data-lang="send-message">Send Message</button>
-                </form>
+                </div>
             </div>
         </section>
+        <footer>
+            <p>Copyright &#169; 2024 Valentina Tihova. All Rights Reserved.</p>
+        </footer>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Valentina Tihova. All Rights Reserved.</p>
-    </footer>
-
     <script src="script.js"></script>
+    <script src="lang.js"></script>
+    <script>
+        const langSwitcher = document.getElementById("langSwitcher");
+        langSwitcher.addEventListener("change", changeLanguage);
+
+        function changeLanguage() {
+            let currentLang = langSwitcher.value;
+
+            for (let key in LanguageDataArr) {
+                const elements = document.querySelectorAll("[class*=" + key + "]");
+                elements.forEach((element) => {
+                    element.innerHTML = LanguageDataArr[key][currentLang];
+                });
+            }
+        }
+    </script>
 </body>
 </html>
