@@ -1,8 +1,4 @@
 const LanguageDataArr = {
-  about: {
-    en: "About",
-    ru: "Обо мне",
-  },
   skills: {
     en: "Skills",
     ru: "Навыки",
@@ -19,6 +15,10 @@ const LanguageDataArr = {
     en: "Contact",
     ru: "Контакты",
   },
+  who:{
+    en: "Data Analyst",
+    ru: "Аналитик данных",
+  },
   contactinfo: {
     en: "Contact Info",
     ru: "Связаться со мной",
@@ -26,10 +26,6 @@ const LanguageDataArr = {
   "get-to-know-more": {
     en: "Get To Know More",
     ru: "Немного",
-  },
-  "about-me": {
-    en: "About me",
-    ru: "Обо мне",
   },
   "about-me-detail_1": {
     en: "No matter what projects I work on, data and its analysis come first. I am able to work with large volumes of information and solve complex and non-standard problems. I like to work in a team - it allows me to see the task from different points of view.",
@@ -75,15 +71,15 @@ const LanguageDataArr = {
     en: "Transform complex data into clear and compelling visual narratives. Create custom dashboards and reports for enhanced data communication and understanding.",
     ru: "Преобразовываю сложные данные в четкие и убедительные визуальные повествования. Создаю собственные информационные панели и отчеты для улучшения передачи и понимания данных.",
   },
-  "web-development": {
+  "web-development-header": {
     en: "Web Development",
     ru: "Веб разработка",
   },
-  // "web-development-detail": {
-  //   en: "Craft intuitive web interfaces that deliver information in an accessible format. Design and build data-driven web solutions, seamlessly blending functionality and aesthetics to present data solutions that engage and inform.",
-  //   ru: "Создаю интуитивно понятные веб-интерфейсы, предоставляющие информацию в доступном формате. Проектируйте и создавайте веб-решения на основе данных, органично сочетая функциональность и эстетику для представления решений по работе с данными, которые привлекают и информируют.",
-  // },
-  "back-development": {
+  "web-development-detail": {
+    en: "Craft intuitive web interfaces that deliver information in an accessible format. Design and build data-driven web solutions, seamlessly blending functionality and aesthetics to present data solutions that engage and inform.",
+    ru: "Создаю интуитивно понятные веб-интерфейсы, предоставляющие информацию в доступном формате. Проектируйте и создавайте веб-решения на основе данных, органично сочетая функциональность и эстетику для представления решений по работе с данными, которые привлекают и информируют.",
+  },
+  "back-development-header": {
     en: "Backend Developmentt",
     ru: "Бэк-разработка",
   },
