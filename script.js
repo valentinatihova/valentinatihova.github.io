@@ -43,3 +43,24 @@ filters.forEach(filterBtn => {
         filterBtn.classList.add('active');
     })
 })
+// Добавить в конец файла
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Проверка сохраненных предпочтений пользователя
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+    body.classList.add(currentTheme);
+}
+
+// Обработчик переключения темы
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+
+    // Сохранение предпочтений пользователя
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark-mode');
+    } else {
+        localStorage.setItem('theme', '');
+    }
+});
