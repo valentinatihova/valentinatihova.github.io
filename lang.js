@@ -19,6 +19,10 @@ const LanguageDataArr = {
     en: "Data Analyst",
     ru: "Аналитик данных",
   },
+  cv:{
+    en: "Download CV",
+    ru: "Скачать CV",
+  },
   contactinfo: {
     en: "Contact Info",
     ru: "Связаться со мной",
