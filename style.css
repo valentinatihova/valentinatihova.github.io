@@ -19,6 +19,50 @@
     --hover-box-shadow: 0px 0px 15px #EBEBE3; /* тень при наведении */
 }
 
+.lang-switch {
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    user-select: none;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Это сдвинет контейнер вправо */
+}
+
+#themeToggle {
+    cursor: pointer;
+    margin-right: 10px; /* Уменьшенный отступ между переключателями */
+}
+
+.lang-switch {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    user-select: none;
+}
+
+/* Добавьте стили для иконок, если их еще нет */
+.sun-icon, .moon-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.moon-icon {
+    display: none;
+}
+
+.dark-mode .sun-icon {
+    display: none;
+}
+
+.dark-mode .moon-icon {
+    display: inline-block;
+}
+
 /* REST OF YOUR CSS REMAINS UNCHANGED */
 
 * {
@@ -78,11 +122,13 @@ nav ul li {
     font-size: 1.3rem;
 }
 
-.logo img {
-    max-width: 50px;
-    height: auto;
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--main-text-color); /* Цвет текста логотипа */
 }
-
 a {
     color: var(--main-text-color); /* основной текст для ссылок */
     text-decoration: none;
@@ -588,7 +634,6 @@ footer p::before {
 }
 
 /* В :root добавить новые переменные для темной темы */
-/* В :root добавить новые переменные для темной темы */
 :root {
     /* Существующие переменные... */
     --dark-bg-color: #333;
@@ -597,7 +642,7 @@ footer p::before {
     --dark-button-color: #5E514F;
 }
 
-/* Стили для темной темы */
+/* Добавить стили для темной темы */
 body.dark-mode {
     background-color: var(--dark-bg-color);
     color: var(--dark-text-color);

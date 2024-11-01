@@ -23,6 +23,7 @@ function sendMail() {
     })
     .catch((err) => console.log(err));
 }
+
 // filters
 
 const filters = document.querySelectorAll('.filter-btn');
@@ -43,6 +44,8 @@ filters.forEach(filterBtn => {
         filterBtn.classList.add('active');
     })
 })
+
+
 
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
@@ -65,7 +68,7 @@ themeToggle.addEventListener('click', () => {
     }
 });
 
-// Переключение языка страницы
+// Код для переключения языка
 document.addEventListener('DOMContentLoaded', () => {
     const langToggle = document.getElementById('langToggle');
     const langText = langToggle.querySelector('.lang-text');
