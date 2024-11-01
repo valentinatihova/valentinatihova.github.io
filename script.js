@@ -43,11 +43,11 @@ filters.forEach(filterBtn => {
         filterBtn.classList.add('active');
     })
 })
-// Добавить в конец файла
+
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
-// Проверка сохраненных предпочтений пользователя
+// Проверка сохраненных предпочтений пользователя по теме сайта
 const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
     body.classList.add(currentTheme);
@@ -62,5 +62,36 @@ themeToggle.addEventListener('click', () => {
         localStorage.setItem('theme', 'dark-mode');
     } else {
         localStorage.setItem('theme', '');
+    }
+});
+
+// Переключение языка страницы
+document.addEventListener('DOMContentLoaded', () => {
+    const langToggle = document.getElementById('langToggle');
+    const langText = langToggle.querySelector('.lang-text');
+    let currentLang = localStorage.getItem('language') || 'en';
+
+    // Инициализация начального состояния
+    updateLanguageUI(currentLang);
+
+    langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'ru' : 'en';
+        updateLanguageUI(currentLang);
+        localStorage.setItem('language', currentLang);
+    });
+
+    function updateLanguageUI(lang) {
+        langText.textContent = lang === 'en' ? 'ENG' : 'RUS';
+        langToggle.classList.toggle('ru', lang === 'ru');
+        
+        // Обновление текста на странице
+        for (let key in LanguageDataArr) {
+            const elements = document.querySelectorAll(`[class*="${key}"]`);
+            elements.forEach((element) => {
+                if (LanguageDataArr[key][lang]) {
+                    element.innerHTML = LanguageDataArr[key][lang];
+                }
+            });
+        }
     }
 });

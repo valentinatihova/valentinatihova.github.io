@@ -588,6 +588,7 @@ footer p::before {
 }
 
 /* В :root добавить новые переменные для темной темы */
+/* В :root добавить новые переменные для темной темы */
 :root {
     /* Существующие переменные... */
     --dark-bg-color: #333;
@@ -596,7 +597,7 @@ footer p::before {
     --dark-button-color: #5E514F;
 }
 
-/* Добавить стили для темной темы */
+/* Стили для темной темы */
 body.dark-mode {
     background-color: var(--dark-bg-color);
     color: var(--dark-text-color);

@@ -166,15 +166,17 @@ const LanguageDataArr = {
 };
 
 const langSwitcher = document.getElementById("langSwitcher");
-langSwitcher.addEventListener("change", changeLanguage);
 
 function changeLanguage() {
-  let currentLang = langSwitcher.value;
+    let currentLang = langSwitcher.textContent === "ENG" ? "ru" : "en";
+    langSwitcher.textContent = currentLang === "en" ? "ENG" : "RUS";
 
-  for (let key in LanguageDataArr) {
-    const elements = document.querySelectorAll("[class*=" + key + "]");
-    elements.forEach((element) => {
-      element.innerHTML = LanguageDataArr[key][currentLang];
-    });
-  }
+    for (let key in LanguageDataArr) {
+        const elements = document.querySelectorAll("[class*=" + key + "]");
+        elements.forEach((element) => {
+            element.innerHTML = LanguageDataArr[key][currentLang];
+        });
+    }
 }
+
+langSwitcher.addEventListener("click", changeLanguage);

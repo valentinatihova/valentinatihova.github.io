@@ -33,7 +33,8 @@
                     <option value="en">en</option>
                     <option value="ru">ru</option>
                 </select>
-                <!-- Добавить в nav после select[name="language"] -->
+
+                <!-- Переключение режима страницы -->
                 <div class="toggle-container" id="themeToggle">
                     <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -50,12 +51,15 @@
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </div>
+
+                <!-- Переключение языка -->
+                <span id="langSwitcher" class="lang-switch">ENG</span>
             </div>
         </nav>
         <nav id="hamburger-nav">
             <div class="header">
                 <div class="logo">
-                    <img src="./assets/vt_logo.png" alt="Valentina Tihova">
+                    <span style="font-size: 24px; font-weight: bold;">V.</span>
                 </div>
                 <div class="hamburger-menu">
                     <div class="hamburger-icon" onclick="toggleMenu()">
