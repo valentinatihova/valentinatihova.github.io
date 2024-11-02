@@ -3,20 +3,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
-    --main-text-color: #494C52; /* основной текст */
-    --hover-text-color: #CE9F82; /* цвет при наведении */
-    --link-text-color: #B0C1C0; /* текст */
-    --background-color: #EBDCC8; /* фон */
-    --button-bg-color: #E5C5B8; /* цвет кнопок */
-    --button-hover-color: #CE9F82; /* цвет кнопки при наведении */
-    --dark-color: #5E514F; /* темный цвет */
-    --secondary-color: #CAB299; /* вторичный цвет */
-    --border-color: #4B3C40; /* цвет рамки */
-    --contact-text-color: #494C52; /* цвет текста в контактной информации */
-    --info-link-color: #B0C1C0; /* цвет ссылок в контактной информации */
-    --project-overlay-bg: #BC9E91; /* фон оверлея проектов */
-    --box-shadow: 0px 0px 10px #EBEBE3; /* зенковая тень */
-    --hover-box-shadow: 0px 0px 15px #EBEBE3; /* тень при наведении */
+    --main-text-color: #8e8d8a;
+    --hover-text-color: #e98074;
+    --link-text-color: #B0C1C0;
+    --background-color: #e85a4f;
+    --button-bg-color: #E5C5B8;
+    --button-hover-color: #CE9F82;
+    --dark-color: #5E514F;
+    --secondary-color: #8e8d8a;
+    --border-color: #4B3C40;
+    --contact-text-color: #8e8d8a;
+    --info-link-color: #B0C1C0;
+    --project-overlay-bg: #BC9E91;
+    --box-shadow: 0px 0px 10px #EBEBE3;
+    --hover-box-shadow: 0px 0px 15px #EBEBE3;
 }
 
 .lang-switch {
@@ -644,9 +644,9 @@ footer p::before {
 :root {
     /* Существующие переменные... */
     --dark-bg-color: #333;
-    --dark-text-color: #fff;
-    --dark-hover-color: #CE9F82;
-    --dark-button-color: #5E514F;
+    --dark-text-color: #eae7dc;
+    --dark-hover-color: #e98074;
+    --dark-button-color: #8e8d8a;
 }
 
 /* Добавить стили для темной темы */
