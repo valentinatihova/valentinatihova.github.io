@@ -1,3 +1,4 @@
+// ОТРАБОТКА МЕНЮ
 function toggleMenu() {
     const menu =document.querySelector(".menu-links"); 
     const icon =document.querySelector(".hamburger-icon");
@@ -24,29 +25,35 @@ function sendMail() {
     .catch((err) => console.log(err));
 }
 
-// filters
-
+// ПРИМЕНЕНИЕ ФИЛЬТРА К КАРТОЧКАМ ПРОЕКТА
 const filters = document.querySelectorAll('.filter-btn');
 
 filters.forEach(filterBtn => {
     filterBtn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filters.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        filterBtn.classList.add('active');
+
         let id = filterBtn.getAttribute('id');
         let projectCards = document.querySelectorAll('.project-card');
+        
         projectCards.forEach(card => {
-            if(card.getAttribute('data-tags').includes(id)){
+            // Get tags for current card
+            let tags = card.getAttribute('data-tags');
+            
+            // Check if card should be shown
+            if(id === 'all' || (tags && tags.includes(id))) {
                 card.classList.remove('hide');
-            } else{
+            } else {
                 card.classList.add('hide');
             }
-        })
-
-        filters.forEach(btn => btn.classList.remove('active'));
-        filterBtn.classList.add('active');
-    })
-})
+        });
+    });
+});
 
 
-
+// СМЕНА ТЕМЫ САЙТА
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 
@@ -68,7 +75,8 @@ themeToggle.addEventListener('click', () => {
     }
 });
 
-// Код для переключения языка
+
+// ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА САЙТА
 document.addEventListener('DOMContentLoaded', () => {
     const langToggle = document.getElementById('langToggle');
     const langText = langToggle.querySelector('.lang-text');

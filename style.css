@@ -446,7 +446,7 @@ article p {
 .filters {
     width: fit-content;
     display: block;
-    margin: 2px auto;
+    margin: 2rem auto;
 }
 
 .filter-btn {
@@ -456,11 +456,18 @@ article p {
     text-transform: capitalize;
     margin: 0 5px 10px;
     cursor: pointer;
+    background: var(--secondary-color);
+    color: var(--main-text-color);
+    transition: all 0.3s ease;
 }
 
 .filter-btn.active {
-    background: linear-gradient(50deg, var(--dark-color), #4A2545);
-    color: var(--hover-text-color);
+    background: var(--button-hover-color);
+    color: var(--background-color);
+}
+
+.project-card.hide {
+    display: none;
 }
 
 .details_container {
