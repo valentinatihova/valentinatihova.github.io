@@ -328,7 +328,7 @@ section {
     transform: translateX(-50%);
     width: 80px;
     height: 3.5px;
-    background: linear-gradient(90deg, var(--dark-color), #4A2545);
+    background: linear-gradient(90deg, #8e8d8a, #e85a4f);
     border-radius: 1px;
 }
 
@@ -576,7 +576,7 @@ textarea {
 }
 
 .submit-button {
-    background: linear-gradient(50deg, var(--dark-color), #4A2545);
+    background: linear-gradient(90deg, #8e8d8a, #e85a4f);
     border: none;
     color: var(--contact-text-color);
     padding: 1rem 2rem;
