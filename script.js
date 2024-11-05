@@ -26,39 +26,24 @@ function sendMail() {
 }
 
 // ПРИМЕНЕНИЕ ФИЛЬТРА К КАРТОЧКАМ ПРОЕКТА
+// Инициализация MixItUp
+const mixer = mixitup('.mixitup-container');
+
+// Обработчик кликов для кнопок фильтров
 const filters = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.subdetail_container');
 
 filters.forEach(filterBtn => {
     filterBtn.addEventListener('click', () => {
-        // Remove active class from all buttons
+        // Удалить активный класс у всех кнопок
         filters.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
+        // Добавить активный класс к нажатой кнопке
         filterBtn.classList.add('active');
 
-        let id = filterBtn.getAttribute('id');
+        // Получаем id кнопки для фильтрации
+        const filterValue = filterBtn.getAttribute('id') === 'all' ? '*' : `.${filterBtn.getAttribute('id')}`;
 
-        projectCards.forEach(card => {
-            if(id === 'all' || (tags && tags.includes(id))) {
-                card.style.visibility = 'visible';
-                card.style.opacity = '1';
-            } else {
-                card.style.visibility = 'hidden';
-                card.style.opacity = '0';
-            }
-        });
-        
-    //     projectCards.forEach(card => {
-    //         // Get tags for current card
-    //         let tags = card.querySelector('.project_img').getAttribute('data-tags');
-            
-    //         // Check if card should be shown
-    //         if(id === 'all' || (tags && tags.split(' ').includes(id))) {
-    //             card.style.display = 'block';
-    //         } else {
-    //             card.style.display = 'none';
-    //         }
-    //     });
+        // Применяем фильтрацию
+        mixer.filter(filterValue);
     });
 });
 
