@@ -59,7 +59,7 @@ filters.forEach(filterBtn => {
     //             card.style.display = 'none';
     //         }
     //     });
-    // });
+    });
 });
 
 
