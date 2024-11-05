@@ -97,7 +97,7 @@ const LanguageDataArr = {
   },
   "projects": {
     en: "Projects",
-    ru: "Проектов",
+    ru: "Проекты",
   },
   "projects-summary": {
     en: "Some of my data analytics and data science projects.",

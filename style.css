@@ -2,6 +2,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 :root {
     --main-text-color: #8e8d8a;
     --hover-text-color: #e98074;
@@ -479,7 +483,7 @@ article p {
 }
 
 .subdetail_container {
-    background-color: var(--secondary-color);
+    /* background-color: var(--secondary-color); */
     border: 1px solid var(--border-color);
     border-radius: 5px;
     padding: 1.5rem;
