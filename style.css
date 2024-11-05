@@ -475,11 +475,14 @@ article p {
 }
 
 .details_container {
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
     justify-content: space-around;
-    gap: 3.5rem;
+    /* gap: 3.5rem; */
     margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }
 
 .subdetail_container {
@@ -491,6 +494,7 @@ article p {
     text-align: left;
     box-shadow: var(--box-shadow);
     transition: transform 0.2s ease-in-out;
+    min-height: 400px;
 }
 
 .subdetail_container:hover {
