@@ -27,6 +27,7 @@ function sendMail() {
 
 // ПРИМЕНЕНИЕ ФИЛЬТРА К КАРТОЧКАМ ПРОЕКТА
 const filters = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.subdetail_container');
 
 filters.forEach(filterBtn => {
     filterBtn.addEventListener('click', () => {
@@ -36,17 +37,16 @@ filters.forEach(filterBtn => {
         filterBtn.classList.add('active');
 
         let id = filterBtn.getAttribute('id');
-        let projectCards = document.querySelectorAll('.project-card');
         
         projectCards.forEach(card => {
             // Get tags for current card
-            let tags = card.getAttribute('data-tags');
+            let tags = card.querySelector('.project_img').getAttribute('data-tags');
             
             // Check if card should be shown
-            if(id === 'all' || (tags && tags.includes(id))) {
-                card.classList.remove('hide');
+            if(id === 'all' || (tags && tags.split(' ').includes(id))) {
+                card.style.display = 'block';
             } else {
-                card.classList.add('hide');
+                card.style.display = 'none';
             }
         });
     });
