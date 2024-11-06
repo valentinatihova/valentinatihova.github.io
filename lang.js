@@ -32,12 +32,12 @@ const LanguageDataArr = {
     ru: "Немного",
   },
   "about-me-detail_1": {
-    en: "No matter what projects I work on, data and its analysis come first. I am able to work with large volumes of information and solve complex and non-standard problems. I like to work in a team - it allows me to see the task from different points of view.",
-    ru: "В каких бы проектах не работала, на первое место выходят данные и их анализ. Умею работать с большими объемами информации, решать сложные и нестандартные задачи. Люблю работать в команде, - это позволяет видеть задачу с разных точек зрения.",
+    en: "System Analyst with nearly 9 years of experience in data analysis and system integration, specializing in optimizing business processes and developing project documentation. Currently, I work at GlowByte Consulting, where I have successfully implemented internal products for major banks, optimized the processes for generating credit offers, and created a pipeline orchestrator based on Apache Airflow. ",
+    ru: "Системный аналитик с почти 9-летним опытом в области анализа данных и системной интеграции, специализирующийся на оптимизации бизнес-процессов и разработке проектной документации. В настоящее время я работаю в GlowByte Consulting, где успешно внедрила внутренние продукты для крупных банков, оптимизировала процессы формирования кредитных предложений и создала оркестратор пайплайнов на базе Apache Airflow.",
   },
   "about-me-detail_2": {
-    en: "I'm interest of Data Visualization and Data Art, some of my plots are used by customers. Looking for inspiration in Information designer such as Eleanor Lutz, Giorgia Lupi, Nadieh Bremer and many others.",
-    ru: "Я интересуюсь визуализацией данных и Дата Артом, некоторые из моих работ успешно испольузются клиентами. Вдохновляюсь работами таких дизайнеров как Элеонор Лутц, ДЖорджии Лупи, Нади Бремер и многими другими.",
+    en: "My key skills include gathering and analyzing business requirements, designing system architecture, and utilizing agile methodologies (Scrum, Kanban) along with tools such as Python, SQL, and PowerBI. I am eager to apply my knowledge and experience to achieve high results in the development of performance products and to effectively collaborate with development teams.",
+    ru: "Мои ключевые навыки включают сбор и анализ бизнес-требований, проектирование архитектуры систем, а также использование гибких методологий (Scrum, Kanban) и инструментов, таких как Python, SQL и PowerBI. Я стремлюсь применять свои знания и опыт для достижения высоких результатов в разработке Performance-продуктов и эффективном взаимодействии с командами разработки.",
   },
   "lng-here-are-my": {
     en: "Here Are My",
