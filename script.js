@@ -26,24 +26,29 @@ function sendMail() {
 }
 
 // ПРИМЕНЕНИЕ ФИЛЬТРА К КАРТОЧКАМ ПРОЕКТА
-// Инициализация MixItUp
-const mixer = mixitup('.mixitup-container');
-
-// Обработчик кликов для кнопок фильтров
 const filters = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.subdetail_container');
 
 filters.forEach(filterBtn => {
     filterBtn.addEventListener('click', () => {
-        // Удалить активный класс у всех кнопок
+        // Remove active class from all buttons
         filters.forEach(btn => btn.classList.remove('active'));
-        // Добавить активный класс к нажатой кнопке
+        // Add active class to clicked button
         filterBtn.classList.add('active');
 
-        // Получаем id кнопки для фильтрации
-        const filterValue = filterBtn.getAttribute('id') === 'all' ? '*' : `.${filterBtn.getAttribute('id')}`;
-
-        // Применяем фильтрацию
-        mixer.filter(filterValue);
+        let id = filterBtn.getAttribute('id');
+        
+        projectCards.forEach(card => {
+            // Get tags for current card
+            let tags = card.querySelector('.project_img').getAttribute('data-tags');
+            
+            // Check if card should be shown
+            if(id === 'all' || (tags && tags.split(' ').includes(id))) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
     });
 });
 
