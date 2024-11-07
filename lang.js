@@ -32,13 +32,13 @@ const LanguageDataArr = {
     ru: "Немного",
   },
   "about-me-detail_1": {
-    en: "System Analyst with nearly 9 years of experience in data analysis and system integration, specializing in optimizing business processes and developing project documentation. Currently, I work at GlowByte Consulting, where I have successfully implemented internal products for major banks, optimized the processes for generating credit offers, and created a pipeline orchestrator based on Apache Airflow. ",
-    ru: "Системный аналитик с почти 9-летним опытом в области анализа данных и системной интеграции, специализирующийся на оптимизации бизнес-процессов и разработке проектной документации. В настоящее время я работаю в GlowByte Consulting, где успешно внедрила внутренние продукты для крупных банков, оптимизировала процессы формирования кредитных предложений и создала оркестратор пайплайнов на базе Apache Airflow.",
+    en: "System Analyst with nearly 7 years of experience in data analysis and system integration, specializing in optimizing business processes and developing project documentation. Currently, I work at GlowByte Consulting, where I have successfully implemented internal products for major banks, optimized the processes for generating credit offers, and created a pipeline orchestrator based on Apache Airflow. ",
+    ru: "Системный аналитик с почти 7-летним опытом в области анализа данных и системной интеграции, специализирующийся на оптимизации бизнес-процессов и разработке проектной документации. В настоящее время я работаю в GlowByte Consulting, где успешно внедрила внутренние продукты для крупных банков, оптимизировала процессы формирования кредитных предложений и создала оркестратор пайплайнов на базе Apache Airflow.",
   },
-  "about-me-detail_2": {
-    en: "My key skills include gathering and analyzing business requirements, designing system architecture, and utilizing agile methodologies (Scrum, Kanban) along with tools such as Python, SQL, and PowerBI. I am eager to apply my knowledge and experience to achieve high results in the development of performance products and to effectively collaborate with development teams.",
-    ru: "Мои ключевые навыки включают сбор и анализ бизнес-требований, проектирование архитектуры систем, а также использование гибких методологий (Scrum, Kanban) и инструментов, таких как Python, SQL и PowerBI. Я стремлюсь применять свои знания и опыт для достижения высоких результатов в разработке Performance-продуктов и эффективном взаимодействии с командами разработки.",
-  },
+  // "about-me-detail_2": {
+  //   en: "My key skills include gathering and analyzing business requirements, designing system architecture, and utilizing agile methodologies (Scrum, Kanban) along with tools such as Python, SQL, and PowerBI. I am eager to apply my knowledge and experience to achieve high results in the development of performance products and to effectively collaborate with development teams.",
+  //   ru: "Мои ключевые навыки включают сбор и анализ бизнес-требований, проектирование архитектуры систем, а также использование гибких методологий (Scrum, Kanban) и инструментов, таких как Python, SQL и PowerBI. Я стремлюсь применять свои знания и опыт для достижения высоких результатов в разработке Performance-продуктов и эффективном взаимодействии с командами разработки.",
+  // },
   "lng-here-are-my": {
     en: "Here Are My",
     ru: "Мои",
@@ -48,8 +48,8 @@ const LanguageDataArr = {
     ru: "Навыки",
   },
   "lng-proficiencies-summary": {
-    en: "I can optimize your data for better results, informed decisions and cost savings. My proficiency in technical tools like SQL, Python, DataLens, Datawrapper, Power BI and Tableau, combined with strong soft skills, enables me to deliver impactful data solutions.",
-    ru: "Я могу оптимизировать ваши данные для достижения лучших результатов, принятия обоснованных решений и экономии средств. Мое знание технических инструментов, таких как SQL, Python, DataLens, Datawrapper, Power BI и Tableau, в сочетании с сильными навыками межличностного общения позволяет мне предлагать эффективные решения для обработки данных и их визуализации.",
+    en: "My key skills include gathering and analyzing business requirements, designing system architecture, and utilizing agile methodologies (Scrum, Kanban) along with tools such as Python, SQL, and PowerBI. I am eager to apply my knowledge and experience to achieve high results in the development of performance products and to effectively collaborate with development teams.",
+    ru: "Мои ключевые навыки включают сбор и анализ бизнес-требований, проектирование архитектуры систем, а также использование гибких методологий (Scrum, Kanban) и инструментов, таких как Python, SQL и PowerBI. Я стремлюсь применять свои знания и опыт для достижения высоких результатов в разработке Performance-продуктов и эффективном взаимодействии с командами разработки.",
   },
   "data-analysis-header": {
     en: "Data Analysis",
