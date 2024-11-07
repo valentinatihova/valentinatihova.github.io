@@ -6,7 +6,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* :root {
+:root {
     --main-text-color: #8e8d8a;
     --hover-text-color: #e98074;
     --link-text-color: #B0C1C0;
@@ -21,22 +21,8 @@
     --project-overlay-bg: #BC9E91;
     --box-shadow: 0px 0px 10px #EBEBE3;
     --hover-box-shadow: 0px 0px 15px #EBEBE3;
-} */
-
-:root {
-    --main-text-color: var(--antiflash-white);  /* Белый для текста */
-    --hover-text-color: var(--aureolin);        /* Яркий желтый для hover эффектов */
-    --link-text-color: var(--antiflash-white);  /* Белые ссылки */
-    --background-color: var(--dark-purple);     /* Темный фоновый цвет */
-    --button-bg-color: var(--rose-ebony);       /* Розовый уголь для кнопок */
-    --button-hover-color: var(--gray);           /* Более светлый серый для hover */
-    --dark-color: var(--rose-ebony);             /* Темный цвет для текста/границ */
-    --secondary-color: var(--gray);              /* Серый для второстепенных элементов */
-    --border-color: var(--rose-ebony);           /* Границы в розовом угле */
-    --project-overlay-bg: rgba(95, 70, 73, 0.9); /* Полупрозрачный розовый */
-    --box-shadow: 0px 0px 10px rgba(95, 70, 73, 0.2);
-    --hover-box-shadow: 0px 0px 15px rgba(95, 70, 73, 0.3);
 }
+
 
 .lang-switch {
     cursor: pointer;
@@ -148,6 +134,7 @@ nav ul li {
     font-weight: bold;
     color: var(--main-text-color); /* Цвет текста логотипа */
 }
+
 a {
     color: var(--main-text-color); /* основной текст для ссылок */
     text-decoration: none;
