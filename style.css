@@ -6,7 +6,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-:root {
+/* :root {
     --main-text-color: #8e8d8a;
     --hover-text-color: #e98074;
     --link-text-color: #B0C1C0;
@@ -21,6 +21,21 @@
     --project-overlay-bg: #BC9E91;
     --box-shadow: 0px 0px 10px #EBEBE3;
     --hover-box-shadow: 0px 0px 15px #EBEBE3;
+} */
+
+:root {
+    --main-text-color: #2C3639;      /* Глубокий серо-синий для основного текста */
+    --hover-text-color: #3F4E4F;     /* Темный серо-зеленый для hover эффектов */
+    --link-text-color: #2C3639;      /* Тот же оттенок для связности */
+    --background-color: #F5F5F5;     /* Светлый фон */
+    --button-bg-color: #A27B5C;      /* Теплый коричневый для кнопок */
+    --button-hover-color: #8B7355;   /* Более темный коричневый для hover */
+    --dark-color: #2C3639;           /* Основной темный цвет */
+    --secondary-color: #DCD7C9;      /* Теплый бежевый для второстепенных элементов */
+    --border-color: #A27B5C;         /* Тот же оттенок что и кнопки */
+    --project-overlay-bg: rgba(162, 123, 92, 0.9); /* Полупрозрачный коричневый */
+    --box-shadow: 0px 0px 10px rgba(44, 54, 57, 0.1);
+    --hover-box-shadow: 0px 0px 15px rgba(44, 54, 57, 0.2);
 }
 
 .lang-switch {
