@@ -24,18 +24,18 @@
 } */
 
 :root {
-    --main-text-color: #2C3639;      /* Глубокий серо-синий для основного текста */
-    --hover-text-color: #3F4E4F;     /* Темный серо-зеленый для hover эффектов */
-    --link-text-color: #2C3639;      /* Тот же оттенок для связности */
-    --background-color: #F5F5F5;     /* Светлый фон */
-    --button-bg-color: #A27B5C;      /* Теплый коричневый для кнопок */
-    --button-hover-color: #8B7355;   /* Более темный коричневый для hover */
-    --dark-color: #2C3639;           /* Основной темный цвет */
-    --secondary-color: #DCD7C9;      /* Теплый бежевый для второстепенных элементов */
-    --border-color: #A27B5C;         /* Тот же оттенок что и кнопки */
-    --project-overlay-bg: rgba(162, 123, 92, 0.9); /* Полупрозрачный коричневый */
-    --box-shadow: 0px 0px 10px rgba(44, 54, 57, 0.1);
-    --hover-box-shadow: 0px 0px 15px rgba(44, 54, 57, 0.2);
+    --main-text-color: var(--antiflash-white);  /* Белый для текста */
+    --hover-text-color: var(--aureolin);        /* Яркий желтый для hover эффектов */
+    --link-text-color: var(--antiflash-white);  /* Белые ссылки */
+    --background-color: var(--dark-purple);     /* Темный фоновый цвет */
+    --button-bg-color: var(--rose-ebony);       /* Розовый уголь для кнопок */
+    --button-hover-color: var(--gray);           /* Более светлый серый для hover */
+    --dark-color: var(--rose-ebony);             /* Темный цвет для текста/границ */
+    --secondary-color: var(--gray);              /* Серый для второстепенных элементов */
+    --border-color: var(--rose-ebony);           /* Границы в розовом угле */
+    --project-overlay-bg: rgba(95, 70, 73, 0.9); /* Полупрозрачный розовый */
+    --box-shadow: 0px 0px 10px rgba(95, 70, 73, 0.2);
+    --hover-box-shadow: 0px 0px 15px rgba(95, 70, 73, 0.3);
 }
 
 .lang-switch {
