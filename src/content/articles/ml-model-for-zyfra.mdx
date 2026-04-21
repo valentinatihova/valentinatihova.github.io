@@ -1,0 +1,115 @@
+import {
+  ZyfraRecoveryHeatmap,
+  ZyfraMetalConcentrationCharts,
+  ZyfraStageConcentrationCharts,
+  ZyfraFeedSizeHistogram,
+  ZyfraTotalConcentrationCharts,
+} from '../../components/article/ZyfraViz';
+
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+  <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+    Industrial regression · public process data
+  </div>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    This note compresses a learning project on gold-ore recovery prediction into the decisions that matter for a design
+    review: how targets are defined from process physics, how train and test differ by measurement latency, which
+    anomalies to cut before fitting, and how to score models with a business-shaped metric. The executable notebook is
+    on GitHub (<code className="rounded border border-stone-700 bg-stone-800 px-1.5 py-0.5 font-mono text-[0.85em] text-stone-100">grand_project_2.ipynb</code>); the figures below follow the same EDA layout as the notebook (heatmap, metal and
+    stage line panels, feed-size comparison, total-concentration curves), with on-site rendering instead of static PNGs.
+  </p>
+</div>
+
+## Problem framing
+
+The goal is to estimate **recovery of gold** at two choke points of the beneficiation line — **rougher output** and
+**final output** — from sensor and feed parameters, so operations can reject uneconomic runs before committing energy
+and reagents. The rubric penalizes naive RMSE: the project defines a custom **sMAPE** on each target and a **combined**
+score that weights final recovery more heavily than rougher (`0.25 × rougher_sMAPE + 0.75 × final_sMAPE`).
+
+## Data shape and leakage risk
+
+Three tables arrive — `train`, `test`, and `full` — with column names encoded as **`stage.parameter_type.signal`** (for
+example `rougher.input.feed_size`, `final.output.concentrate_au`). Train carries late-measured **output** and
+**calculation** fields that do not exist in test because those measurements simply are not available at scoring time.
+Any model that silently keeps test-invisible columns in `X` would be cheating; the notebook aligns columns by
+intersection and rebuilds targets by **date-indexed joins** into `full`, so rougher and final recovery on test rows are
+only taken where timestamps exist in the complete log.
+
+<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-700 bg-stone-900/70 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
+  <div className="min-w-0 flex flex-col justify-center">
+    <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Notebook</p>
+    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-200">
+      Full pipeline, grids, and numeric outputs: <code className="font-mono text-stone-300">ml_model_for_Zyfra/grand_project_2.ipynb</code>.
+    </p>
+  </div>
+  <a
+    href="https://github.com/valentinatihova/DS_projects/tree/main/ml_model_for_Zyfra"
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex w-full shrink-0 items-center justify-center self-center justify-self-stretch rounded-lg border border-accent/40 bg-accent/15 px-5 py-3 font-mono text-sm font-medium uppercase tracking-[0.12em] text-accent transition-colors hover:bg-accent/25 md:w-auto md:min-w-[12rem] md:justify-self-end"
+  >
+    Open on GitHub
+  </a>
+</div>
+
+<KeyMetrics label="What the notebook optimizes">
+  <KeyMetric value="2" label="Targets" note="rougher.output.recovery and final.output.recovery, joined from full by date." />
+  <KeyMetric value="sMAPE" label="Primary loss" note="Symmetric percentage error; combined with a 0.25 / 0.75 rougher/final mix." accent />
+  <KeyMetric value="CV=5" label="Selection" note="GridSearchCV / cross_val_score with the custom scorer for fair stage metrics." />
+</KeyMetrics>
+
+## Feature selection before EDA plots
+
+The first modeling gate is correlation against both recovery columns. Features with **weak linear coupling** to either
+target are dropped in bulk so later plots and grids are not dominated by noise dimensions.
+
+<ZyfraRecoveryHeatmap />
+
+## Concentration dynamics
+
+Daily resampling (`resample('D').mean()`) exposes drift and sensor dropouts: stretches where all metal lines collapse to
+near zero indicate missing measurements rather than physical zero concentrate. The notebook treats those as data
+quality issues, not signal.
+
+### By metal (Au, Ag, Pb)
+
+<ZyfraMetalConcentrationCharts />
+
+### By process stage
+
+<ZyfraStageConcentrationCharts />
+
+## Feed size and train vs test calibration
+
+`rougher.input.feed_size` is a good canary for covariate shift. After daily aggregation, train and test histograms stay
+in the same support; aggressive outliers still deserve trimming before tree models overfit tails.
+
+<ZyfraFeedSizeHistogram />
+
+## Total element load across stages
+
+Summing Ag, Au, Pb, and solubles into **feed**, **rougher concentrate**, and **final concentrate** totals highlights
+impossible rows (near-zero mass) and long tails. The notebook filters on minimum total concentration before fitting,
+then drops the engineered sums so they do not leak as redundant features.
+
+<ZyfraTotalConcentrationCharts />
+
+## Modeling and evaluation (summary)
+
+- **Targets** are recovered from `full` on the shared date index so train and test share the same label definition.
+- **Features** are intersected across train/test; targets are removed from `X`.
+- **Metrics**: custom `smape` wrapped in `make_scorer`, then `final_smape` for the business mix.
+- **Baselines**: linear regression, grid-tuned decision tree, and dummy mean — cross-validated on train, then reported
+  on test. In the captured run, **linear regression achieves the lowest combined cross-validated sMAPE** (~10.1 vs
+  ~10.3 for the tuned tree on the same folds); the dummy baseline sits higher (~11.2 combined), which is the sanity
+  check you want before trusting any nonlinear structure.
+
+Test-set numbers read worse than validation — expected under temporal drift and reagent variability — but the ranking
+between learned models and the constant baseline still answers the “is this model doing work?” question.
+
+## Takeaways
+
+Industrial tabular problems punish two shortcuts: **using future-stage columns that do not exist in deployment**, and
+**ignoring concentration zeros that are really missing data**. The notebook keeps the feature contract honest, uses a
+metric aligned with operations, and documents where signal lives before GridSearch spends cycles. For exact tables,
+hyperparameters, and every numeric printout, stay in the repository — this page is the briefing, not the lab notebook.

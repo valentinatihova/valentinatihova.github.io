@@ -1,0 +1,1104 @@
+# Mobile App User Behavior & A/B Testing
+
+# Analysis of user behavior in the mobile application "Unnecessary things"
+
+The dataset contains data about events (mobile_dataset) committed in the “Unnecessary Things” mobile application. In it, users sell their unwanted items by posting them on a bulletin board. In this case, the mobile application can be installed from different sources (mobile_sources).
+
+The dataset contains data from users who first performed actions in the application after October 7, 2019.
+
+### Goals:
+- Analyze the relationship between the target event - viewing contacts - and other user actions.
+- The customer of this research wants to see what the portrait of clients who are part of the “hot” churn (they actively used the application and left the application recently) is;
+- Based on our analysis, targeted programs will be applied to those application clients who do not view contacts and churn (or are close to it) to retain clients and increase their involvement.
+
+### Tasks:
+1. Conduct exploratory data analysis (EDA stage).
+2. Based on customer behavior, determine what actions lead to viewing the seller’s contacts.
+3. Test statistical hypotheses.
+    
+### Project stages:
+1. [Data preprocessing](#Data_preprocessing):
+    - investigate missing values;
+    - see data types;
+    - look for duplicates in the data (and process them if necessary);
+    - correct the names of the columns (to increase readability);
+    - look for gaps in the data.
+2. [Exploratory EDA Data Analysis](#EDA):
+    - see what actions users perform in the application, with what frequency, their [correlation](#corr) at the user level;
+    - look at the clients that are represented in the datasets: what groups users can be divided into depending on the completion of the target event (viewing a contact);
+    - you can divide users into groups by looking at the common characteristics of clients and their correlation, or you can use [clustering](#ML) ML tools;
+    - we build a funnel for clients, look at the relationship between actions;
+
+3. [Working with metrics and business indicators](#metrics): for each group, look at the engagement and activity metrics and group validation (if the differences between groups are small, it may be worth considering an alternative breakdown):
+    - customer return retention rate;
+    - duration of the user session in the application - look at the time interval between the start of sessions and see the distribution among clusters (if the interval is more than N hours (minutes), then we consider that the client closed the application);
+    - frequency of actions, 
+    - conversion.
+4. [Testing hypotheses](#hyp): with those users who have churn (or are close to it), we begin to test hypotheses based on user actions.
+    - [hypothesis 1](#hyp1): conversion to contact views differs between these two groups (Some users perform the actions tips_show and tips_click, others - only tips_show);
+    - [hypothesis 2](#hyp2): according to sources of attracting users - the problem of self-selection - users of different sources may have a different sequence of events.    
+5. Obtaining a ["portrait" of a client](#summary) who is churn and formulate actions to retain him.
+
+## Data preprocessing <a name="Data_preprocessing"></a>
+
+First, let’s import the necessary libraries and read data from two files: user events and sources of user acquisition.
+
+```python
+import pandas as pd
+import pandas_profiling
+import statistics
+import numpy as np
+from datetime import datetime, timedelta
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import silhouette_score
+from sklearn.cluster import KMeans
+from scipy.cluster.hierarchy import dendrogram, linkage
+import math as mth
+from scipy import stats as st
+
+import seaborn as sns
+import pandas.util.testing as tm
+import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
+import matplotlib
+from matplotlib.pyplot import figure
+%matplotlib inline
+matplotlib.rcParams['figure.figsize'] = (15,8)
+pd.options.mode.chained_assignment = None
+
+import warnings
+warnings.filterwarnings("ignore")
+```
+
+```output
+C:\Users\valen\Anaconda3\lib\site-packages\statsmodels\tools\_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
+```
+
+```python
+datasets = pd.read_csv('C:/Users/valen/Downloads/mobile_dataset.csv')
+soures = pd.read_csv('C:/Users/valen/Downloads/mobile_soures.csv')
+```
+
+Let's convert the column names to lower case and also insert an underscore. This increases the readability of column names.
+
+```python
+for df in [datasets, soures]:      
+    df.columns = df.columns.str.lower()
+    df.columns = df.columns.str.replace('.','_')
+    
+soures.columns = ['user_id','source']
+```
+
+Let's analyze the table data: 
+    * display example data, 
+    * table dimension,
+    * let's look at data types, 
+    * check the gaps,
+    * duplicates in data,
+    * and immediately look at the basic statistics.
+
+This information can be obtained using the pandas_profiling library. But to get point data from tables, let's write the df() function.
+
+```python
+# уберем перенос строки
+pd.options.display.expand_frame_repr = False
+
+# анализ данных на типы данных, пропуски и дубликаты:
+def info(df):
+    
+    """ Функция по предобработке данных  """
+    
+    print('Пример данных таблицы:\n%s\n\n'
+          'Размерность таблицы:\n%s\n\n'
+          'Типы строк таблицы:\n%s\n\n' 
+          'Кол-во пропусков в таблице:\n%s\n\n'
+          'Кол-во дубликатов в таблице:\n%s\n\n' 
+          'Базовая статистика таблицы:\n%s\n\n' % (df.sample(3), 
+                                                   df.shape,
+                                                   df.dtypes, 
+                                                   df.isnull().sum(), 
+                                                   df[df.duplicated(keep=False)].shape[0],
+                                                   df.describe()))
+```
+
+Let's look at the data on user actions:
+
+```python
+info(datasets)
+```
+
+```output
+Пример данных таблицы:
+                       event_time event_name                               user_id
+22747  2019-10-16 13:57:54.654351  tips_show  3bc5febf-f692-4e36-9cfa-6e06392e339f
+63817  2019-10-30 21:55:23.315109  tips_show  a2ffbe34-53bb-4394-a8d7-61a0617ad4dd
+70862  2019-11-02 20:08:24.631047   search_1  f6f94ebe-e69a-4ae3-9fb0-312d52d35826
+
+Размерность таблицы:
+(74197, 3)
+
+Типы строк таблицы:
+event_time    object
+event_name    object
+user_id       object
+dtype: object
+
+Кол-во пропусков в таблице:
+event_time    0
+event_name    0
+user_id       0
+dtype: int64
+
+Кол-во дубликатов в таблице:
+0
+
+Базовая статистика таблицы:
+                        event_time event_name                               user_id
+count                        74197      74197                                 74197
+unique                       74197         16                                  4293
+top     2019-10-30 19:12:38.255366  tips_show  cb36854f-570a-41f4-baa8-36680b396370
+freq                             1      40055                                   478
+```
+
+The date and time of the event must have a different data type - let's change it.
+
+```python
+datasets['event_time'] = pd.to_datetime(datasets['event_time'], format='%Y-%m-%d %H:%M:%S')
+```
+
+It can be seen that there are events *contacts_show* and *show_contacts*, which are identical.
+
+```python
+datasets['event_name'] = datasets['event_name'].mask(datasets['event_name'] == 'contacts_show', 'show_contacts')
+```
+
+Data on sources of user acquisition:
+
+```python
+info(soures)
+```
+
+```output
+Пример данных таблицы:
+                                   user_id  source
+27    e570de4f-5cf9-463c-80f6-4d81be19bf47   other
+2590  7ab08c08-1b28-4ef9-ae54-96054b95c69b  yandex
+4175  bd74ba4a-2531-4b4c-950a-84ea2bd7e0ac  yandex
+
+Размерность таблицы:
+(4293, 2)
+
+Типы строк таблицы:
+user_id    object
+source     object
+dtype: object
+
+Кол-во пропусков в таблице:
+user_id    0
+source     0
+dtype: int64
+
+Кол-во дубликатов в таблице:
+0
+
+Базовая статистика таблицы:
+                                     user_id  source
+count                                   4293    4293
+unique                                  4293       3
+top     315fc0df-f2f0-4958-bbdb-24c6df4d8f6d  yandex
+freq                                       1    1934
+```
+
+As a result, for analysis we have two datasets with the following information:
+Columns in *mobile_sources.csv*: 
+
+- `userId` — user identifier,
+- `source` — the source from which the user installed the application.
+
+Columns in mobile_dataset.csv: **
+
+- `event.time` — time of occurrence,
+- `user.id` — user identifier,
+- `event.name` — user action.
+
+Types of actions:
+
+- `advert_open` — opened ad cards,
+- `photos_show` — viewed photos in the ad,
+- `tips_show` — saw recommended ads,
+- `tips_click` — clicked on the recommended ad,
+- `contacts_show` — looked up the phone number,
+- `contacts_call` — called the number from the ad,
+- `map` — opened the ad map,
+- `search_1`—`search_7` — various actions related to site search,
+- `favorites_add` - added the ad to favorites.
+
+Data on the actions of application users and the sources of their attraction are ready for further analysis.
+
+Next, we will conduct an exploratory analysis of the EDA data.
+
+## Exploratory data analysis EDA<a name="EDA"></a>
+
+The distribution of users by source is interesting, so let’s add a column with the source of attraction.
+
+```python
+df = datasets.merge(soures, left_on=['user_id'], right_on=['user_id'])
+```
+
+Let's look at the correlation of events in the application at the user level. Let's group events by users and draw a heat map. <a name="corr"></a>
+
+```python
+user_by_events = pd.get_dummies(df, columns=['event_name']).groupby('user_id').agg('sum')
+# сразу уберем приписку "event_name"
+user_by_events.columns = user_by_events.columns.str.replace('event_name_','')
+```
+
+```python
+fig, ax = plt.subplots(figsize=(12,7))
+matrix = np.triu(user_by_events.corr())
+sns.heatmap(user_by_events.corr(), annot=True, mask=matrix)
+plt.show()
+```
+
+![Plot](/images/projects/final-project-da/plot_1.png)
+
+The target event (`viewing contacts`) most correlates with the ad map (the client is better oriented on the map relative to his location, and if the object of sale is closer to him, he looks at the owner’s contact).
+To open the ad card, you need to do a series of search actions 3 and (or) see recommended ads.
+Several search actions also have a connection with each other - for example, search 2, 5, 6, 7. And those who use search 1 view photographs of objects more.
+
+Let's add a column with day, week, month and see the distribution of users by time.
+
+```python
+df['day'] = df['event_time'].dt.day
+df['week'] = df['event_time'].dt.week
+df['month'] = df['event_time'].dt.month
+```
+
+In order to understand which clients we have and with what characteristics, it is necessary to divide them into groups and conduct a research analysis on them.
+
+We need to divide users into groups in order to understand which clients we are dealing with. This will allow you to build a policy of behavior with them.
+We use `clustering` of users. <a name="ML"></a> 
+To do this, we will obtain a dataset of users with characteristic features and a target variable (event_name_show_contacts).
+
+```python
+user_ml = pd.get_dummies(df[['user_id', 'event_name']], columns=['event_name']).groupby('user_id').agg('sum').reset_index()
+# сразу уберем приписку "event_name"
+user_ml.columns = user_ml.columns.str.replace('event_name_','')
+```
+
+As we saw earlier in the correlation matrix, there are several signs that directly influence a customer to ultimately call the salesperson:
+
+* map with advertisements;
+* viewing photos;
+* saw recommendations and followed the recommendation to the page;
+* search actions 5, 6
+
+```python
+user_ml = user_ml[['user_id', 'map', 'photos_show', 'search_5', 'search_6', 
+                  'tips_click', 'tips_show', 'show_contacts']]
+user_ml.sample(3)
+```
+
+<div className="my-4 rounded-xl overflow-hidden border border-stone-700 bg-stone-900 shadow-inner p-4">
+<div className="text-xs font-mono uppercase tracking-wider mb-2 font-semibold text-stone-400">OUTPUT</div>
+<div className="overflow-x-auto custom-scrollbar text-sm text-stone-200">
+<div>
+<table  className="dataframe">
+  <thead>
+    <tr >
+      <th></th>
+      <th>user_id</th>
+      <th>map</th>
+      <th>photos_show</th>
+      <th>search_5</th>
+      <th>search_6</th>
+      <th>tips_click</th>
+      <th>tips_show</th>
+      <th>show_contacts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2640</th>
+      <td>9d6de32d-bef4-4703-a8ff-744e86a90a0b</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1498</th>
+      <td>5a3f17df-9b8b-49b5-a132-cce4ba6601ae</td>
+      <td>4.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3157</th>
+      <td>bddf472e-0fb2-42b2-9b42-d1a8765d82cf</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+
+```python
+# создаём объект класса scaler (нормализатор)
+scaler = StandardScaler() 
+
+# обучаем нормализатор и преобразуем набор данных
+x_sc = scaler.fit_transform(user_ml.drop(columns = ['user_id','show_contacts']))
+```
+
+The output will be converted object-attribute tables. Let us sequentially combine close clusters. Let's build a distance matrix using the linkage() function on a standardized feature matrix and draw a dendrogram.
+
+```python
+linked = linkage(x_sc, method = 'ward')
+
+plt.figure(figsize=(15, 10))  
+dendrogram(linked, orientation='top')
+plt.title('Кластеризация пользователей интернет-магазина')
+plt.show()
+```
+
+![Plot](/images/projects/final-project-da/plot_2.png)
+
+Using the dendrogram, you can visually estimate how many clusters there should be. And also estimate the distance after which we stop combining objects. The suggested optimal number of clusters based on the graph above is `4` - four different colors in the graph.
+
+Let's train a clustering model based on the K-Means algorithm and predict client clusters. The algorithm is based on the assumption that the number of clusters (groups) is known in advance, so we set the number of clusters to 4.
+
+```python
+# задаём число кластеров, равное 4
+km = KMeans(n_clusters = 4, random_state = 1) 
+
+# применяем алгоритм к данным и формируем вектор кластеров
+labels = km.fit_predict(x_sc) 
+
+# сохраняем метки кластера в поле нашего датасета
+user_ml['cluster_km'] = labels
+
+# выводим статистику по средним значениям наших признаков по кластеру
+user_ml.groupby('cluster_km').mean().round(3).reset_index().T
+```
+
+<div className="my-4 rounded-xl overflow-hidden border border-stone-700 bg-stone-900 shadow-inner p-4">
+<div className="text-xs font-mono uppercase tracking-wider mb-2 font-semibold text-stone-400">OUTPUT</div>
+<div className="overflow-x-auto custom-scrollbar text-sm text-stone-200">
+<div>
+<table  className="dataframe">
+  <thead>
+    <tr >
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>cluster_km</th>
+      <td>0.000</td>
+      <td>1.000</td>
+      <td>2.000</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <th>map</th>
+      <td>0.847</td>
+      <td>0.706</td>
+      <td>10.642</td>
+      <td>0.68</td>
+    </tr>
+    <tr>
+      <th>photos_show</th>
+      <td>0.000</td>
+      <td>1.800</td>
+      <td>0.000</td>
+      <td>62.58</td>
+    </tr>
+    <tr>
+      <th>search_5</th>
+      <td>1.885</td>
+      <td>0.093</td>
+      <td>0.654</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>search_6</th>
+      <td>1.313</td>
+      <td>0.002</td>
+      <td>0.099</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>tips_click</th>
+      <td>0.133</td>
+      <td>0.109</td>
+      <td>4.346</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>tips_show</th>
+      <td>11.661</td>
+      <td>7.378</td>
+      <td>95.667</td>
+      <td>2.94</td>
+    </tr>
+    <tr>
+      <th>show_contacts</th>
+      <td>0.737</td>
+      <td>0.854</td>
+      <td>11.173</td>
+      <td>2.20</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+
+If you look at the average values ​​of features for clusters, you will notice that for all features the average value for clusters is different. Let's look at the `silhouette metric` for our clustering:
+
+```python
+print('Silhouette_score: {:.2f}'.format(silhouette_score(x_sc, labels)))
+```
+
+```output
+Silhouette_score: 0.63
+```
+
+The metric value tends to 1, which means the clustering is high-quality.
+
+Let's construct distributions of features for clusters.
+
+```python
+df_1 = user_ml.drop(columns = ['user_id','show_contacts'], axis=1)
+for i, col in enumerate(df_1):
+    fig, ax = plt.subplots(figsize=(7,3))
+    sns.boxplot(data = df_1, x = col, y = 'cluster_km', orient = 'h')
+    plt.title(str(col))
+    plt.legend(labels=user_ml['cluster_km'].unique())
+    plt.show()
+```
+
+![Plot](/images/projects/final-project-da/plot_3.png)
+
+![Plot](/images/projects/final-project-da/plot_4.png)
+
+![Plot](/images/projects/final-project-da/plot_5.png)
+
+![Plot](/images/projects/final-project-da/plot_6.png)
+
+![Plot](/images/projects/final-project-da/plot_7.png)
+
+![Plot](/images/projects/final-project-da/plot_8.png)
+
+![Plot](/images/projects/final-project-da/plot_9.png)
+
+Let's divide the general data into user groups and start exploring them.
+
+```python
+def group(km):
+    
+    """ Функция выделения пользователей по 
+        группам в отдельные датасеты       """  
+    
+    km = user_ml[user_ml['cluster_km'] == km]['user_id'].unique().tolist()
+    return df[df['user_id'].isin(km)]
+
+gr_0 = group(0)
+gr_1 = group(1)
+gr_2 = group(2)
+gr_3 = group(3)
+```
+
+## Business metrics <a name="metrics"></a>
+
+Previously, we added columns with day, week and month, now it’s easy to see user actions by group, broken down by frequency. To automate the drawing of graphs, we will write the `bars()` function.
+
+```python
+def bars(data, column1, column2, func, title):
+   
+    """ Функция для отрисовки гистограмм  """
+    
+    visit_count = data.groupby([column1, 'source']).agg({column2:func}).reset_index()
+    visit_count.columns = [column1, 'source', 'count']
+    fig, ax = plt.subplots(figsize=(15,4))
+    g = sns.barplot(x=column1, 
+                    y = 'count', 
+                    hue='source',
+                    data = visit_count)
+    ax.set_title(title, loc='left', pad=12, fontweight="bold") 
+    sns.despine()
+    plt.show()
+```
+
+Let's write a research function `EDA()`, which will display a “portrait” of each group:
+- How many people use the application per day?
+- How many people use the application per week?
+- How many people use the application per month?
+- Average session duration by activity
+- What events are there in the logs and with what frequency do they occur?
+- How many users completed the event (potential funnel steps)
+- Conversion in the funnel
+- Customer retention rate.
+
+To draw a funnel, we will write the `hist()` function.
+
+```python
+def hist(data, title, xlabel, ylabel):
+    
+    """ Функция для отрисовки горизонтальной гистограммы (воронки событий)  """
+    
+    fig, ax = plt.subplots(figsize=(15, 5))        # размер графика
+    ax.barh(data.iloc[:,0], data.iloc[:,1]) # горизонтальный bar по данным 
+    ax.set_title(title, loc='left', pad=12, fontweight="bold")   # заголовок графика + задаем шрифт
+    for s in ['top','bottom','left','right']:                    # убираю все границы графика
+        ax.spines[s].set_visible(False)                          
+    ax.grid(b=True, color='grey', linestyle='-.', linewidth=0.5, alpha=0.2)  # задаю только промежуточные границы по значениям
+    for i in ax.patches:                                                     # цикл по значениям
+        ax.text(i.get_width()+2, i.get_y()+0.5, str(round((i.get_width()), 2)),   # задаю отступ (+) для подписи
+                fontsize=10, fontweight='bold', color='black')                     # задаю шрифт и цвет подписи значения
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.show()
+```
+
+To select 'sessions' from the event log and calculate its duration, it is necessary.
+    
+1) To do this, sort them by user_id, then the events of each user will go sequentially.
+
+2) In the 'session_duration' column, for each event of an individual user, we calculate the difference between the time of visiting the page and the time of visiting the previous page. If the page was the first for the user, then the value in the 'session_duration' column will be NaT, since there is no previous value.
+
+3) We find events that will be the starting points for sessions (NaT).
+
+4) From the main dataframe 'df' we will create an auxiliary dataframe 'session_start_df'. This dataframe will contain events that will be considered the first events of the sessions. Such events include all events that occurred more than `30` minutes after the previous one, or events that were the first for the user (NaT in the ’session_duration’ column). We will also create a column 'session_id' in the auxiliary dataframe, which will contain the id of the first event of the session. It will be useful to correctly display the session identifier when we combine data from the main and auxiliary dataframes.
+
+5) Using the merge_asof function, we will combine the data of the main and auxiliary dataframes. This function allows you to combine data from two dataframes in a similar way to a left join, but not by exact match of keys, but by the closest one.
+
+Let's put all the actions into the `session_duration()` function.
+
+```python
+def session_duration(df):
+    
+    """ Функция расчета длительности сессии  """
+    
+    # 1
+    df = df.sort_values(['user_id', 'event_time'])
+    df['id'] = df.index
+
+    # 2
+    df['session_duration'] = df.groupby('user_id')['event_time'].diff(1)
+
+    # 3-4
+    sessions_start_df = df[(df['session_duration'].isnull()) | (df['session_duration'] > '1800 seconds')]
+    sessions_start_df['session_id'] = sessions_start_df.index
+    sessions_start_df['id'] = sessions_start_df.index
+
+    # 5
+    df = df.sort_values('id')
+    sessions_start_df = sessions_start_df.sort_values('id')
+    df = pd.merge_asof(df, sessions_start_df[['id','user_id','session_id']], on='id', by='user_id')
+
+    df['session_duration_min'] = df['session_duration'].astype('timedelta64[m]') # переводим время в минуты
+    
+    plt.figure(figsize=(16,5));
+    sns.boxplot(df.groupby('session_id')['session_duration_min'].sum());
+    plt.title('Средняя длительность сессии, минуты', loc='left', pad=12, fontweight="bold");
+    sns.set()
+    return plt.show()
+```
+
+Let's write a function that will count and show customer retention by day `RetentionaRate()`.
+
+```python
+def RetentionaRate(df):
+    
+    """ Функция расчета показателя удержания клиента:
+        пользователей выделяют в когорты по дате первого
+        его действия, определяют кол-во новых 
+        пользователей по дням                             
+    """   
+    
+    df['event_time'] = pd.to_datetime(df['event_time'])
+    first_date = df.groupby(['user_id'])['event_time'].min()
+    first_date.name = 'first_visit_date'
+    df = df.join(first_date, on='user_id')
+
+    df['visit_day'] = df['event_time'].astype('datetime64[D]')
+    df['first_visit_day'] = df['first_visit_date'].astype('datetime64[D]')
+
+#      lifetime пользователя в рамках когорты
+    df['cohort_lifetime'] = df['visit_day'] - df['first_visit_day']
+    df['cohort_lifetime'] = df['cohort_lifetime'] / np.timedelta64(1,'D')
+    df['cohort_lifetime'] = df['cohort_lifetime'].round().astype('int')
+    
+#     для каждой когорты количество активных пользователей
+    cohorts = df.groupby(['first_visit_day','cohort_lifetime']).agg({'user_id':'nunique'}).reset_index()
+
+#     исходное количество пользователей в когорте
+    initial_users_count = cohorts[cohorts['cohort_lifetime'] == 0][['first_visit_day','user_id']]
+    initial_users_count = initial_users_count.rename(columns={'user_id':'cohort_users'})
+    
+#     Объединим данные по когортам с исходным количеством пользователей в когорте:
+    cohorts = cohorts.merge(initial_users_count,on='first_visit_day')
+    
+#     рассчитаем Retention Rate
+    cohorts['retention'] = cohorts['user_id']/cohorts['cohort_users']
+    cohorts['first_visit_day'] = cohorts['first_visit_day'].dt.strftime('%Y-%m-%d')
+    
+    retention_pivot = cohorts.pivot_table(index='first_visit_day',
+                                      columns='cohort_lifetime',
+                                      values='retention',
+                                      aggfunc='sum')
+#     рисуем тепловую карту
+    plt.figure(figsize=(7,5))
+    plt.title('Как часто люди возвращаются?', loc='left', pad=12, fontweight="bold")
+    sns.heatmap(retention_pivot,
+                    annot=False, 
+                    fmt='.1%', 
+                    linewidths=1, 
+                    linecolor='gray');
+```
+
+Let's combine all the functions into one.
+
+```python
+def EDA(df):
+   
+    """ Функция по анализу групп пользователей:
+         - Сколько людей пользуется приложением в день?
+         - Сколько людей пользуется приложением в неделю?
+         - Сколько людей пользуется приложением в месяц?
+         - Средняя длительность сессии
+         - Какие есть события в логах и с какой частотой встречаются
+         - Сколько пользователей совершило событие
+         - Смотрим конверсию в воронке
+         - Смотрим показатель удержания клиентов
+    """
+    
+#     Сколько людей пользуется приложением в день?
+    bars(df, 'day', 'user_id', 'nunique', 'Сколько людей пользуется приложением в день?')
+    
+#     Сколько людей пользуется приложением в неделю?
+    bars(df, 'week', 'user_id', 'nunique', 'Сколько людей пользуется приложением в неделю?')
+
+#     Сколько людей пользуется приложением в месяц?
+    bars(df, 'month', 'user_id', 'nunique', 'Сколько людей пользуется приложением в месяц?')
+    
+#     Средняя длительность сессии
+    session_duration(df)
+    
+#     Смотрим, какие есть события в логах и с какой частотой встречаются
+    events_per_type = (df.groupby('event_name')['event_time']
+                         .count()
+                         .reset_index()
+                         .sort_values(by='event_time', ascending = False)
+                         .rename({'event_name': 'event', 'event_time': 'count_of_events'}, axis=1))
+
+    hist(events_per_type.sort_values('count_of_events'), 'Какие события есть в логах и с какой частотой втречаются?', 
+         'количество событий', 'события')
+    
+#     Сколько пользователей совершило событие
+    events_per_user = (df.groupby('event_name')
+                         .agg({'user_id': 'nunique'})
+                         .reset_index().sort_values(by='user_id', ascending = False)
+                         .rename({'event_name': 'event', 'user_id': 'count_of_users'}, axis=1)) 
+  
+    hist(events_per_user.sort_values('count_of_users') ,'Сколько пользователей совершили события?', 
+         'количество пользователей', 'события')
+
+#     Смотрим конверсию в воронке
+    events_per_user['unique_prev_step'] = events_per_user['count_of_users'].shift(1)
+
+    events_per_user.loc[events_per_user['unique_prev_step'].isna(),'unique_prev_step'] = \
+              events_per_user.loc[events_per_user['unique_prev_step'].isna(),'count_of_users']
+
+    events_per_user['prev_step_%'] = round(events_per_user['count_of_users'] / events_per_user['unique_prev_step'] *100, 2)
+    
+    hist(events_per_user[['event', 'prev_step_%','count_of_users']].sort_values('count_of_users', ascending=True),
+     'Конверсия по шагам воронки, в %', 'доля пользователей, в %', 'событие')
+    
+#    Смотрим показатель удержания клиентов
+    RetentionaRate(df)
+```
+
+**Group 0:**
+
+```python
+EDA(gr_0)
+```
+
+![Plot](/images/projects/final-project-da/plot_10.png)
+
+![Plot](/images/projects/final-project-da/plot_11.png)
+
+![Plot](/images/projects/final-project-da/plot_12.png)
+
+![Plot](/images/projects/final-project-da/plot_13.png)
+
+![Plot](/images/projects/final-project-da/plot_14.png)
+
+![Plot](/images/projects/final-project-da/plot_15.png)
+
+![Plot](/images/projects/final-project-da/plot_16.png)
+
+![Plot](/images/projects/final-project-da/plot_17.png)
+
+- users from “other” sources have the most daily activity, google has the least, by the end of the month user activity increases
+- every week the activity increases a little or remains the same.
+- the number of users decreased sharply in November
+- most of all, users view recommended ads, perform search actions 5, 6 and 4, and also view ad cards.
+- 51 users looked at the seller’s contacts (conversion rate is 51%)
+- already on the second day, the flow of users began to decrease; by the middle of the month, users almost did not enter the application.
+
+**Group 1:**
+
+```python
+EDA(gr_1)
+```
+
+![Plot](/images/projects/final-project-da/plot_18.png)
+
+![Plot](/images/projects/final-project-da/plot_19.png)
+
+![Plot](/images/projects/final-project-da/plot_20.png)
+
+![Plot](/images/projects/final-project-da/plot_21.png)
+
+![Plot](/images/projects/final-project-da/plot_22.png)
+
+![Plot](/images/projects/final-project-da/plot_23.png)
+
+![Plot](/images/projects/final-project-da/plot_24.png)
+
+![Plot](/images/projects/final-project-da/plot_25.png)
+
+- users from Yandex have the most daily activity, other sources are on par with each other
+- weekly user activity remained almost unchanged
+- the number of users decreased sharply in November
+- session duration is approximately equal to - 
+- most of all, users view recommended ads and photos based on them, open ad cards, look at seller contacts, perform search actions 1 and look at ads on the map
+- 963 users looked at the seller’s contacts (conversion rate is 82%)
+- already on the second day the flow of users began to decrease, but users still opened the application.
+
+**Group 2:**
+
+```python
+EDA(gr_2)
+```
+
+![Plot](/images/projects/final-project-da/plot_26.png)
+
+![Plot](/images/projects/final-project-da/plot_27.png)
+
+![Plot](/images/projects/final-project-da/plot_28.png)
+
+![Plot](/images/projects/final-project-da/plot_29.png)
+
+![Plot](/images/projects/final-project-da/plot_30.png)
+
+![Plot](/images/projects/final-project-da/plot_31.png)
+
+![Plot](/images/projects/final-project-da/plot_32.png)
+
+![Plot](/images/projects/final-project-da/plot_33.png)
+
+- user activity is highest in the middle of the month; Yandex is the leader as a source of attracting application clients
+- in week 42 (end of October) there was the highest activity among users from Yandex, other clients from other sources were unchanged
+- as in other groups, the number of people in the application in November became significantly smaller
+- session duration is approximately equal to - 
+- customers view recommended ads, open the ad card, look at the seller’s contacts, open the card and click on the recommended ad
+- 41 users looked at the seller’s contacts (conversion rate is 70%)
+- it is clear that users used the application (especially in the middle of the month).
+
+**Group 3:**
+
+```python
+EDA(gr_3)
+```
+
+![Plot](/images/projects/final-project-da/plot_34.png)
+
+![Plot](/images/projects/final-project-da/plot_35.png)
+
+![Plot](/images/projects/final-project-da/plot_36.png)
+
+![Plot](/images/projects/final-project-da/plot_37.png)
+
+![Plot](/images/projects/final-project-da/plot_38.png)
+
+![Plot](/images/projects/final-project-da/plot_39.png)
+
+![Plot](/images/projects/final-project-da/plot_40.png)
+
+![Plot](/images/projects/final-project-da/plot_41.png)
+
+- weekly authenticity is greatest at the beginning and end of the month, here it is impossible to choose a unanimous leader by source
+- weekly user activity increases slightly over time
+- in October the most clients are from Google, in November the number of users decreases
+- session duration is approximately equal to - 
+- users look at photos of ads, make a search 1, open the ad card, view recommended ads, add it to favorites and view contacts
+- 26 users looked at the seller’s contacts (conversion rate is 74%)
+- the customer retention rate was the highest at the end of the month, almost all users who downloaded the application at the end of the period used it actively.
+
+Groups of users with characteristic features have been identified.
+
+## Testing hypotheses <a name="hyp"></a>
+
+Let's test several hypotheses regarding the conversion to views to contacts. To do this, we will write a function (part of the EDA() function) that will show the funnel of events and conversions along it, as well as a function that will check the statistical significance of the shares.
+
+Let's separate the part of the `EDA()` function for calculating conversion into a separate `funnel()`.
+
+```python
+def funnel(df):
+    
+    """ Функция расчета конверсии в воронке событий  """
+    
+    events_per_user = (df.groupby('event_name')
+                         .agg({'user_id': 'nunique'})
+                         .reset_index().sort_values(by='user_id', ascending = False)
+                         .rename({'event_name': 'event', 'user_id': 'count_of_users'}, axis=1))
+
+    events_per_user['unique_prev_step'] = events_per_user['count_of_users'].shift(1)
+
+    events_per_user.loc[events_per_user['unique_prev_step'].isna(),'unique_prev_step'] = \
+              events_per_user.loc[events_per_user['unique_prev_step'].isna(),'count_of_users']
+
+    events_per_user['prev_step_%'] = round(events_per_user['count_of_users'] / events_per_user['unique_prev_step'] *100, 2)
+    
+    hist(events_per_user[['event', 'prev_step_%','count_of_users']].sort_values('count_of_users', ascending=True),
+     'Конверсия по шагам воронки, в %', 'доля пользователей, в %', 'событие')
+```
+
+Let's look at the statistical significance of the shares using the z-test for each step of the funnel. For convenience, let's write a function.
+
+```python
+def z_test(successes1, successes2, trials1, trials2, alpha=0.01):
+    
+    """ Функция расчета статистической значимости
+        долей каждого шага воронки z-критерием
+    """
+    
+    # пропорция успехов в первой и второй группах:
+    p1 = successes1/trials1
+    p2 = successes2/trials2
+
+    # пропорция успехов в комбинированном датасете:
+    p_combined = (successes1 + successes2) / (trials1 + trials2)
+
+    # разница пропорций в датасетах
+    difference = p1 - p2
+    
+    # считаем статистику в ст.отклонениях стандартного нормального распределения
+    z_value = difference / mth.sqrt(p_combined * (1 - p_combined) * (1/trials1 + 1/trials2))
+
+    # задаем стандартное нормальное распределение (среднее 0, ст.отклонение 1)
+    distr = st.norm(0, 1) 
+
+    # считаем статистику в ст.отклонениях стандартного нормального распределения
+    z_value = difference / mth.sqrt(p_combined * (1 - p_combined) * (1/trials1 + 1/trials2))
+
+    p_value = (1 - distr.cdf(abs(z_value))) * 2
+
+    print(f'p-значение: {p_value:.3%}')
+
+    if (p_value < alpha):
+        print('Отвергаем нулевую гипотезу: между долями есть значимая разница')
+    else:
+        print('Не получилось отвергнуть нулевую гипотезу, нет оснований считать доли разными')
+```
+
+```python
+def check_hypithesis(df, event_name, exp1, exp2):
+    
+    """ Функция проверки гипотезы для двух
+        экспериментальных групп
+    """    
+    
+    users_events_per_group = df.pivot_table(index='event_name', 
+                                        values='user_id', 
+                                        columns='group', 
+                                        aggfunc=lambda x: x.nunique())
+
+    gr_count_user = (df.pivot_table(index='group', values='user_id', aggfunc=lambda x: x.nunique()))['user_id']
+    
+    pr1 = users_events_per_group.loc[event_name, exp1] / gr_count_user.loc[exp1]
+    pr2 = users_events_per_group.loc[event_name, exp2] / gr_count_user.loc[exp2]
+    
+    print(f'{pr1:.0%} пользователей с событием {event_name} в группе {exp1}')
+    print(f'{pr2:.0%} пользователей с событием {event_name} в группе {exp2}')
+    
+    z_test(users_events_per_group.loc[event_name, exp1],
+           users_events_per_group.loc[event_name, exp2],
+           gr_count_user.loc[exp1],
+           gr_count_user.loc[exp2])
+```
+
+The first hypothesis <a name="hyp1"></a> is based on the assumption that the conversion to contact views differs between the two groups (Some users perform the actions `tips_show` and `tips_click`, others - only `tips_show`).
+
+**Hypothesis H0 - between groups 1 and 2 there is no difference in the proportions for each of the funnel events. It doesn't matter if they open and view recommended ads or simply see recommended ads. This does not affect viewing the seller's contact.**
+
+```python
+list_both_actions = user_by_events.query('tips_show > 0' and 'tips_click > 0').reset_index()['user_id'].tolist()
+# list_one_action = user_by_events.query('tips_show > 0' or 'tips_click > 0').reset_index()['user_id'].tolist()
+
+hyp_1 = df
+hyp_1['group'] = np.where(hyp_1['user_id'].isin(list_both_actions), 'both_actions', 'one_action')
+```
+
+```python
+funnel(hyp_1.query('group == "one_action"'))
+```
+
+![Plot](/images/projects/final-project-da/plot_42.png)
+
+```python
+funnel(hyp_1.query('group == "both_actions"'))
+```
+
+![Plot](/images/projects/final-project-da/plot_43.png)
+
+```python
+print('A\B тестирование:\n')
+check_hypithesis(hyp_1, 'show_contacts', 'one_action', 'both_actions')
+print()
+```
+
+```output
+A\B тестирование:
+
+22% пользователей с событием show_contacts в группе one_action
+31% пользователей с событием show_contacts в группе both_actions
+p-значение: 0.027%
+Отвергаем нулевую гипотезу: между долями есть значимая разница
+```
+
+There is a difference in the conversion of the step of viewing a seller's contact.
+
+The second hypothesis <a name="hyp2"></a> says that no matter what source of customer acquisition is used, it does not affect the conversion of the step of viewing the seller’s contact.
+
+**Hypothesis H0 - between groups 1 and 2 there is no difference in the proportions for each of the funnel events. It doesn’t matter what source the user came from, this does not affect the view of the seller’s contact.**
+
+Let's check it out.
+
+```python
+hyp_2 = df
+hyp_2['group'] = hyp_2.source
+```
+
+```python
+display('Yandex')
+funnel(df.query('source == "yandex"'))
+```
+
+```output
+'Yandex'
+```
+
+![Plot](/images/projects/final-project-da/plot_44.png)
+
+```python
+display('Google')
+funnel(df.query('source == "google"'))
+```
+
+```output
+'Google'
+```
+
+![Plot](/images/projects/final-project-da/plot_45.png)
+
+```python
+display('Other')
+funnel(df.query('source == "other"'))
+```
+
+```output
+'Other'
+```
+
+![Plot](/images/projects/final-project-da/plot_46.png)
+
+```python
+print('A\B тестирование:\n')
+check_hypithesis(hyp_1, 'show_contacts', 'google', 'yandex')
+print()
+```
+
+```output
+A\B тестирование:
+
+24% пользователей с событием show_contacts в группе google
+25% пользователей с событием show_contacts в группе yandex
+p-значение: 82.443%
+Не получилось отвергнуть нулевую гипотезу, нет оснований считать доли разными
+```
+
+```python
+print('A\B тестирование:\n')
+check_hypithesis(hyp_1, 'show_contacts', 'other', 'yandex')
+print()
+```
+
+```output
+A\B тестирование:
+
+19% пользователей с событием show_contacts в группе other
+25% пользователей с событием show_contacts в группе yandex
+p-значение: 0.005%
+Отвергаем нулевую гипотезу: между долями есть значимая разница
+```
+
+```python
+print('A\B тестирование:\n')
+check_hypithesis(hyp_1, 'show_contacts', 'google', 'other')
+print()
+```
+
+```output
+A\B тестирование:
+
+24% пользователей с событием show_contacts в группе google
+19% пользователей с событием show_contacts в группе other
+p-значение: 0.056%
+Отвергаем нулевую гипотезу: между долями есть значимая разница
+```
+
+The actions of users who downloaded the application using Yandex and Google have similar actions in the event funnel and conversion values ​​in the contact viewing step.
+
+Users from other sources clearly differ in how they use the app.
+
+## General conclusions <a name="summary"></a>
+
+In total, during the study it became clear that the fact of viewing the seller’s contacts is most influenced by such events as: the ad map (the client navigates the map much faster and makes decisions about contacting the seller), viewing the ad card and their photos, and, of course, recommendations for the ad (viewing them and opening them).
+
+
+In the process of grouping users into groups based on characteristic characteristics, it was possible to find out that customer activity drops towards the end of the month, with a sharp decline observed in November. The most “active” users look at photos of ads, view and click on recommended ads, and also perform search actions 1 (using various hashtags?). 
+Such users often use the application and update/open it repeatedly over time (especially if they have added the ad to their favorites).
+
+
+For users who are churn or close to it, they probably can’t figure out the search actions for ads, use different types of searches, it bores them, and they simply don’t want to continue using the application. Yes, they view recommended ads, but don't get to the point of viewing photos. This is due to the fact that to view photos you must go to the ad card. This step in the funnel is clearly unnecessary and can be excluded.
+
+
+There is a possibility that the source of attraction is reflected in user actions. The actions of users who downloaded the application using Yandex and Google have similar actions in the event funnel and conversion values ​​to the contact viewing step. Users from other sources clearly differ in how they use the app. With other sources, you need to work out the steps of the funnel so that their actions are clear and logical for application clients.
+
+Presentation with research results at the link: https://yadi.sk/d/oabLNtzRVRfI3Q

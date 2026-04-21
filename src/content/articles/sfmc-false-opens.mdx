@@ -1,0 +1,318 @@
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm">
+  <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">What this case shows</div>
+  <div className="mt-4 max-w-3xl text-lg leading-relaxed text-stone-200 font-serif">
+    One of the fastest ways to make lifecycle reporting less trustworthy is to treat every open as human intent.
+    In Salesforce Marketing Cloud, some opens happen seconds after send because security scanners and automated systems
+    preload the message. This case shows how I used Data Views and SQL heuristics to separate noisy activity from
+    more credible engagement signals.
+  </div>
+</div>
+
+## The Problem in Production Reporting
+
+Open rate is easy to over-trust because it looks simple, available, and comparable across campaigns. In practice, it is
+often one of the noisiest metrics in email reporting. If an automated scanner loads tracking pixels immediately after
+delivery, the report still records an open. That can inflate performance, distort benchmarks, and make a weak campaign
+look healthier than it really is.
+
+The real issue is not whether every fast open is a bot. The issue is that a reporting layer should distinguish between
+signals that are likely human and signals that are likely automated. Without that distinction, teams can optimize toward
+noise.
+
+## Why SFMC Opens Need Extra Scrutiny
+
+In Salesforce Marketing Cloud, the `_Open` Data View records pixel loads, not verified human attention. That means the
+metric can be influenced by:
+
+- automated security scanning shortly after delivery
+- mailbox protection systems that preload content
+- technical checks that happen before a real person reads the message
+
+This does not make `_Open` useless. It means it should be treated as a probabilistic engagement signal rather than a
+clean source of truth.
+
+## Data Views I Used
+
+For this investigation, the core join pattern was built around these system tables:
+
+- `_Sent` to anchor the delivery timestamp
+- `_Open` to capture open events and timing
+- `_Subscribers` to inspect subscriber-level behavior
+- `_Job` when I needed send- or journey-level context for a specific email
+
+The practical goal was simple: measure how long it took between send and first open, then look for patterns that were
+too immediate to trust at face value.
+
+<Architecture
+  orientation="vertical"
+  caption="Investigative data flow"
+  note={
+    <>
+      The only transform that changes the meaning of the metric is the delay filter. Everything upstream is SFMC system
+      state; everything downstream is a reporting interpretation of it. For how system tables are wired (columns and
+      relationships), see{' '}
+      <a href="https://dataviews.io" target="_blank" rel="noreferrer">
+        dataviews.io
+      </a>
+      .
+    </>
+  }
+>
+  <ArchitectureStep label="SFMC Data Views" caveat="System-managed tables">
+    <ArchitectureNode>_Sent</ArchitectureNode>
+    <ArchitectureNode>_Open</ArchitectureNode>
+    <ArchitectureNode>_Subscribers</ArchitectureNode>
+    <ArchitectureNode>_Job</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label={"JOIN _Sent ↔ _Open on composite key\n(JobID · ListID · BatchID · SubscriberKey)"} />
+  <ArchitectureStep label="Compute">
+    <ArchitectureNode>FirstOpenDelay (sec)</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label={'Filter delay < 30s'} accent />
+  <ArchitectureStep label="Output">
+    <ArchitectureNode accent>Qualified-engagement signal</ArchitectureNode>
+  </ArchitectureStep>
+</Architecture>
+
+## The Heuristic I Chose
+
+I did not want a dramatic rule. I wanted a defensible operational threshold. Based on the dataset I reviewed, opens
+that happened in under 30 seconds were strong candidates for suspicious activity. Three observations from the
+first-open distribution supported that threshold:
+
+<KeyMetrics label="First-open timing — observed distribution">
+  <KeyMetric
+    value="6 s"
+    label="Observed min delay"
+    note="Far too fast to reflect normal human reading — a smoking gun for automated scanners."
+    accent
+  />
+  <KeyMetric
+    value="~25%"
+    label="Within ~25 seconds"
+    note="A quarter of suspicious first opens clustered in the extreme early tail."
+  />
+  <KeyMetric
+    value="~16 min"
+    label="Median first open"
+    note="Where real human engagement actually lives — two orders of magnitude above the suspicious cluster."
+  />
+</KeyMetrics>
+
+That does **not** mean every open under 30 seconds should be permanently discarded in every business context. I used
+`<30 seconds` as an operating threshold, not as a universal truth. The observed distribution gave me three anchors:
+the suspicious cluster sat very early, around a quarter of these opens appeared within roughly 25 seconds, the median
+first open time was around 16 minutes, and the minimum observed delay was 6 seconds. That made 30 seconds a practical
+boundary for separating the extreme early tail from more plausible human behavior.
+
+The next level of rigor would be a sensitivity check across `<15s`, `<30s`, and `<60s>` to show the tradeoff
+explicitly: how much suspicious activity each threshold removes, and how aggressively it starts cutting into
+potentially valid opens. In this case, the analysis supports `<30s` as a pragmatic reporting threshold while still
+treating it as a heuristic rather than a platform-wide law.
+
+## Why 30 Seconds Instead of 15 or 60?
+
+`<15 seconds` would be a stricter threshold, but it risks missing part of the suspicious early tail. `<60 seconds`
+would be more forgiving, but it would also absorb more borderline behavior and start removing a wider slice of opens
+that may still include valid human activity. I chose `<30 seconds` because it sat in the middle of that tradeoff:
+strict enough to isolate the most implausibly fast opens, but not so broad that it became an overly aggressive cleanup
+rule.
+
+That is why I treat `30 seconds` as an operating threshold rather than a universal platform rule. If this logic were
+going into a production reporting layer, the next step would be a sensitivity comparison across `<15s`, `<30s>`, and
+`<60s>` to quantify exactly how each threshold changes suspicious-open volume and downstream engagement metrics.
+
+<Callout type="tip" title="Why I picked 30 seconds">
+  Boundary choices in measurement work are rarely absolute. The right framing is tradeoff geometry: `<15s` is
+  conservative but misses part of the early suspicious tail; `<60s` is permissive but absorbs borderline human
+  behavior. Picking `<30s` is a defensible middle because it sits right between the observed min-delay floor
+  (6 s) and the median (~16 min), isolating the implausibly fast cluster without over-cleaning.
+</Callout>
+
+## Pattern 1: Suspicious Two-Open Behavior
+
+One of the clearest patterns was a message that appeared to be opened exactly twice, with the first open happening
+almost immediately after send. That combination is often worth investigating because it looks less like normal reading
+behavior and more like automated scanning plus a later event.
+
+```sql
+SELECT
+    sub.EmailAddress,
+    sub.SubscriberKey,
+    s.JobID,
+    s.EventDate AS SendDate,
+    MIN(o.EventDate) AS FirstOpenDate,
+    MAX(o.EventDate) AS SecondOpenDate,
+    DATEDIFF(second, s.EventDate, MIN(o.EventDate)) AS FirstOpenTimeDiffSeconds,
+    DATEDIFF(second, s.EventDate, MAX(o.EventDate)) AS SecondOpenTimeDiffSeconds,
+    DATEDIFF(second, MIN(o.EventDate), MAX(o.EventDate)) AS TimeBetweenOpensSeconds
+FROM _Sent s
+INNER JOIN _Open o
+    ON s.JobID = o.JobID
+    AND s.ListID = o.ListID
+    AND s.BatchID = o.BatchID
+    AND s.SubscriberKey = o.SubscriberKey
+INNER JOIN _Subscribers sub
+    ON s.SubscriberKey = sub.SubscriberKey
+WHERE o.EventDate > DATEADD(day, -7, GETDATE())
+GROUP BY
+    sub.EmailAddress,
+    sub.SubscriberKey,
+    s.JobID,
+    s.EventDate
+HAVING COUNT(*) = 2
+   AND DATEDIFF(second, s.EventDate, MIN(o.EventDate)) < 10
+```
+
+This query is not a final production rule. It is an investigative lens. It helps surface send-and-open patterns that
+deserve closer review before they are allowed to shape performance conclusions.
+
+## Pattern 2: Subscriber-Level Drill-Down
+
+After finding suspicious timing behavior in aggregate, I used a focused query to inspect a single subscriber or a single
+send in context. This is where `_Job` becomes useful: it lets the analysis move from abstract anomaly detection to a
+concrete journey or email asset.
+
+```sql
+SELECT
+    sub.EmailAddress,
+    o.SubscriberKey,
+    s.JobID,
+    j.JourneyID,
+    j.EmailName,
+    j.JobName,
+    s.EventDate AS SendDate,
+    o.EventDate AS OpenDate,
+    DATEDIFF(second, s.EventDate, o.EventDate) AS OpenDelaySeconds
+FROM _Sent s
+INNER JOIN _Open o
+    ON s.JobID = o.JobID
+    AND s.ListID = o.ListID
+    AND s.BatchID = o.BatchID
+    AND s.SubscriberKey = o.SubscriberKey
+INNER JOIN _Subscribers sub
+    ON s.SubscriberKey = sub.SubscriberKey
+INNER JOIN _Job j
+    ON s.JobID = j.JobID
+WHERE o.EventDate > DATEADD(day, -7, GETDATE())
+  AND sub.EmailAddress = 'subscriber@example.com'
+  AND DATEDIFF(second, s.EventDate, o.EventDate) <= 5
+```
+
+I would not publish or productionize a hardcoded email address, of course. But for internal debugging this pattern is
+useful: it shows whether suspicious opens are isolated or recurring, and which journey or job they belong to.
+
+## Pattern 3: Statistical Thresholding
+
+Instead of picking a number emotionally, I calculated percentiles for first-open delay. That gave me a more grounded
+way to explain why a threshold like 30 seconds was reasonable for the dataset at hand.
+
+```sql
+SELECT
+    MIN(FirstOpenTimeDiffSeconds) AS Min_FirstOpen_Seconds,
+    MAX(FirstOpenTimeDiffSeconds) / 60.0 AS Max_FirstOpen_Minutes,
+    AVG(FirstOpenTimeDiffSeconds) / 60.0 AS Avg_FirstOpen_Minutes,
+    MAX(CASE WHEN PercentileRank <= 0.25 THEN FirstOpenTimeDiffSeconds END) / 60.0 AS P25_FirstOpen_Minutes,
+    MAX(CASE WHEN PercentileRank <= 0.50 THEN FirstOpenTimeDiffSeconds END) / 60.0 AS P50_FirstOpen_Minutes,
+    MAX(CASE WHEN PercentileRank <= 0.75 THEN FirstOpenTimeDiffSeconds END) / 60.0 AS P75_FirstOpen_Minutes,
+    MAX(CASE WHEN PercentileRank <= 0.90 THEN FirstOpenTimeDiffSeconds END) / 60.0 AS P90_FirstOpen_Minutes,
+    MAX(CASE WHEN PercentileRank <= 0.95 THEN FirstOpenTimeDiffSeconds END) / 60.0 AS P95_FirstOpen_Minutes,
+    COUNT(*) AS TotalRecords
+FROM (
+    SELECT
+        FirstOpenTimeDiffSeconds,
+        CAST(ROW_NUMBER() OVER (ORDER BY FirstOpenTimeDiffSeconds) AS FLOAT) / COUNT(*) OVER () AS PercentileRank
+    FROM (
+        SELECT
+            DATEDIFF(second, s.EventDate, MIN(o.EventDate)) AS FirstOpenTimeDiffSeconds
+        FROM _Sent s
+        INNER JOIN _Open o
+            ON s.JobID = o.JobID
+            AND s.ListID = o.ListID
+            AND s.BatchID = o.BatchID
+            AND s.SubscriberKey = o.SubscriberKey
+        INNER JOIN _Subscribers sub
+            ON s.SubscriberKey = sub.SubscriberKey
+        WHERE o.EventDate > DATEADD(day, -7, GETDATE())
+        GROUP BY
+            sub.EmailAddress,
+            sub.SubscriberKey,
+            s.JobID,
+            s.EventDate
+        HAVING COUNT(*) = 2
+    ) AS FirstOpenDistribution
+) AS RankedDistribution
+```
+
+This step matters because it changes the conversation from “I think this looks wrong” to “the observed timing
+distribution supports a more careful interpretation of opens.”
+
+## What Changed After Filtering
+
+The outcome was not a magical corrected open rate. The outcome was a safer reporting posture.
+
+Without this filter, reporting was vulnerable to overstating engagement before a person had realistically interacted
+with the message. That creates several downstream risks:
+
+- campaign open rates look healthier than they are
+- send-to-send benchmarks become less trustworthy
+- weak creative or poor audience fit can be masked by automated early opens
+- lifecycle teams can overestimate message relevance when using opens as an early success signal
+- optimization decisions around journey performance and engagement reporting can be made on inflated data
+
+## What Broke in Reporting Without the Filter?
+
+The biggest issue was not cosmetic metric inflation. The real problem was decision quality.
+
+<Callout type="warning" title="The real risk">
+  An inflated open rate on its own is cosmetic. An inflated open rate driving a lifecycle team's **next** creative,
+  audience, and journey decisions is operational damage — the kind that compounds send over send before anyone can
+  attribute it to the measurement layer underneath.
+</Callout>
+
+Without a suspicious-open filter, open rate could look healthier than it really was, comparisons between sends could
+become less trustworthy, and weak campaign performance could be partially hidden by automated early activity. That makes
+it easier for teams to misread creative quality, overestimate audience engagement, and optimize journeys against noisy
+signals rather than plausible human behavior.
+
+After filtering likely automated behavior, the measurement layer became more useful for:
+
+- comparing sends without over-crediting instant technical opens
+- reading lifecycle performance with more skepticism and more confidence at the same time
+- avoiding false narratives about engagement quality
+- giving stakeholders a clearer line between raw activity and qualified engagement
+
+That is a very typical martech data problem: the biggest win is often not a new dashboard, but a more trustworthy
+definition behind the dashboard. The business value of the work was not a prettier query. It was a more trustworthy
+measurement layer for lifecycle reporting.
+
+## Limits and Caveats
+
+I would not present this as universal bot detection logic. It is a practical heuristic built on observed timing patterns.
+
+<Callout type="caveat" title="What this case does NOT claim">
+  - Not every fast open is automated — the filter removes a likely class, not a proven one.
+  - Thresholds are dataset-specific. They should be re-validated per domain mix, geography, and send cadence.
+  - `_Open` alone should not drive strategic decisions without corroborating signals (clicks, downstream actions, replies).
+  - In production, I would also review domain-level behavior and document which reporting views are filtered vs. raw —
+    a filter that is invisible to stakeholders is worse than no filter at all.
+</Callout>
+
+That caution is part of the value. Senior-level analytics work is not just about finding a query. It is about knowing
+which conclusions are safe to operationalize.
+
+## Why This Case Matters
+
+I like this case because it sits exactly at the intersection I want to be hired for: marketing systems, data reasoning,
+reporting integrity, and operational judgment.
+
+The work itself is compact. The implication is not. When a team stops treating every open as real intent, campaign
+analysis becomes more honest, lifecycle decisions become more defensible, and optimization work starts from a better
+signal.
+
+In other words, this is not just an SQL exercise. It is a measurement-quality decision inside a real martech stack.
+
+## Further Reading
+
+- [Salesforce StackExchange: Bot clicks elimination](https://salesforce.stackexchange.com/questions/266485/how-to-eliminate-bot-clicks-with-query-in-marketing-cloud)
+- [Salesforce help article referenced in the original internal note](https://help.salesforce.com/s/articleView?id=000381730&type=1)

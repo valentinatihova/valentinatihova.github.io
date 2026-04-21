@@ -1,0 +1,116 @@
+import { BankChurnViz } from '../../components/article/BankChurnViz';
+import { BankChurnMetricsViz } from '../../components/article/BankChurnMetricsViz';
+
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+  <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+    Churn modeling · public tabular data
+  </div>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    This page states the engineering argument behind an older supervised-learning exercise on a public Kaggle dataset.
+    The authoritative record — imports, splits, every metric, and the plots that justified calls — remains the Jupyter
+    notebook in GitHub. What follows is the subset of decisions that actually moved F1, written the way I would brief
+    another senior IC before they opened the repo.
+  </p>
+</div>
+
+## Problem framing
+
+Banks optimize for retention when acquisition cost dominates. The task was crisp: from behavior and demographics,
+predict **exit** soon, and push **F1 on a held-out test split** past a fixed gate (0.59 in the original rubric).
+AUC-ROC stayed in the room as a sanity check on ranking quality, not as the optimization target.
+
+## Data
+
+The **Bank Customer Churn Modeling** dataset on Kaggle (10k rows, mixed numeric and categorical fields, binary
+`Exited`) is public benchmark data — useful for comparing techniques without conflating results with any live portfolio.
+
+<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-700 bg-stone-900/70 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
+  <div className="min-w-0 flex flex-col justify-center">
+    <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Notebook</p>
+    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-200">
+      Full experiment: cells, outputs, and figures. The header link on this article opens the same tree.
+    </p>
+  </div>
+  <a
+    href="https://github.com/valentinatihova/DS_projects/tree/main/bank_churn_prediction"
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex w-full shrink-0 items-center justify-center self-center justify-self-stretch rounded-lg border border-accent/40 bg-accent/15 px-5 py-3 font-mono text-sm font-medium uppercase tracking-[0.12em] text-accent transition-colors hover:bg-accent/25 md:w-auto md:min-w-[12rem] md:justify-self-end"
+  >
+    Open on GitHub
+  </a>
+</div>
+
+<KeyMetrics label="What made the exercise non-trivial">
+  <KeyMetric value="~20%" label="Positive rate" note="Roughly one in five rows is churn — a classic imbalanced target." />
+  <KeyMetric value="0.59" label="F1 gate" note="Rubric threshold; models that looked accurate on accuracy failed here." accent />
+  <KeyMetric value="~0.61" label="Test F1 (best run)" note="Class-weighted random forest after disciplined preprocessing and splits." />
+</KeyMetrics>
+
+## What constrained F1
+
+### 1. Class imbalance vs. headline accuracy
+
+With ~80% negatives, high accuracy can still mean useless churn detection. I compared **class weights**, **minority
+upsampling**, and **threshold search on predicted probabilities**. **Balanced class weights inside a random forest**
+won; upsampling moved some tree configurations but did not beat the best weighted forest on validation, and threshold
+sweeps did not rescue models that never separated the minority class.
+
+When the business metric is F1, tune for that objective end-to-end — including the decision threshold — but do not
+expect thresholding to fix a model with no usable ranking signal.
+
+### 2. Scaling without leakage
+
+Numeric columns (`credit_score`, `age`, `balance`, `estimated_salary`, `tenure`, `num_of_products`) were standardized
+with `StandardScaler` **fit only on the training slice** after a stratified 60 / 20 / 20 split. Geography and gender were
+one-hot encoded with a consistent baseline drop to avoid redundant dummies.
+
+Fitting the scaler on the full frame before splitting would leak aggregate statistics into validation and test — a
+small mistake that quietly flatters metrics.
+
+### 3. Weak linear signals, still informative
+
+Correlation against `exited` put **age** and **balance** forward; `is_active_member` leaned negative in this slice
+(active customers slightly more likely to churn) — a useful reminder that a single column is not a causal story
+(product mix, geography, and competition sit behind the label).
+
+![Schematic of Pearson correlations between selected features and the churn label](/articles/bank-churn/correlation-signals.svg)
+
+### 4. Model families under imbalance
+
+Unbalanced trees plateaued early; **logistic regression collapsed on F1** unless weights or resampling intervened.
+Random forests with `class_weight='balanced'` and tuned depth / estimator count gave the best bias–variance trade for
+this tabular problem.
+
+Ensembles reduce variance, but imbalance still needs an explicit prior via weights or sampling — library defaults encode
+a majority-class prior whether you name it or not.
+
+### 5. Validation discipline
+
+Hyperparameters were compared on the validation fold; the **test fold was reserved** for the final readout. The
+reported run landed near **F1 ≈ 0.61** with **AUC-ROC ≈ 0.76** on test — above the 0.59 gate with margin.
+
+![Class imbalance in the public sample (approximate shares)](/articles/bank-churn/class-imbalance.svg)
+
+## Tradeoffs I would carry to a production review
+
+- **F1 vs. AUC-ROC:** AUC averages ranking across thresholds; F1 locks to one operating point. Stakeholders who pay for
+  interventions usually care about the latter — report both, declare a primary metric before tuning.
+- **Upsampling vs. weighting:** Upsampling duplicates information and costs training time; weighting keeps the empirical
+  sample size honest. I still run both because some estimators interact oddly with `class_weight`.
+- **Interpretability:** Shallow trees read well but cap performance; the weighted forest was the pragmatic compromise for
+  this dataset size and noise level.
+
+## Takeaways
+
+The durable output is methodological: a reproducible notebook, a single honest test touch, and a comparison narrative that
+does not depend on one lucky split. No claim of lift on a real bank book — the value is **clean measurement hygiene**
+and a model choice you can defend in a design review.
+
+Correlations and class mix are repeated above as lightweight SVGs for fast first paint. Below, two on-page views sit on
+top of the same experiment: a cohort-flow sketch for intuition, then an F1 ladder from baselines to the weighted
+forest (amber guide marks the rubric gate).
+
+<BankChurnViz />
+
+<BankChurnMetricsViz />
