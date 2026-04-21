@@ -1,0 +1,3 @@
+# Netlify SPA fallback. Static files (prerendered per-route index.html, og/*.png, etc)
+# are served first; only unknown paths fall back to the root SPA shell.
+/*    /index.html   200

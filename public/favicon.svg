@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Base: dark stone rounded square with subtle hairline border -->
+  <rect width="32" height="32" rx="7" fill="#0c0a09" />
+  <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="#44403c" stroke-width="1" />
+
+  <!-- VT monogram: V and T share the vertical stem (literal ligature) -->
+  <!-- V: two diagonals from top corners converging at center -->
+  <path
+    d="M 7.5 8.5 L 16 22.5 L 24.5 8.5"
+    stroke="#fafaf9"
+    stroke-width="2.1"
+    stroke-linecap="square"
+    stroke-linejoin="miter"
+    fill="none"
+  />
+  <!-- T: crossbar on top + stem shared with V's meeting point (vertical down) -->
+  <path
+    d="M 11.5 8.5 L 20.5 8.5"
+    stroke="#fafaf9"
+    stroke-width="2.1"
+    stroke-linecap="square"
+    fill="none"
+  />
+
+  <!-- Amber editorial accent: hairline beneath monogram, signals brand color -->
+  <rect x="10" y="25.5" width="12" height="1.25" fill="#ce7f46" />
+</svg>

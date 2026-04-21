@@ -1,0 +1,69 @@
+import { FeedingClockInfographic } from '../../components/article/FeedingClockInfographic';
+import { FeedingTimelineDiary } from '../../components/article/FeedingTimelineDiary';
+
+<FeedingClockInfographic />
+
+## The source: twenty-four hours in a spreadsheet
+
+The raw data is embarrassingly simple. Eight rows, two columns: a timestamp and a bottle volume in milliliters.
+Nothing unusual &mdash; the same shape of log that thousands of parents keep on their phones while they learn a new
+human's rhythm.
+
+The interesting question is not how to store it. The interesting question is whether a single day's log has any
+visual structure at all, or whether it is just noise. A table of eight rows hides that. A day-clock shows it in
+about three seconds.
+
+## Diary timeline (notebook photos 1→4)
+
+The clock poster below still uses **one representative eight-feeding day** for the radial sketch. The strip chart
+here is the fuller scan from the paper diary, in the order of the numbered photos. Pick a calendar day to see
+times and volumes on a straight 24-hour axis.
+
+<FeedingTimelineDiary />
+
+## The day at a glance
+
+The four summary figures at the bottom of the poster are the full arithmetic story of the day. They are worth
+lifting out of the canvas and into the page, because they are the numbers a reader takes away even if they never
+look at the clock itself.
+
+<KeyMetrics label="Twenty-four hours — arithmetic summary">
+  <KeyMetric
+    value="990 ml"
+    label="Total intake / 24 h"
+    note="Across eight bottles — an average of ~124 ml per feeding, close to the median."
+    accent
+  />
+  <KeyMetric
+    value="3 h"
+    label="Average interval"
+    note="Rounded over eight gaps wrapping around midnight — the day's baseline cadence."
+  />
+  <KeyMetric
+    value="5 h 32 m"
+    label="Longest gap"
+    note="Between the 03:43 and 09:15 feedings — the visible silence on the clock's left side."
+  />
+</KeyMetrics>
+
+The two 180 ml bottles sit at the edges of the long silences: one at 00:50, right before the overnight gap, and
+one at 19:30, right before the evening wind-down. Nobody in the household called that a pattern out loud. The
+clock made it visible.
+
+## What this visualization is NOT
+
+This is a personal data piece, not a clinical tool. It rewards a careful reading of one day; it does not tolerate
+being read as a longitudinal dataset, and it was not designed to.
+
+<Callout type="caveat" title="What this visualization does NOT claim">
+  - Not a medical or nutritional recommendation. The 124 ml average is this day's average, not a target.
+  - Sample size is n = 1 day. Rhythm, averages, and the longest-gap duration will vary heavily across days and
+    across babies.
+  - The radial layout compresses time; adjacency on the clock does not imply causality in the underlying behavior.
+  - This is a family keepsake in poster form, not a production dashboard. It intentionally privileges readability
+    over statistical rigor.
+</Callout>
+
+The value of the piece is not the math. The math is trivial. The value is the **visual grammar** &mdash; a
+radial data-object that holds twenty-four hours of a new life and is still readable at a glance a week, a month,
+or a year later. That is what this case is really about.
