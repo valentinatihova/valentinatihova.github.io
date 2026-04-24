@@ -1,9 +1,7 @@
 export const profile = {
   name: "Valentina Tihova",
-  role: "Senior Data & MarTech Engineer",
   title: "Senior Data & MarTech Engineer",
-  tagline: "Building production data pipelines, decisioning systems, and reporting infrastructure.",
-  about: "Senior Data & MarTech Engineer with 8+ years of experience building and operationalizing data pipelines, real-time decisioning flows, reporting systems, and customer lifecycle platforms across fintech, retail, and telecom. I work from architecture through rollout, connecting business logic with production-ready implementation across orchestration, monitoring, analytics, and martech environments. Recent delivery proof includes 15+ analytical cases implemented and 5 complex marketing cases migrated from legacy CRM to a new platform.",
+  about: "Senior Data & MarTech Engineer, 8+ years. I've shipped and run data pipelines, real-time decisioning, reporting, and customer lifecycle work in fintech, retail, and telecom. Day to day: turn requirements into something deployable, then keep it testable and observable. Recent work includes 15+ analytics builds for a large bank and migrating five marketing flows off a legacy CRM to a new stack.",
   email: "valentina.tikhova1@gmail.com",
   location: "Valencia, Spain",
   hiringContext: "Remote in Europe",
@@ -16,23 +14,17 @@ export const profile = {
     linkedin: "https://www.linkedin.com/in/valentina-tihova/",
     github: "https://github.com/valentinatihova"
   },
-  skills: {
-    dataEngineering: ["Python", "Apache Airflow", "Docker", "Kubernetes", "Kafka", "SQL", "Azure Databricks", "ETL"],
-    dataScience: ["Pandas", "Scikit-learn", "PyTorch", "BERT", "Stats", "A/B Testing"],
-    marTech: ["Salesforce Data Cloud", "SFMC", "SAS RTDM", "PowerBI", "Tableau", "D3.js"],
-    tools: ["GIT", "Jira", "Postman", "GraphQL", "Hyperion"]
-  },
   experience: [
     {
       company: "T1A",
       role: "Senior CLM Solutions Consultant",
       period: "Jan 2025 – Present",
-      description: "Built and operationalized customer lifecycle, decisioning, and reporting systems for enterprise telecom and banking engagements.",
+      description: "Customer lifecycle, decisioning, and reporting for telecom and banking clients—integrations, live campaign logic, and cloud reporting.",
       achievements: [
         "Designed integrations between decisioning, reporting, and customer data layers to support more scalable personalization and operational visibility.",
         "Configured real-time campaign logic and validation flows in SAS RTDM for production decisioning and activation.",
-        "Built a cloud reporting architecture with Azure, Databricks, and Power BI for automated monitoring and stakeholder reporting.",
-        "Implemented Salesforce Data Cloud and SFMC for a financial institution, enabling unified profiles and omnichannel lifecycle activation."
+        "Cloud reporting on Azure, Databricks, and Power BI for monitoring and standard stakeholder packs.",
+        "Rolled out Salesforce Data Cloud and SFMC for a bank: unified profiles and lifecycle use cases across channels."
       ],
       tools: ["SAS RTDM", "Azure Databricks", "Power BI", "Salesforce Data Cloud", "SFMC", "SQL"]
     },
@@ -102,7 +94,7 @@ export const profile = {
       name: "Data Visualisation and Introduction to BI-Tools",
       issuer: "Yandex Practicum",
       date: "Sep 2024",
-      details: "Skilled in dashboard design, UX patterns, and creating custom visualizations (Tableau, DataLens, Datawrapper).",
+      details: "Dashboard layout, common UX patterns, and custom charts in Tableau, DataLens, and Datawrapper.",
       previewUrl: ""
     },
     {
@@ -113,9 +105,4 @@ export const profile = {
       previewUrl: ""
     }
   ],
-  languages: [
-    { name: "Russian", level: "Native" },
-    { name: "English", level: "Professional working proficiency (B1/B2)" },
-    { name: "Spanish", level: "Elementary proficiency" }
-  ]
 };

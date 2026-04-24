@@ -186,8 +186,8 @@ function RootTemplate() {
             flexDirection: 'column',
           }}
         >
-          <span>Production data pipelines, decisioning</span>
-          <span style={{ color: ACCENT, fontStyle: 'italic' }}>systems, and reporting infrastructure.</span>
+          <span>Pipelines, decisioning, reporting</span>
+          <span style={{ color: ACCENT, fontStyle: 'italic' }}>Fintech, retail, telecom.</span>
         </div>
       </div>
 

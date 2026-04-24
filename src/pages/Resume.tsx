@@ -12,7 +12,7 @@ export const Resume: React.FC = () => {
   useDocumentHead({
     title: 'Resume | Valentina Tihova \u2014 Senior Data & MarTech Engineer',
     description:
-      'Chronology, scope, and production-facing responsibilities for Valentina Tihova \u2014 Senior Data & MarTech Engineer. 8+ years across fintech, retail, and telecom. Remote in Europe, EU work authorized.',
+      'Resume for Valentina Tihova, Senior Data & MarTech Engineer. Eight years in fintech, retail, and telecom. Remote in Europe, EU work authorized.',
     url: `${SITE_URL}/resume`,
   });
   const activeCertification =
@@ -115,10 +115,9 @@ export const Resume: React.FC = () => {
               Role &amp; responsibilities
             </p>
             <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-stone-300 md:text-lg">
-              I build and operationalize data-heavy systems that connect decisioning logic, analytics workflows,
-              customer lifecycle platforms, and reporting infrastructure. My work usually sits between architecture and
-              delivery: translating business needs into scalable implementation, then making sure the system is
-              observable, testable, and usable in production.
+              I build and run data-heavy systems: decisioning, analytics, customer lifecycle, and reporting. Most of the
+              job is between design and go-live&mdash;turn a requirement into something you can deploy, then keep it
+              testable and observable in production.
             </p>
           </section>
 
@@ -140,9 +139,8 @@ export const Resume: React.FC = () => {
               Experience & Responsibilities
             </h3>
             <p className="mb-8 max-w-[62ch] text-sm leading-relaxed text-stone-400 md:text-base">
-              The timeline below shows how my work evolved from analytics and financial reporting into data orchestration,
-              real-time decisioning, martech implementation, QA automation, migration work, and delivery ownership
-              across banking, telecom, and retail environments.
+              From analytics and finance reports into orchestration, live decisioning, martech, QA automation, and migration
+              work&mdash;mostly banking, telecom, and retail.
             </p>
             
             <div className="divide-y divide-stone-800/70 border-t border-stone-800/70">

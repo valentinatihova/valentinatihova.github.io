@@ -9,19 +9,19 @@ export const Hero: React.FC = () => {
     {
       label: 'Delivery',
       value: '15+ cases shipped',
-      note: '5 complex marketing cases migrated. Measurable production impact.',
+      note: 'Five marketing flows moved off a legacy CRM; figures from live systems.',
       accent: true,
     },
     {
       label: 'Experience',
       value: '8+ years',
-      note: 'Fintech, retail, and telecom delivery.',
+      note: 'Fintech, retail, telecom.',
       accent: false,
     },
     {
       label: 'Remote',
       value: 'Europe',
-      note: 'EU work authorized. Senior IC platform roles.',
+      note: 'EU work authorized. Senior IC work.',
       accent: false,
     },
   ];
@@ -46,8 +46,7 @@ export const Hero: React.FC = () => {
           </p>
 
           <p className="max-w-[62ch] font-serif text-lg leading-[1.55] text-stone-400 md:text-xl">
-            Production data pipelines, decisioning systems, and reporting infrastructure
-            &mdash; architecture through rollout, across fintech, retail, and telecom.
+            Pipelines, real-time decisioning, and reporting&mdash;fintech, retail, and telecom, from design to production.
           </p>
 
           <div className="mt-14 mb-14 grid gap-x-14 gap-y-10 border-t border-stone-700/60 pt-12 sm:grid-cols-2 xl:grid-cols-3">
@@ -81,7 +80,7 @@ export const Hero: React.FC = () => {
               href="#projects"
               className="inline-flex items-center gap-2 rounded border border-stone-700 bg-transparent px-6 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-stone-200 transition-all hover:-translate-y-0.5 hover:bg-stone-800 hover:text-stone-50"
             >
-              Browse Stories
+              See articles
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>

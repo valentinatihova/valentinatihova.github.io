@@ -37,7 +37,7 @@ export const Home: React.FC = () => {
 
   const featuredArticle = useMemo(() => {
     if (selectedTags.length > 0) return undefined;
-    return filteredArticles.find((article) => !article.tags.includes('Infographic'));
+    return filteredArticles[0];
   }, [filteredArticles, selectedTags]);
 
   const remainingArticles = useMemo(() => {
@@ -69,7 +69,7 @@ export const Home: React.FC = () => {
             <div className="mb-4 flex items-center gap-4">
               <BrandMark size={18} />
               <span className="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-accent">
-                Publication Index
+                Index
               </span>
               <span className="h-px w-16 bg-accent/40" />
             </div>
@@ -77,9 +77,9 @@ export const Home: React.FC = () => {
               Case Studies & Ideas
             </h2>
             <p className="max-w-2xl text-stone-400 font-serif leading-relaxed">
-              <strong className="font-semibold text-stone-200">Case studies</strong> ship with public GitHub repositories.
-              <strong className="font-semibold text-stone-200"> Ideas</strong> are prose-first &mdash; architecture,
-              measurement, and delivery patterns from martech and data platforms, written without proprietary artifacts.
+              <strong className="font-semibold text-stone-200">Case studies</strong> include a public GitHub repo.
+              <strong className="font-semibold text-stone-200"> Other pieces</strong> are long-form write-ups from the same
+              work&mdash;no client data or screenshots, just how things were built and measured.
             </p>
           </div>
 

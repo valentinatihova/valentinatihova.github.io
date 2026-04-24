@@ -50,7 +50,7 @@ export const FeedingTimelineDiary: React.FC = () => {
           <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">Feeding diary</p>
           <h3 className="mt-2 font-serif text-xl text-stone-50 md:text-2xl">Timeline by day</h3>
           <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-stone-400">
-            Notebook pages transcribed in photo order (1→4). Dates are editorial placeholders — adjust in{' '}
+            Placeholder dates — change in{' '}
             <code className="rounded border border-stone-700 bg-stone-900 px-1.5 py-0.5 font-mono text-[0.8em] text-stone-200">
               feedingDiaryData.ts
             </code>{' '}

@@ -75,7 +75,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const navItems = [
     {
       to: '/#projects',
-      label: 'Articles & Ideas',
+      label: 'Articles',
       active: isArticleArea,
     },
     {
@@ -162,7 +162,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <div>
                     <p className="font-serif text-lg text-stone-50">Navigation</p>
                     <p className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">
-                      Publication-first mobile menu
+                      Menu
                     </p>
                   </div>
                   <button
@@ -223,9 +223,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-stone-800 bg-stone-950/40 px-4 py-4">
-                  <p className="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">Current mode</p>
+                  <p className="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">You are here</p>
                   <p className="mt-2 font-serif text-stone-100">
-                    {isArticleArea ? 'Reading and browsing stories.' : 'Reviewing the CV view.'}
+                    {isArticleArea ? 'Home or an article.' : 'Resume.'}
                   </p>
                 </div>
               </div>
@@ -244,60 +244,37 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {children}
       </motion.main>
 
-      <footer className="border-t border-stone-700 bg-stone-900 mt-32">
-        <div className="container mx-auto grid gap-12 px-4 py-16 md:grid-cols-[auto_1fr_auto] md:items-start md:gap-16">
-          <BrandLockup variant="stacked" size={32} />
-
-          <div className="flex flex-col gap-3 md:max-w-md">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">
-              Colophon
-            </p>
-            <p className="font-serif text-[15px] leading-[1.65] text-stone-300">
-              Typeset in <em className="font-medium not-italic text-stone-100">Fraunces</em> (display, opsz 144) &amp;{' '}
-              <em className="font-medium not-italic text-stone-100">JetBrains Mono</em>.
-              <br />
-              Published from Valencia, Spain. First issue April 2026.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 md:items-end">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">
-              Contact
-            </p>
-            <div className="flex items-center gap-4 text-stone-300">
-              <a
-                href={`mailto:${profile.email}`}
-                aria-label="Email"
-                className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
-              <a
-                href={profile.socials.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-              >
-                <LinkedinIcon />
-              </a>
-              <a
-                href={profile.socials.github}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
-                className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-              >
-                <GithubIcon />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-stone-800/80">
-          <div className="container mx-auto flex flex-col items-start justify-between gap-2 px-4 py-5 font-mono text-[11px] uppercase tracking-[0.22em] text-stone-500 md:flex-row md:items-center">
-            <p>© {new Date().getFullYear()} {profile.name}. All rights reserved.</p>
-            <p>valentinatihova.com</p>
+      <footer className="mt-32 border-t border-stone-800/80 bg-stone-900">
+        <div className="container mx-auto flex flex-col gap-5 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-6">
+          <p className="font-mono text-[12px] tracking-[0.18em] text-stone-300">
+            © {new Date().getFullYear()} {profile.name}
+          </p>
+          <div className="flex items-center gap-4 text-stone-300 sm:shrink-0">
+            <a
+              href={`mailto:${profile.email}`}
+              aria-label="Email"
+              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
+            >
+              <Mail className="w-5 h-5" />
+            </a>
+            <a
+              href={profile.socials.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
+            >
+              <LinkedinIcon />
+            </a>
+            <a
+              href={profile.socials.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
+            >
+              <GithubIcon />
+            </a>
           </div>
         </div>
       </footer>
