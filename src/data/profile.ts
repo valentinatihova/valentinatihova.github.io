@@ -32,12 +32,12 @@ export const profile = {
       company: "GlowByte Consulting",
       role: "Lead Data Analyst",
       period: "Dec 2022 – Dec 2024",
-      description: "Owned analytical delivery, orchestration, monitoring, QA automation, and migration work across fintech and martech systems.",
+      description: "Led migration from SAS RTDM to CM Ocean and owned QA, monitoring, and delivery across fintech and martech projects.",
       achievements: [
-        "Led the technical implementation of Talys.SDE within 6 months, replacing legacy CRM flows and migrating 5 complex marketing cases to the new platform.",
-        "Built event-stream and process-monitoring solutions that reduced issue detection and investigation time by 30-40%.",
-        "Designed automated functional and load-testing frameworks that accelerated testing workflows by 50% and reduced QA cycle time by 30%.",
-        "Streamlined onboarding by creating an internal Wiki and Telegram knowledge hub, reducing onboarding time."
+        "Migrated marketing campaigns, customer segments, and underlying data (Oracle to Postgres and Tarantool) to CM Ocean over 6 months — 5 complex flows fully re-implemented on the new stack.",
+        "Built Kafka topic monitoring for campaign triggers: tracked input parameter consumption, detected failures, and automated campaign restarts via a custom API module.",
+        "Automated functional and load testing, replacing manual execution with structured frameworks.",
+        "Built team onboarding infrastructure — internal Wiki and Telegram knowledge hub."
       ],
       tools: ["Apache Airflow", "Python", "Docker", "Kubernetes", "Kafka", "ETL", "Pandas", "Scikit-learn", "SQL", "A/B Testing"]
     },
@@ -45,11 +45,11 @@ export const profile = {
       company: "GlowByte Consulting",
       role: "Data Analyst",
       period: "Oct 2020 – Dec 2022",
-      description: "Delivered analytical implementations for credit decisioning and adjacent data workflows in a high-stakes banking environment.",
+      description: "Delivered marketing decisioning cases in SAS RTDM and SAS MA for one of Russia's largest banks, and built the testing infrastructure around them.",
       achievements: [
-        "Implemented 15+ analytical cases that improved the efficiency of real-time credit decision-making for one of the largest banks in Russia.",
-        "Reduced credit portfolio risk by 20% through the implementation of a complex scoring calculation system.",
-        "Automated functional testing scenarios, increasing testing speed by 50% for decisioning-related changes."
+        "Implemented 15+ marketing cases — offer recalculation, card issuance, installment products, and transactional triggers — from campaign brief to production.",
+        "Replaced manual log-based testing with SoapUI and Postman automation, running multiple scenarios in parallel with structured output.",
+        "Extended test coverage to load simulation, verifying system stability under campaign traffic."
       ],
       tools: ["Python", "Pandas", "Scikit-learn", "SQL", "Apache Airflow", "A/B Testing"]
     },
@@ -57,12 +57,13 @@ export const profile = {
       company: "KORUS Consulting",
       role: "Data Analyst",
       period: "Jun 2018 – Oct 2020",
-      description: "Reduced budget planning resource allocation by 20% by implementing OLAP Oracle Hyperion in food retail.",
+      description: "Implemented retail planning systems for food and fashion clients across Russia and Europe — automating workflows that previously ran in Excel.",
       achievements: [
-        "Developed an MVP for seasonal delivery planning in fashion retail, automating workflows and reducing manual errors.",
-        "Delivered a box-solution for Seasonality Trading Strategies in fashion retail as part of a retail analytics product suite.",
-        "Created custom Power BI and Tableau reports with deep Python integration for data visualization and insights.",
-        "Prepared functional and technical documentation, and supported UAT sessions with 25+ users."
+        "Implemented Oracle Hyperion for a major food retailer, replacing manual Excel consolidation and adding new planning dimensions for their first online sales channel.",
+        "Led TXT Retail implementation for a large fashion retailer from scratch — automated seasonal merchandise planning, markdown calculations, and assortment metrics.",
+        "Delivered Armonica Retail for a European fashion e-tailer — seasonal financial planning from strategic targets to buyer plans with multi-level drill-down for merchandising teams.",
+        "Built plan vs actual dashboards in Power BI and Tableau with Python, giving buyers and merchants a unified view across planning horizons.",
+        "Prepared solution documentation and led UAT sessions with 25+ users."
       ],
       tools: ["Oracle Hyperion", "Power BI", "Tableau", "Python", "SQL"]
     },
