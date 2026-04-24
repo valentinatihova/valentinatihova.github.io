@@ -77,10 +77,10 @@ function writeRoute(pathSegments: string[], seo: Seo) {
 writeRoute(['resume'], {
   title: 'Resume | Valentina Tihova \u2014 Senior Data & MarTech Engineer',
   description:
-    'Chronology, scope, and production-facing responsibilities for Valentina Tihova \u2014 Senior Data & MarTech Engineer. 8+ years across fintech, retail, and telecom. Remote in Europe, EU work authorized.',
+    'Resume for Valentina Tihova, Senior Data & MarTech Engineer. Eight years in fintech, retail, and telecom. Remote in Europe, EU work authorized.',
   url: `${SITE_URL}/resume`,
   image: `${SITE_URL}/og-image.png`,
-  imageAlt: 'Valentina Tihova \u2014 Senior Data & MarTech Engineer. Editorial portfolio.',
+  imageAlt: 'Valentina Tihova \u2014 Senior Data & MarTech Engineer',
 });
 
 for (const article of articles) {
@@ -116,11 +116,7 @@ function writeSitemap() {
 
   for (const article of articles) {
     const changefreq =
-      article.id === 'final-project-da' ||
-      article.id === 'ml-model-for-zyfra' ||
-      article.id === 'bank-churn-prediction'
-        ? 'yearly'
-        : 'monthly';
+      article.id === 'ml-model-for-zyfra' || article.id === 'bank-churn-prediction' ? 'yearly' : 'monthly';
     const priority = article.id === 'sfmc-false-opens' ? '0.9' : '0.7';
     entry(`${SITE_URL}/article/${article.id}`, changefreq, priority, article.date);
   }

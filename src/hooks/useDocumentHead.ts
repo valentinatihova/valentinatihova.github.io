@@ -9,7 +9,7 @@ interface DocumentHeadOptions {
 }
 const DEFAULT_TITLE = 'Valentina Tihova | Senior Data & MarTech Engineer';
 const DEFAULT_DESCRIPTION =
-  'Editorial portfolio of Valentina Tihova, Senior Data & MarTech Engineer. Decisioning systems, analytics delivery, martech architecture, case studies, and visual data storytelling.';
+  'Valentina Tihova—Senior Data & MarTech engineer. Pipelines, real-time decisioning, reporting, and martech work, with case studies and notes from production.';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 const DEFAULT_URL = `${SITE_URL}/`;
 

@@ -20,12 +20,6 @@ NOTEBOOKS = [
         "title": "Predicting Gold Recovery (Zyfra ML Model)",
         "tags": ["Machine Learning", "Python", "Regression", "Data Science"]
     },
-    {
-        "id": "final-project-da",
-        "url": "https://raw.githubusercontent.com/valentinatihova/DA_projects/master/final_project/grand_mobile_app_users.ipynb",
-        "title": "Mobile App User Behavior & A/B Testing",
-        "tags": ["Data Analytics", "A/B Testing", "Python", "SQL"]
-    }
 ]
 
 translator = GoogleTranslator(source='ru', target='en')

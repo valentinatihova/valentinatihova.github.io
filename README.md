@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# valentinatihova.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio and case-study site for Valentina Tihova — Senior Data & MarTech Engineer.
 
-Currently, two official plugins are available:
+## What it is
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+A static React SPA deployed on GitHub Pages at [valentinatihova.com](https://valentinatihova.com). It serves as a professional landing page and a collection of long-form case studies written around real production work.
 
-## React Compiler
+## What's inside
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Section | Purpose |
+|---------|---------|
+| **Home** | Short bio, tag-filtered article index |
+| **Case studies** | Deep-dive write-ups (machine learning, MarTech, data viz) — some backed by public GitHub notebooks |
+| **Resume** | Inline HTML CV with a downloadable PDF link |
+| **Lab** | One-off interactive demos (e.g. baby feeding spiral infographic) |
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 18 + TypeScript, bundled with Vite
+- MDX for article content
+- Tailwind CSS + Framer Motion
+- Custom SVG / D3-style data visualizations (no D3 dependency)
+- Pre-rendered HTML shell + `sitemap.xml` via `scripts/prerender-html.tsx`
+- OG images generated at build time via `scripts/generate-og.tsx`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Deploy
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Pushes to `main` trigger the GitHub Actions workflow (`.github/workflows/deploy-pages.yml`), which builds and publishes to GitHub Pages. The custom domain is set in `public/CNAME`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+npm run dev      # local dev server
+npm run build    # production build + prerender + OG images
 ```

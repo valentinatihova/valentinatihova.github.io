@@ -15,7 +15,7 @@ function App() {
         <div className="min-h-screen bg-stone-900 text-stone-50 flex items-center justify-center px-6">
           <div className="rounded-3xl border border-stone-800 bg-stone-950/60 px-6 py-5 text-center backdrop-blur-sm">
             <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">Loading</div>
-            <div className="mt-3 font-serif text-xl text-stone-100">Preparing the next view...</div>
+            <div className="mt-3 font-serif text-xl text-stone-100">Loading…</div>
           </div>
         </div>
       }

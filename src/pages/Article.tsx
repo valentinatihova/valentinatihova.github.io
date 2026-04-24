@@ -33,7 +33,7 @@ export const Article: React.FC = () => {
   useDocumentHead({
     title: article
       ? `${article.title} | Valentina Tihova`
-      : 'Case Study Not Found | Valentina Tihova',
+      : 'Not found | Valentina Tihova',
     description: article?.summary,
     image: article ? `${SITE_URL}/og/${article.id}.png` : undefined,
     url: article ? `${SITE_URL}/article/${article.id}` : undefined,
@@ -63,8 +63,8 @@ export const Article: React.FC = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-32 text-center">
-          <h1 className="text-4xl font-bold mb-4">Case Study Not Found</h1>
-          <p className="text-stone-300 mb-8">The article you're looking for doesn't exist.</p>
+          <h1 className="text-4xl font-bold mb-4">Not found</h1>
+          <p className="text-stone-300 mb-8">No article at this address.</p>
           <Link to="/" className="text-accent hover:text-accent/80 font-medium">
             &larr; Back to Home
           </Link>
