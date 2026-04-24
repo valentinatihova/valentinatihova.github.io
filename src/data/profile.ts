@@ -71,10 +71,8 @@ export const profile = {
       company: "Sberbank",
       role: "Finance Analyst",
       period: "Dec 2015 – May 2018",
-      description: "Automated 10+ reporting forms, reducing manual errors and significantly speeding up data collection processes.",
-      achievements: [
-        "Developed validation forms for the accounting system, ensuring IFRS compliance and data completeness."
-      ],
+      description: "Automated financial reporting and built accounting validation for IFRS compliance at one of Russia's largest banks.",
+      achievements: [],
       tools: ["VBA", "Excel", "SQL", "Financial Modeling"]
     }
   ],
