@@ -101,7 +101,7 @@ export const profile = {
       name: "Data Analyst",
       issuer: "Yandex Practicum",
       date: "Jan 2020",
-      details: "",
+      details: "Python, preprocessing, EDA, statistical analysis, data collection & storage, business analytics, data-driven decisions, data storytelling, automation, forecasting, and an independent graduation project. 240 hours total.",
       previewUrl: "/certificates/cert-da-2020.pdf"
     }
   ],
