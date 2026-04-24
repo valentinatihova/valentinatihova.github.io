@@ -6,10 +6,14 @@ import { BankChurnMetricsViz } from '../../components/article/BankChurnMetricsVi
     Churn modeling · public tabular data
 </div>
   <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    This page states the engineering argument behind an older supervised-learning exercise on a public Kaggle dataset.
-    The authoritative record — imports, splits, every metric, and the plots that justified calls — remains the Jupyter
-    notebook in GitHub. What follows is the subset of decisions that actually moved F1, written the way I would brief
-    another senior IC before they opened the repo.
+    A bank&apos;s cheapest customer is the one they already have. The hardest part of churn modeling isn&apos;t the
+    algorithm — it&apos;s getting F1 to a useful level when the leaving class is 20% of the data and every oversampling
+    method introduces its own form of leakage.
+  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    This page covers the engineering argument behind the key decisions: how the data was split without leakage, why a
+    weighted random forest beat upsampling, and what actually moved F1. The full record — imports, splits, every metric
+    — is in the GitHub notebook. What follows is the subset of decisions that matter before you open the repo.
   </p>
 </div>
 

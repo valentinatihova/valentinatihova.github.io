@@ -11,11 +11,15 @@ import {
     Industrial regression · public process data
   </div>
   <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    This note compresses a learning project on gold-ore recovery prediction into the decisions that matter for a design
-    review: how targets are defined from process physics, how train and test differ by measurement latency, which
-    anomalies to cut before fitting, and how to score models with a business-shaped metric. The executable notebook is
-    on GitHub (<code className="rounded border border-stone-700 bg-stone-800 px-1.5 py-0.5 font-mono text-[0.85em] text-stone-100">grand_project_2.ipynb</code>); the figures below follow the same EDA layout as the notebook (heatmap, metal and
-    stage line panels, feed-size comparison, total-concentration curves), with on-site rendering instead of static PNGs.
+    Every time a recovery model overestimates output, a plant commits energy and reagents to a batch it should have
+    rejected. The question isn&apos;t whether the model is accurate in the abstract — it&apos;s whether it holds when
+    sensors drift and the input distribution shifts between shifts.
+  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    This note covers the design decisions that matter: how targets are defined from process physics, how train and test
+    differ by measurement latency, which anomalies to cut before fitting, and why sMAPE is the right loss function here.
+    The executable notebook is on GitHub (<code className="rounded border border-stone-700 bg-stone-800 px-1.5 py-0.5 font-mono text-[0.85em] text-stone-100">grand_project_2.ipynb</code>);
+    the figures follow the same EDA layout, with on-site rendering.
   </p>
 </div>
 

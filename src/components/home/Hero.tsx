@@ -42,11 +42,11 @@ export const Hero: React.FC = () => {
           </h1>
 
           <p className="mb-10 max-w-3xl font-serif text-[1.75rem] italic leading-[1.1] text-stone-300 md:text-[2.25rem]">
-            Senior Data &amp; MarTech Engineer.
+            Senior Data &amp; MarTech Engineer&mdash;I build systems that are honest about what&apos;s happening.
           </p>
 
           <p className="max-w-[62ch] font-serif text-lg leading-[1.55] text-stone-400 md:text-xl">
-            Pipelines, real-time decisioning, and reporting&mdash;fintech, retail, and telecom, from design to production.
+            Pipelines, real-time decisioning, and reporting. I work from design to production and keep it observable so the team can trust the numbers.
           </p>
 
           <div className="mt-14 mb-14 grid gap-x-14 gap-y-10 border-t border-stone-700/60 pt-12 sm:grid-cols-2 xl:grid-cols-3">

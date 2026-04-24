@@ -1,23 +1,21 @@
 <div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm">
   <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">What this case shows</div>
   <div className="mt-4 max-w-3xl text-lg leading-relaxed text-stone-200 font-serif">
-    One of the fastest ways to make lifecycle reporting less trustworthy is to treat every open as human intent.
-    In Salesforce Marketing Cloud, some opens happen seconds after send because security scanners and automated systems
-    preload the message. This case shows how I used Data Views and SQL heuristics to separate noisy activity from
-    more credible engagement signals.
+    SFMC considers a pixel load an open — including the ones your security scanner generates 3 seconds after delivery.
+    If more than 15% of your opens are instant, your campaign reports are measuring scanner activity, not human intent.
+    This case shows how to find that threshold with a SQL query and what to do with the numbers afterward.
   </div>
 </div>
 
 ## The Problem in Production Reporting
 
-Open rate is easy to over-trust because it looks simple, available, and comparable across campaigns. In practice, it is
-often one of the noisiest metrics in email reporting. If an automated scanner loads tracking pixels immediately after
-delivery, the report still records an open. That can inflate performance, distort benchmarks, and make a weak campaign
-look healthier than it really is.
+Open rate has a specific, quiet way of lying: it records the event, not the intent. In SFMC, the `_Open` Data View
+logs pixel loads — and pixel loads happen from security scanners, mail protection systems, and automated checks, often
+within seconds of delivery. None of those are a person deciding your email was worth reading.
 
-The real issue is not whether every fast open is a bot. The issue is that a reporting layer should distinguish between
-signals that are likely human and signals that are likely automated. Without that distinction, teams can optimize toward
-noise.
+The practical cost: a campaign that performed poorly looks healthier than it was. You optimize toward it. The next
+campaign does the same thing. Over time, your performance benchmarks are a reflection of your IT infrastructure, not
+your audience.
 
 ## Why SFMC Opens Need Extra Scrutiny
 
