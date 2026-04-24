@@ -95,14 +95,14 @@ export const profile = {
       issuer: "Yandex Practicum",
       date: "Sep 2024",
       details: "Dashboard layout, common UX patterns, and custom charts in Tableau, DataLens, and Datawrapper.",
-      previewUrl: ""
+      previewUrl: "/certificates/cert-datavis-bi-2024.pdf"
     },
     {
       name: "Data Analyst",
       issuer: "Yandex Practicum",
       date: "Jan 2020",
       details: "",
-      previewUrl: ""
+      previewUrl: "/certificates/cert-da-2020.pdf"
     }
   ],
 };
