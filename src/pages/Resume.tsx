@@ -84,7 +84,7 @@ export const Resume: React.FC = () => {
               className="inline-flex items-center gap-2 rounded border border-accent/45 bg-accent/15 px-7 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-paper transition-all shadow-sm hover:-translate-y-0.5 hover:bg-accent/25"
             >
               <ExternalLink className="w-4 h-4" />
-              Open Recruiter CV
+              Open CV
             </a>
             <a
               href={profile.telegram.url}
