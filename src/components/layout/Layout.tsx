@@ -4,6 +4,7 @@ import { Mail, FileText, ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { BrandLockup, BrandMark } from '../brand/BrandMark';
+import { trackEvent } from '../../lib/analytics';
 
 const GithubIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -69,6 +70,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [location.pathname, location.hash]);
 
   const scrollToTop = () => {
+    trackEvent('scroll_to_top');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -109,6 +111,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <Link
                 key={item.to}
                 to={item.to}
+                onClick={() => trackEvent('nav_click', { label: item.label })}
                 className={`transition-colors whitespace-nowrap flex items-center gap-2 ${
                   item.active ? 'text-accent' : 'text-stone-400 hover:text-stone-100'
                 }`}
@@ -118,10 +121,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </Link>
             ))}
             <div className="flex items-center gap-3 pl-2 border-l border-stone-700">
-              <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="text-stone-400 hover:text-accent transition-colors">
+              <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'linkedin_header' })} className="text-stone-400 hover:text-accent transition-colors">
                 <LinkedinIcon />
               </a>
-              <a href={profile.socials.github} target="_blank" rel="noreferrer" className="text-stone-400 hover:text-accent transition-colors">
+              <a href={profile.socials.github} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'github_header' })} className="text-stone-400 hover:text-accent transition-colors">
                 <GithubIcon />
               </a>
             </div>
@@ -208,6 +211,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     href={profile.socials.linkedin}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => trackEvent('social_click', { label: 'linkedin_mobile' })}
                     className="rounded-2xl border border-stone-800 bg-stone-950/50 px-4 py-4 text-sm font-mono text-stone-300 transition-colors hover:border-stone-600 hover:text-stone-100"
                   >
                     LinkedIn
@@ -216,6 +220,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     href={profile.socials.github}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() => trackEvent('social_click', { label: 'github_mobile' })}
                     className="rounded-2xl border border-stone-800 bg-stone-950/50 px-4 py-4 text-sm font-mono text-stone-300 transition-colors hover:border-stone-600 hover:text-stone-100"
                   >
                     GitHub
@@ -253,6 +258,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <a
               href={`mailto:${profile.email}`}
               aria-label="Email"
+              onClick={() => trackEvent('social_click', { label: 'email_footer' })}
               className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
             >
               <Mail className="w-5 h-5" />
@@ -262,6 +268,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               target="_blank"
               rel="noreferrer"
               aria-label="LinkedIn"
+              onClick={() => trackEvent('social_click', { label: 'linkedin_footer' })}
               className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
             >
               <LinkedinIcon />
@@ -271,6 +278,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               target="_blank"
               rel="noreferrer"
               aria-label="GitHub"
+              onClick={() => trackEvent('social_click', { label: 'github_footer' })}
               className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
             >
               <GithubIcon />

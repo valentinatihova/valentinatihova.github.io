@@ -5,6 +5,7 @@ import { profile } from '../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { SITE_URL } from '../config/site';
+import { trackEvent } from '../lib/analytics';
 
 export const Resume: React.FC = () => {
   const [activeCertificationIndex, setActiveCertificationIndex] = useState<number | null>(null);
@@ -81,6 +82,7 @@ export const Resume: React.FC = () => {
               href="/Valentina_Tihova_CV.html"
               target="_blank"
               rel="noreferrer"
+              onClick={() => trackEvent('cv_open', { label: 'html_cv' })}
               className="inline-flex items-center gap-2 rounded border border-accent/45 bg-accent/15 px-7 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-paper transition-all shadow-sm hover:-translate-y-0.5 hover:bg-accent/25"
             >
               <ExternalLink className="w-4 h-4" />
@@ -90,6 +92,7 @@ export const Resume: React.FC = () => {
               href={profile.telegram.url}
               target="_blank"
               rel="noreferrer"
+              onClick={() => trackEvent('social_click', { label: 'telegram_resume' })}
               className="inline-flex items-center gap-2 rounded border border-stone-700 bg-transparent px-6 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-stone-200 transition-all hover:-translate-y-0.5 hover:bg-stone-800 hover:text-stone-50"
             >
               <Send className="w-4 h-4" />
@@ -105,8 +108,8 @@ export const Resume: React.FC = () => {
               <span>{profile.location}</span>
               <span>{profile.hiringContext}</span>
               <span>{profile.workAuthorization}</span>
-              <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-200">LinkedIn</a>
-              <a href={profile.telegram.url} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-200">{profile.telegram.handle}</a>
+              <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'linkedin_resume' })} className="transition-colors hover:text-stone-200">LinkedIn</a>
+              <a href={profile.telegram.url} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'telegram_strip' })} className="transition-colors hover:text-stone-200">{profile.telegram.handle}</a>
             </div>
           </div>
 
@@ -203,7 +206,7 @@ export const Resume: React.FC = () => {
                 <button
                   key={index}
                   type="button"
-                  onClick={() => setActiveCertificationIndex(index)}
+                  onClick={() => { trackEvent('certificate_open', { label: cert.name }); setActiveCertificationIndex(index); }}
                   className="group rounded-lg border border-stone-800 bg-stone-900/40 p-7 text-left transition-colors hover:border-stone-600"
                 >
                   <div className="flex justify-between items-start mb-2">
