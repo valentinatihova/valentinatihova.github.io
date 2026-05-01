@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
+import { trackEvent } from '../../lib/analytics';
 
 export const Hero: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -71,6 +72,7 @@ export const Hero: React.FC = () => {
           <div className="flex flex-wrap items-center gap-4">
             <Link
               to="/resume"
+              onClick={() => trackEvent('hero_cta_click', { label: 'view_resume' })}
               className="inline-flex items-center gap-2 rounded border border-accent/45 bg-accent/15 px-7 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-paper transition-all shadow-sm hover:-translate-y-0.5 hover:bg-accent/25"
             >
               <FileText className="w-4 h-4" />
@@ -78,6 +80,7 @@ export const Hero: React.FC = () => {
             </Link>
             <a
               href="#projects"
+              onClick={() => trackEvent('hero_cta_click', { label: 'see_articles' })}
               className="inline-flex items-center gap-2 rounded border border-stone-700 bg-transparent px-6 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-stone-200 transition-all hover:-translate-y-0.5 hover:bg-stone-800 hover:text-stone-50"
             >
               See articles

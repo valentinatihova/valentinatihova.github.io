@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Heart } from 'lucide-react';
+import { trackEvent } from '../lib/analytics';
 import { Layout } from '../components/layout/Layout';
 import { ARTICLE_KIND_LABEL, articles, getArticleKind } from '../data/articles';
 import { MDXComponents } from '../components/article/MDXComponents';
@@ -50,11 +51,13 @@ export const Article: React.FC = () => {
     setIsLiked((prev) => {
       const nextValue = !prev;
       window.localStorage.setItem(`article-liked:${id}`, String(nextValue));
+      trackEvent('article_like', { label: id, value: nextValue ? 'liked' : 'unliked' });
       return nextValue;
     });
   };
 
   const handleShareFacebook = () => {
+    trackEvent('article_share', { label: id ?? '', value: 'facebook' });
     const url = encodeURIComponent(window.location.href);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
   };
@@ -109,6 +112,7 @@ export const Article: React.FC = () => {
           <div className="min-w-0">
             <Link
               to="/"
+              onClick={() => trackEvent('article_back', { label: article.id })}
               className="mb-12 inline-flex items-center gap-2 text-sm font-medium font-mono text-stone-400 transition-colors hover:text-stone-100"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -151,6 +155,7 @@ export const Article: React.FC = () => {
                 href={article.githubUrl}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackEvent('article_github', { label: article.id })}
                 className="ml-auto flex items-center gap-2 text-stone-300 transition-colors hover:text-accent"
               >
                 <GithubIcon />

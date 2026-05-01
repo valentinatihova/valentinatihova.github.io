@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import { articles, type Article } from '../../data/articles';
+import { trackEvent } from '../../lib/analytics';
 
 interface ReadNextProps {
   currentId: string;
@@ -58,6 +59,7 @@ export function ReadNext({ currentId, limit = 2 }: ReadNextProps) {
           <Link
             key={a.id}
             to={`/article/${a.id}`}
+            onClick={() => trackEvent('article_read_next', { label: a.id, value: currentId })}
             className="group block border-b border-stone-800 px-3 py-8 transition-colors hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
           >
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { trackEvent } from '../../lib/analytics';
 
 interface TagFilterProps {
   tags: string[];
@@ -19,7 +20,7 @@ export const TagFilter: React.FC<TagFilterProps> = ({ tags, selectedTags, onTagT
       className="flex flex-wrap gap-3 mb-8"
     >
       <button
-        onClick={() => onTagToggle('all')}
+        onClick={() => { trackEvent('tag_filter', { label: 'all' }); onTagToggle('all'); }}
         className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 ${
           selectedTags.length === 0
             ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'
@@ -34,7 +35,7 @@ export const TagFilter: React.FC<TagFilterProps> = ({ tags, selectedTags, onTagT
         return (
           <button
             key={tag}
-            onClick={() => onTagToggle(tag)}
+            onClick={() => { trackEvent('tag_filter', { label: tag }); onTagToggle(tag); }}
             className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 ${
               isSelected
                 ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'

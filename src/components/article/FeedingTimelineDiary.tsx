@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import * as d3 from 'd3';
 import { FEEDING_DIARY_ENTRIES, diaryDatesSorted, entriesForDate } from '../../data/feedingDiaryData';
+import { trackEvent } from '../../lib/analytics';
 
 const BIRTH_DATE_MS = new Date('2026-02-24T12:00:00').getTime();
 
@@ -164,7 +165,7 @@ export const FeedingTimelineDiary: React.FC = () => {
         </div>
         <div className="flex flex-col items-start gap-3 md:items-end">
           <button
-            onClick={openRawDataTable}
+            onClick={() => { trackEvent('raw_data_table_open'); openRawDataTable(); }}
             className="inline-flex items-center gap-1.5 rounded-lg border border-stone-700 bg-stone-900 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400 transition-colors hover:border-stone-600 hover:text-stone-200"
           >
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -179,7 +180,7 @@ export const FeedingTimelineDiary: React.FC = () => {
           <select
             className="rounded-lg border border-stone-700 bg-stone-900 px-3 py-2.5 font-sans text-sm font-medium normal-case tracking-normal text-stone-100 focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/40"
             value={selected}
-            onChange={(e) => setSelected(e.target.value)}
+            onChange={(e) => { trackEvent('diary_day_change', { label: e.target.value }); setSelected(e.target.value); }}
           >
             {dates.map((d) => (
               <option key={d} value={d}>

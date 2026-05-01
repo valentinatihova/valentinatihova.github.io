@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { type Article } from '../../data/articles';
 import { ArrowRight, Clock, Calendar } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { trackEvent } from '../../lib/analytics';
 
 interface ArticleCardProps {
   article: Article;
@@ -24,6 +25,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     >
       <Link
       to={`/article/${article.id}`}
+      onClick={() => trackEvent('article_open', { label: article.id })}
       className="group block h-full cursor-pointer overflow-hidden border-t border-stone-800 bg-transparent transition-all duration-300 hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
     >
       <div className="relative overflow-hidden px-3 pt-6 pb-4">
