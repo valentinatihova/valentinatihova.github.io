@@ -32,10 +32,15 @@ jobs:
         run: |
           OWNER='${{ github.repository_owner }}'
           REPO='${{ github.event.repository.name }}'
-          if [ "$REPO" = "$OWNER.github.io" ]; then
+          # User/organization Pages repo name is literally "<owner>.github.io" → site at https://<owner>.github.io/
+          if [ "$REPO" = "${OWNER}.github.io" ]; then
             echo "VITE_BASE=/" >> "$GITHUB_ENV"
-            # User Pages at apex: add public/CNAME + Settings → Pages custom domain → valentinatihova.com
-            echo "VITE_SITE_URL=https://${OWNER}.com" >> "$GITHUB_ENV"
+            if [ -f public/CNAME ]; then
+              DOMAIN="$(head -n1 public/CNAME | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+              echo "VITE_SITE_URL=https://${DOMAIN}" >> "$GITHUB_ENV"
+            else
+              echo "VITE_SITE_URL=https://${OWNER}.github.io" >> "$GITHUB_ENV"
+            fi
           else
             echo "VITE_BASE=/${REPO}/" >> "$GITHUB_ENV"
             echo "VITE_SITE_URL=https://${OWNER}.github.io/${REPO}" >> "$GITHUB_ENV"

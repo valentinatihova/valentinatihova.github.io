@@ -24,9 +24,16 @@ A static React SPA deployed on GitHub Pages at [valentinatihova.com](https://val
 - Pre-rendered HTML shell + `sitemap.xml` via `scripts/prerender-html.tsx`
 - OG images generated at build time via `scripts/generate-og.tsx`
 
-## Deploy
+## Deploy (GitHub Pages)
 
-Pushes to `main` trigger the GitHub Actions workflow (`.github/workflows/deploy-pages.yml`), which builds and publishes to GitHub Pages. The custom domain is set in `public/CNAME`.
+Workflow: `.github/workflows/deploy-pages.yml`. On push to `main` / `master`, it builds with the correct `VITE_BASE` / `VITE_SITE_URL` for Pages (project repo vs `*.github.io` user repo), copies `dist/index.html` to `dist/404.html` for SPA routing, then deploys.
+
+### First-time setup on GitHub
+
+1. Create the repo (for apex domain **valentinatihova.com**, name it **`yourusername.github.io`** so `VITE_BASE=/`; otherwise use any name — site will live at `https://username.github.io/repo/`).
+2. **Settings → Pages → Build and deployment**: Source **GitHub Actions** (not “Deploy from branch”).
+3. Push `main`; open **Actions** and wait for **Deploy to GitHub Pages** to finish green.
+4. **Custom domain**: DNS points to GitHub Pages; in repo **Settings → Pages** add **Custom domain** `valentinatihova.com` (matches `public/CNAME`). Enable **Enforce HTTPS** after DNS validates.
 
 ```
 npm run dev      # local dev server
