@@ -3,6 +3,7 @@ import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
 import sql from 'react-syntax-highlighter/dist/esm/languages/prism/sql';
 import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
+import apex from 'react-syntax-highlighter/dist/esm/languages/prism/apex';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Terminal, AlertCircle } from 'lucide-react';
 import { getTextContent, slugify } from '../../lib/text';
@@ -13,6 +14,7 @@ import { Architecture, ArchitectureNode, ArchitectureEdge, ArchitectureStep } fr
 SyntaxHighlighter.registerLanguage('python', python);
 SyntaxHighlighter.registerLanguage('sql', sql);
 SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('apex', apex);
 
 /**
  * Anchorable heading — assigns a deterministic slug id so the TOC can link

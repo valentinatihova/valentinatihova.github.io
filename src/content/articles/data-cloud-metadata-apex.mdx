@@ -1,0 +1,387 @@
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+  <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+    Data Cloud metadata · Apex extraction
+  </div>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    A Data Cloud implementation can have a clean UI and still leave the delivery team with a fragile handover:
+    stream names copied into a spreadsheet, field mappings checked by hand, and DMO relationships rebuilt from memory.
+  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
+    This case shows a safer pattern: use Apex HTTP callouts against the Data Cloud REST API to extract stream inventory,
+    field mappings, and DMO relationships into a documentation layer that can be regenerated.
+  </p>
+</div>
+
+## Why not SOQL or the UI
+
+Data Cloud runs as a separate layer inside a Salesforce org. The implementation metadata I needed was not available as
+a clean standard SOQL export, and the Setup UI gave a visual read on individual objects but no systematic export across
+all streams at once.
+
+The metadata surface I used sits under the Data Cloud-specific REST namespace:
+
+```bash
+/services/data/v{version}/ssot/
+```
+
+For an internal handover workflow, Apex HTTP callouts from inside the org were the most direct path to the metadata:
+same environment, same permission model, no separate Postman collection that would disappear after one consultant left.
+
+The examples below show the shape of the extraction pattern, not a production security template. In a production
+implementation I would prefer an approved authentication pattern such as a Named Credential where the org and security
+policy allow it.
+
+## The three layers you are documenting
+
+Before writing code, it helps to separate the layers that end up inside the Solution Document.
+
+<Architecture
+  orientation="horizontal"
+  caption="Data Cloud documentation scope"
+  note={
+    <>
+      The important distinction is semantic. The DLO is the typed lake layer; the DMO is the harmonized business entity.
+      Documentation should make that boundary visible instead of collapsing both into one object list.
+    </>
+  }
+>
+  <ArchitectureStep label="Source system">
+    <ArchitectureNode>CRM account</ArchitectureNode>
+    <ArchitectureNode>Customer profile</ArchitectureNode>
+    <ArchitectureNode>Email contact</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label="Data stream" />
+  <ArchitectureStep label="DLO / lake layer">
+    <ArchitectureNode>Account__dll</ArchitectureNode>
+    <ArchitectureNode>Individual__dll</ArchitectureNode>
+    <ArchitectureNode>ContactPointEmail__dll</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label="Mapping" />
+  <ArchitectureStep label="DMO / semantic layer">
+    <ArchitectureNode accent>ssot__Account__dlm</ArchitectureNode>
+    <ArchitectureNode accent>ssot__Individual__dlm</ArchitectureNode>
+    <ArchitectureNode accent>ssot__ContactPointEmail__dlm</ArchitectureNode>
+  </ArchitectureStep>
+</Architecture>
+
+**DLO (Data Lake Object)** is the typed lake layer. In API names it is often represented with the `__dll` suffix.
+Field names can be normalized from the source on the way in. A data stream writes into this layer.
+
+**DMO (Data Model Object)** is the semantic layer. Standard Data Cloud objects use the `ssot__` namespace, for example
+`ssot__Individual__dlm`, `ssot__Account__dlm`, and `ssot__ContactPointEmail__dlm`. This is where the model starts to
+look like the Customer 360 business contract rather than a source-system mirror.
+
+**Data Stream** is the pipeline definition: connector, source object, schedule, update mode, and field mapping into the
+DLO.
+
+## Extraction scope
+
+I treated the documentation task as three questions:
+
+<div className="not-prose my-8 grid gap-4">
+  {[
+    {
+      script: 'datastreams.apex',
+      question: 'What is configured and where does data come from?',
+      endpoint: '/ssot/data-streams',
+    },
+    {
+      script: 'datamappings.apex',
+      question: 'Which source fields land in which DLO fields?',
+      endpoint: '/ssot/data-streams',
+    },
+    {
+      script: 'dmo-relationships.apex',
+      question: 'How are DMO objects related to each other?',
+      endpoint: '/ssot/data-model-objects/{name}/relationships',
+    },
+  ].map((item, index) => (
+    <div
+      key={item.script}
+      className="rounded-2xl border border-stone-800 bg-stone-950/45 p-5 shadow-sm md:grid md:grid-cols-[auto_minmax(0,1fr)_minmax(220px,0.9fr)] md:items-start md:gap-5"
+    >
+      <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-accent/50 font-mono text-xs font-semibold text-accent md:mb-0">
+        {index + 1}
+      </div>
+      <div>
+        <div className="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-500">Question</div>
+        <p className="mt-2 max-w-xl font-serif text-[1.05rem] leading-relaxed text-stone-100">{item.question}</p>
+        <code className="mt-3 inline-flex rounded border border-stone-700 bg-stone-900 px-2 py-1 font-mono text-[0.78rem] text-stone-200">
+          {item.script}
+        </code>
+      </div>
+      <div className="mt-4 rounded-xl border border-stone-800 bg-stone-900/70 p-3 md:mt-0">
+        <div className="font-mono text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">Endpoint</div>
+        <code className="mt-2 block break-words font-mono text-[0.8rem] leading-relaxed text-accent">
+          {item.endpoint}
+        </code>
+      </div>
+    </div>
+  ))}
+</div>
+
+That is enough to produce the first useful version of the SI Solution Document: stream inventory, field mapping tables,
+and an ERD source for the DMO layer.
+
+## Script 1: data stream inventory
+
+The `/ssot/data-streams` endpoint returns the top-level map of configured streams. Each entry can carry connector
+metadata, the DLO target, refresh schedule, and update mode.
+
+```apex
+Http http = new Http();
+HttpRequest req = new HttpRequest();
+
+req.setEndpoint(
+    URL.getOrgDomainUrl().toExternalForm()
+    + '/services/data/v62.0/ssot/data-streams'
+);
+req.setMethod('GET');
+req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+req.setHeader('Content-Type', 'application/json');
+
+HttpResponse res = http.send(req);
+Map<String, Object> body =
+    (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+List<Object> streams = (List<Object>) body.get('dataStreams');
+
+for (Object s : streams) {
+    Map<String, Object> stream = (Map<String, Object>) s;
+    String name = (String) stream.get('name');
+    String dlo = (String) stream.get('dataLakeObjectName');
+
+    System.debug('Stream: ' + name + ' -> DLO: ' + dlo);
+}
+```
+
+```output
+Stream: CRM_Individual_Stream -> DLO: Individual__dll
+Stream: CRM_Email_Stream -> DLO: ContactPointEmail__dll
+```
+
+This output becomes the first section of the Solution Document: stream name, source connector, target DLO, refresh
+cadence, and update mode. It answers the question a new team member asks on day one: what is connected, and how often
+does it run?
+
+## Script 2: field mappings
+
+The same `/ssot/data-streams` response can carry field-level data one level deeper. In the response shape I reviewed,
+two arrays were useful:
+
+- `sourceFields` for field names as they exist in the source system
+- `dataLakeFieldInfoRepresentation` for field names as they land in the DLO
+
+```apex
+for (Object s : streams) {
+    Map<String, Object> stream = (Map<String, Object>) s;
+    List<Object> sourceFields =
+        (List<Object>) stream.get('sourceFields');
+    List<Object> dloFields =
+        (List<Object>) stream.get('dataLakeFieldInfoRepresentation');
+
+    if (sourceFields.size() != dloFields.size()) {
+        System.debug('Field count mismatch for stream: ' + stream.get('name'));
+        continue;
+    }
+
+    for (Integer i = 0; i < sourceFields.size(); i++) {
+        Map<String, Object> src = (Map<String, Object>) sourceFields[i];
+        Map<String, Object> dlo = (Map<String, Object>) dloFields[i];
+
+        System.debug(
+            src.get('name') + ' -> ' + dlo.get('name')
+            + ' (' + dlo.get('dataType') + ')'
+        );
+    }
+}
+```
+
+```output
+email -> EmailAddress__c (Email)
+customer_id -> CustomerId__c (Text)
+```
+
+Index-based pairing worked for the response shape I reviewed, but I would treat it as an assumption to validate, not as
+an API contract. Any mismatch between source and DLO field counts should be flagged for manual review. For heavily
+customized source schemas, name-based matching with explicit normalization rules is safer.
+
+That caveat is part of the work. Automated documentation should be reproducible, not blindly confident.
+
+## Script 3: DMO relationships
+
+Relationships between Data Model Objects are the source material for the ERD section of the SI document. They are not
+returned in the same call as stream metadata. I queried each DMO relationship endpoint individually.
+
+```apex
+// Step 1: list DMO objects in the org
+HttpRequest dmoReq = new HttpRequest();
+dmoReq.setEndpoint(
+    URL.getOrgDomainUrl().toExternalForm()
+    + '/services/data/v62.0/ssot/data-model-objects'
+);
+dmoReq.setMethod('GET');
+dmoReq.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+dmoReq.setHeader('Content-Type', 'application/json');
+
+HttpResponse dmoRes = http.send(dmoReq);
+Map<String, Object> dmoBody =
+    (Map<String, Object>) JSON.deserializeUntyped(dmoRes.getBody());
+List<Object> dmos = (List<Object>) dmoBody.get('dataModelObjects');
+
+// Step 2: query each DMO's relationships
+for (Object d : dmos) {
+    Map<String, Object> dmo = (Map<String, Object>) d;
+    String dmoName = (String) dmo.get('name');
+
+    HttpRequest relReq = new HttpRequest();
+    relReq.setEndpoint(
+        URL.getOrgDomainUrl().toExternalForm()
+        + '/services/data/v62.0/ssot/data-model-objects/'
+        + dmoName
+        + '/relationships'
+    );
+    relReq.setMethod('GET');
+    relReq.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+    relReq.setHeader('Content-Type', 'application/json');
+
+    HttpResponse relRes = http.send(relReq);
+    System.debug('Relationships for ' + dmoName + ': ' + relRes.getBody());
+}
+```
+
+For example, querying `ssot__Individual__dlm` can return relationships to contact point DMOs such as
+`ssot__ContactPointEmail__dlm` and `ssot__ContactPointPhone__dlm`. That relationship payload becomes ERD source
+material instead of another diagram redrawn from memory.
+
+## Extraction data flow
+
+<Architecture
+  orientation="vertical"
+  caption="Metadata extraction flow"
+  note={
+    <>
+      The output is not meant to replace architecture review. It gives the review a current, reproducible baseline.
+    </>
+  }
+>
+  <ArchitectureStep label="/ssot/data-streams">
+    <ArchitectureNode>Stream inventory</ArchitectureNode>
+    <ArchitectureNode>Connector · DLO · schedule · mode</ArchitectureNode>
+    <ArchitectureNode>Source field -> DLO field mappings</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label="Normalize into documentation rows" />
+  <ArchitectureStep label="/ssot/data-model-objects">
+    <ArchitectureNode>DMO inventory</ArchitectureNode>
+  </ArchitectureStep>
+  <ArchitectureEdge label="Query relationships per DMO" />
+  <ArchitectureStep label="Solution Document">
+    <ArchitectureNode accent>Data streams</ArchitectureNode>
+    <ArchitectureNode accent>Mapping tables</ArchitectureNode>
+    <ArchitectureNode accent>Relationship map / ERD</ArchitectureNode>
+  </ArchitectureStep>
+</Architecture>
+
+One HTTP client, three endpoint families, one current metadata picture.
+
+## The DLO to DMO naming gap
+
+This was the part that needed the most manual caution.
+
+When you extract data streams, you get DLO names: the typed lake-layer names, often with the `__dll` suffix. When you
+query the relationships endpoint, you need DMO names: the semantic-layer names, often with the `ssot__` prefix and
+`__dlm` suffix for standard Customer 360 objects.
+
+For standard objects, the candidate pattern is usually predictable:
+
+```bash
+{ObjectName}__dll -> ssot__{ObjectName}__dlm
+```
+
+For example:
+
+```bash
+Individual__dll -> ssot__Individual__dlm
+Account__dll -> ssot__Account__dlm
+```
+
+The practical approach is to build a candidate DMO name from the DLO API name, attempt the relationships call, and
+handle missing matches explicitly.
+
+```apex
+String dloName = 'Individual__dll';
+String candidateDmo =
+    'ssot__' + dloName.replace('__dll', '__dlm');
+
+HttpRequest relReq = new HttpRequest();
+relReq.setEndpoint(
+    URL.getOrgDomainUrl().toExternalForm()
+    + '/services/data/v62.0/ssot/data-model-objects/'
+    + candidateDmo
+    + '/relationships'
+);
+relReq.setMethod('GET');
+relReq.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+relReq.setHeader('Content-Type', 'application/json');
+
+HttpResponse relRes = http.send(relReq);
+
+if (relRes.getStatusCode() == 404) {
+    System.debug('No DMO found for DLO: ' + dloName + ' - check manually');
+}
+```
+
+```output
+Individual__dll -> ssot__Individual__dlm
+No DMO found for DLO: Custom_Source_Object__dll - check manually
+```
+
+This is a convention, not a guarantee. It works cleanly for many standard Customer 360 objects and breaks where the
+implementation uses custom DMOs, source-specific names, or relationship structures that are not exposed in the same
+way. Those gaps should be documented as gaps, not hidden by the extraction script.
+
+## What this produces
+
+The useful output is not the debug log. It is the documentation table that follows from it.
+
+**Data Stream Inventory** lists streams with connector type, source object, DLO target, refresh schedule, and update
+mode.
+
+**Field Mapping Table** shows source field -> DLO field -> data type. This is the traceability layer that answers where
+each column came from and what it was called before ingest.
+
+**DMO Relationship Map** shows the FK graph across DMOs. This becomes the ERD source material for the semantic layer:
+identity objects, contact points, account models, and custom entities.
+
+In the implementation that shaped this write-up, the extraction runtime was under two minutes. The value was not the
+speed. The value was that the output could be regenerated after a configuration change instead of reassembled by hand.
+
+## Limits and caveats
+
+The scripts extract metadata as it exists at runtime. They do not validate whether the configuration is correct,
+complete, or aligned with the intended data model. A misconfigured stream is still documented accurately as
+misconfigured.
+
+The DLO to DMO naming logic is a convention, not an API guarantee. Pin scripts to a specific API version and re-validate
+when upgrading.
+
+Index-based field matching should be treated as a validated local assumption, not a universal rule. If source and DLO
+field arrays diverge, switch to explicit name-based matching.
+
+The examples use the current user's session token because that keeps the code short enough to show the pattern. In a
+production-ready version, authentication, permissioning, logging, and audit trail should be aligned with the org's
+security model.
+
+## Why this case matters
+
+The SI Solution Document is not internal housekeeping. On enterprise implementations it becomes a delivery artifact:
+reviewed by solution architects, signed off by clients, and used as the reference point for integration and
+configuration decisions that follow.
+
+A document assembled manually from 22 UI screens is one snapshot, accurate only on the day it was made. A document
+generated from the API is something you can regenerate, compare, and hand to a new team member with more confidence.
+
+The Apex part is not the point. The point is that the documentation layer becomes trustworthy and stays closer to the
+system it describes.
+
+That is the kind of Data Cloud work I like: not just configuring the platform, but making the implementation easier to
+verify, explain, and maintain.

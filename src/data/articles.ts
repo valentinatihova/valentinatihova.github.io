@@ -37,6 +37,20 @@ export const ARTICLE_KIND_LABEL: Record<ArticleKind, string> = {
 
 export const articles: Article[] = [
   {
+    id: "data-cloud-metadata-apex",
+    title: "Data Cloud Documentation Should Not Be Written by Hand",
+    summary:
+      "Apex HTTP callouts against the Data Cloud REST API to extract stream inventory, field mappings, and DMO relationships into reproducible SI documentation.",
+    date: "2026-05-10",
+    readTime: "11 min read",
+    tags: ["Data Engineering", "MarTech"],
+    caseStudyFrame: {
+      role: "Apex scripting, Data Cloud REST API, and SI documentation design",
+      scope: "Extract stream configuration, field mappings, and DMO relationships from a Data Cloud org into a reproducible documentation layer.",
+      outcome: "A Solution Document that can be regenerated, reviewed, and handed over instead of maintained by screenshots.",
+    }
+  },
+  {
     id: "sfmc-false-opens",
     title: "When Open Rate Lies: Detecting Suspicious Opens in SFMC",
     summary: "SFMC Data Views to flag likely fake opens, cut noise in reports, and get a cleaner read on engagement.",
