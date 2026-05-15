@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Hero } from '../components/home/Hero';
+import { HomeArticlesSection } from '../components/home/HomeArticlesSection';
+
+const SITE_URL = 'https://valentinatihova.com';
+---
+
+<Layout
+  title="Valentina Tihova | Senior Data & MarTech Engineer"
+  description="Valentina Tihova—Senior Data & MarTech engineer. Pipelines, decisioning, reporting, martech, and analytics—case studies and short notes from real projects."
+  canonical={SITE_URL + '/'}
+  ogImage={SITE_URL + '/og-image.png'}
+>
+  <Hero client:load />
+  <HomeArticlesSection client:load />
+</Layout>

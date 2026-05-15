@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { trackEvent } from '../../lib/analytics';
 
@@ -70,14 +69,14 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <Link
-              to="/resume"
+            <a
+              href="/resume"
               onClick={() => trackEvent('hero_cta_click', { label: 'view_resume' })}
               className="inline-flex items-center gap-2 rounded border border-accent/45 bg-accent/15 px-7 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-paper transition-all shadow-sm hover:-translate-y-0.5 hover:bg-accent/25"
             >
               <FileText className="w-4 h-4" />
               View Resume
-            </Link>
+            </a>
             <a
               href="#projects"
               onClick={() => trackEvent('hero_cta_click', { label: 'see_articles' })}

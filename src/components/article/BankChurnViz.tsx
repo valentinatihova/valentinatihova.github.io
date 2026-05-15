@@ -55,6 +55,7 @@ export const BankChurnViz: React.FC = () => {
     // Render Sankey
     if (sankeyRef.current) {
       d3.select(sankeyRef.current).selectAll("*").remove();
+      d3.select(sankeyRef.current).append('title').text('Sankey diagram showing stylized customer churn paths by geography, age band, and balance tier');
       
       const width = 900;
       const height = 500;
@@ -144,7 +145,7 @@ export const BankChurnViz: React.FC = () => {
           communicate the <em className="text-stone-300">shape</em> of the story (older, higher-balance cohorts feeding
           churn) for portfolio reading. For exact tables and plots, use the GitHub notebook.
         </p>
-        <svg ref={sankeyRef} className="mt-8 w-full" aria-label="Sankey diagram of stylized customer paths" />
+        <svg ref={sankeyRef} role="img" className="mt-8 w-full" aria-label="Sankey diagram of stylized customer paths" />
       </div>
     </div>
   );

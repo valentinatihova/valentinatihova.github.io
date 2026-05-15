@@ -64,6 +64,7 @@ export const ZyfraRecoveryHeatmap: React.FC = () => {
 
     const svg = d3.select(el).attr('viewBox', `0 0 ${width} ${height}`).style('width', '100%').style('height', 'auto');
     svg.selectAll('*').remove();
+    svg.append('title').text('Correlation heatmap showing Pearson r between ore processing features and gold recovery targets (rougher and final)');
 
     cols.forEach((c, j) => {
       const cx = gridLeft + j * cw + cw / 2;
@@ -201,6 +202,7 @@ function ConcentrationChart({
       .style('width', '100%')
       .style('height', 'auto');
     svg.selectAll('*').remove();
+    svg.append('title').text(title);
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
     g.append('g')
@@ -351,6 +353,7 @@ export const ZyfraFeedSizeHistogram: React.FC = () => {
       .style('width', '100%')
       .style('height', 'auto');
     svg.selectAll('*').remove();
+    svg.append('title').text('Histogram comparing feed particle size distribution between training and test sets');
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
     g.selectAll('g.bin')
@@ -439,6 +442,7 @@ function TotalConcChart({ pack, title, subtitle }: { pack: TotalPack; title: str
       .style('width', '100%')
       .style('height', 'auto');
     svg.selectAll('*').remove();
+    svg.append('title').text(title);
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
     const colors = ['#94a3b8', '#38bdf8', '#fbbf24'];

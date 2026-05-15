@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Page not found | Valentina Tihova"
+  description="The page you're looking for doesn't exist."
+  noindex={true}
+>
+  <div class="container mx-auto px-4 py-32 text-center">
+    <p class="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-accent mb-6">404</p>
+    <h1 class="text-4xl font-bold mb-4 font-serif text-stone-50">Page not found</h1>
+    <p class="text-stone-300 mb-10 font-serif text-lg">No page at this address.</p>
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 rounded border border-stone-700 bg-stone-900 px-6 py-3 font-mono text-sm font-medium text-stone-200 transition-all hover:border-stone-600 hover:text-stone-100"
+    >
+      ← Back to Home
+    </a>
+  </div>
+</Layout>

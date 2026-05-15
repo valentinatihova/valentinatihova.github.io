@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Resume } from '../components/pages/Resume';
+
+const SITE_URL = 'https://valentinatihova.com';
+---
+
+<Layout
+  title="Resume | Valentina Tihova — Senior Data & MarTech Engineer"
+  description="Resume for Valentina Tihova, Senior Data & MarTech Engineer. Eight years in fintech, retail, and telecom. Remote in Europe, EU work authorized."
+  canonical={SITE_URL + '/resume'}
+  ogImage={SITE_URL + '/og-image.png'}
+>
+  <Resume client:load />
+</Layout>
