@@ -58,7 +58,7 @@ export default function SiteNav() {
   const navItems = [
     {
       href: '/#projects',
-      label: 'Articles',
+      label: 'Work',
       active: isArticleArea,
     },
     {
@@ -71,12 +71,12 @@ export default function SiteNav() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-stone-700 bg-stone-900/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 w-full border-b border-stone-200 bg-stone-50/90 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <a
             href="/"
             aria-label="Valentina Tihova — home"
-            className="group inline-flex items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+            className="group inline-flex items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
           >
             <BrandLockup
               variant="full"
@@ -87,21 +87,21 @@ export default function SiteNav() {
             <BrandMark size={28} className="sm:hidden" title="Valentina Tihova" />
           </a>
 
-          <nav className="hidden md:flex items-center gap-3 md:gap-6 text-sm font-medium text-stone-300 overflow-x-auto no-scrollbar">
+          <nav className="hidden md:flex items-center gap-3 md:gap-6 text-sm font-medium overflow-x-auto no-scrollbar">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => trackEvent('nav_click', { label: item.label })}
                 className={`transition-colors whitespace-nowrap flex items-center gap-2 ${
-                  item.active ? 'text-accent' : 'text-stone-400 hover:text-stone-100'
+                  item.active ? 'text-accent' : 'text-stone-500 hover:text-stone-900'
                 }`}
               >
                 {item.icon}
                 {item.label}
               </a>
             ))}
-            <div className="flex items-center gap-3 pl-2 border-l border-stone-700">
+            <div className="flex items-center gap-3 pl-2 border-l border-stone-200">
               <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'linkedin_header' })} className="text-stone-400 hover:text-accent transition-colors">
                 <LinkedinIcon />
               </a>
@@ -114,7 +114,7 @@ export default function SiteNav() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden inline-flex items-center justify-center rounded-2xl border border-stone-700 bg-stone-950/80 p-2.5 text-stone-200 transition-colors hover:border-stone-600 hover:text-stone-100"
+            className="md:hidden inline-flex items-center justify-center rounded-2xl border border-stone-200 bg-white p-2.5 text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900"
             aria-label="Open navigation menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -132,25 +132,25 @@ export default function SiteNav() {
               exit={shouldReduceMotion ? undefined : { opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 z-[70] bg-stone-950/70 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[70] bg-stone-900/30 backdrop-blur-sm md:hidden"
             />
             <motion.aside
               initial={shouldReduceMotion ? undefined : { opacity: 0, y: -18 }}
               animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
               exit={shouldReduceMotion ? undefined : { opacity: 0, y: -18 }}
               transition={{ duration: 0.24, ease: 'easeOut' }}
-              className="fixed inset-x-3 top-3 z-[80] overflow-hidden rounded-[1.75rem] border border-stone-700 bg-stone-900/95 shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl md:hidden"
+              className="fixed inset-x-3 top-3 z-[80] overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white/95 shadow-[0_8px_40px_rgba(0,0,0,0.08)] backdrop-blur-xl md:hidden"
             >
-              <div className="border-b border-stone-800 px-5 py-4">
+              <div className="border-b border-stone-100 px-5 py-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-serif text-lg text-stone-50">Navigation</p>
+                    <p className="font-serif text-lg text-stone-900">Navigation</p>
                     <p className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">Menu</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="inline-flex items-center justify-center rounded-2xl border border-stone-700 bg-stone-950/80 p-2.5 text-stone-200 transition-colors hover:border-stone-600 hover:text-stone-100"
+                    className="inline-flex items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 p-2.5 text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900"
                     aria-label="Close navigation menu"
                   >
                     <X className="w-5 h-5" />
@@ -175,8 +175,8 @@ export default function SiteNav() {
                         }}
                         className={`flex items-center justify-between rounded-2xl border px-4 py-4 transition-colors ${
                           item.active
-                            ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'
-                            : 'border-stone-800 bg-stone-950/50 text-stone-200 hover:border-stone-600 hover:text-stone-100'
+                            ? 'border-accent/50 bg-accent/8 text-accent'
+                            : 'border-stone-200 bg-stone-50 text-stone-700 hover:border-stone-300 hover:text-stone-900'
                         }`}
                       >
                         <span className="flex items-center gap-2 font-mono text-sm">
@@ -195,7 +195,7 @@ export default function SiteNav() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => trackEvent('social_click', { label: 'linkedin_mobile' })}
-                    className="rounded-2xl border border-stone-800 bg-stone-950/50 px-4 py-4 text-sm font-mono text-stone-300 transition-colors hover:border-stone-600 hover:text-stone-100"
+                    className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4 text-sm font-mono text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900"
                   >
                     LinkedIn
                   </a>
@@ -204,15 +204,15 @@ export default function SiteNav() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => trackEvent('social_click', { label: 'github_mobile' })}
-                    className="rounded-2xl border border-stone-800 bg-stone-950/50 px-4 py-4 text-sm font-mono text-stone-300 transition-colors hover:border-stone-600 hover:text-stone-100"
+                    className="rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4 text-sm font-mono text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900"
                   >
                     GitHub
                   </a>
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-stone-800 bg-stone-950/40 px-4 py-4">
+                <div className="mt-6 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-4">
                   <p className="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">You are here</p>
-                  <p className="mt-2 font-serif text-stone-100">
+                  <p className="mt-2 font-serif text-stone-700">
                     {isArticleArea ? 'Home or an article.' : 'Resume.'}
                   </p>
                 </div>
@@ -228,7 +228,7 @@ export default function SiteNav() {
         initial={false}
         animate={showBackToTop ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.2 }}
-        className={`fixed bottom-8 right-8 z-50 rounded-full border border-stone-700 bg-stone-950/85 p-3 text-stone-200 shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:text-accent ${
+        className={`fixed bottom-8 right-8 z-50 rounded-full border border-stone-200 bg-white/90 p-3 text-stone-500 shadow-md backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:text-accent ${
           showBackToTop ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
         aria-label="Back to top"

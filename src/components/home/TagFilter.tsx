@@ -21,25 +21,25 @@ export const TagFilter: React.FC<TagFilterProps> = ({ tags, selectedTags, onTagT
     >
       <button
         onClick={() => { trackEvent('tag_filter', { label: 'all' }); onTagToggle('all'); }}
-        className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 ${
+        className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50 ${
           selectedTags.length === 0
-            ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'
-            : 'border-stone-700/80 bg-stone-950/80 text-stone-300 hover:border-stone-600 hover:bg-stone-900 hover:text-stone-100'
+            ? 'border-accent/50 bg-accent/10 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.15)]'
+            : 'border-stone-300 bg-stone-50 text-stone-500 hover:border-stone-400 hover:bg-stone-100 hover:text-stone-900'
         }`}
       >
-        All Articles
+        All
       </button>
-      
+
       {tags.map((tag) => {
         const isSelected = selectedTags.includes(tag);
         return (
           <button
             key={tag}
             onClick={() => { trackEvent('tag_filter', { label: tag }); onTagToggle(tag); }}
-            className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 ${
+            className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-mono font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50 ${
               isSelected
-                ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'
-                : 'border-stone-700/80 bg-stone-950/80 text-stone-300 hover:border-stone-600 hover:bg-stone-900 hover:text-stone-100'
+                ? 'border-accent/50 bg-accent/10 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.15)]'
+                : 'border-stone-300 bg-stone-50 text-stone-500 hover:border-stone-400 hover:bg-stone-100 hover:text-stone-900'
             }`}
           >
             {tag}
