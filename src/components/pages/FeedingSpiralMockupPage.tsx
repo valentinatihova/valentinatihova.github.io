@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { Layout } from '../components/layout/Layout';
-import { FEEDING_DIARY_ENTRIES, type FeedingDiaryEntry } from '../data/feedingDiaryData';
+import { FEEDING_DIARY_ENTRIES, type FeedingDiaryEntry } from '../../data/feedingDiaryData';
 
 /** Дата рождения (локальный календарь). */
 const BIRTH = new Date(2026, 1, 24, 0, 0, 0, 0);
@@ -105,14 +103,14 @@ export const FeedingSpiralMockupPage: React.FC = () => {
   }, []);
 
   return (
-    <Layout>
+    <div>
       <div className="container mx-auto max-w-5xl px-4 py-12 md:py-16">
-        <Link
-          to="/"
+        <a
+          href="/"
           className="mb-8 inline-flex font-mono text-sm text-stone-400 transition-colors hover:text-stone-100"
         >
           ← На главную
-        </Link>
+        </a>
 
         <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">Лаб / макет</p>
         <h1 className="mt-3 font-serif text-3xl font-bold tracking-tight text-stone-50 md:text-4xl">
@@ -221,6 +219,6 @@ export const FeedingSpiralMockupPage: React.FC = () => {
           ; здесь вместо GIF — статичный SVG + скролл карточек для портфолио.
         </p>
       </div>
-    </Layout>
+    </div>
   );
 };

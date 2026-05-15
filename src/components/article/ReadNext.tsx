@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import { articles, type Article } from '../../data/articles';
 import { trackEvent } from '../../lib/analytics';
@@ -56,9 +55,9 @@ export function ReadNext({ currentId, limit = 2 }: ReadNextProps) {
 
       <div className="grid gap-0 border-t border-stone-800">
         {related.map((a) => (
-          <Link
+          <a
             key={a.id}
-            to={`/article/${a.id}`}
+            href={`/article/${a.id}`}
             onClick={() => trackEvent('article_read_next', { label: a.id, value: currentId })}
             className="group block border-b border-stone-800 px-3 py-8 transition-colors hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
           >
@@ -84,7 +83,7 @@ export function ReadNext({ currentId, limit = 2 }: ReadNextProps) {
               Read article
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-          </Link>
+          </a>
         ))}
       </div>
     </section>

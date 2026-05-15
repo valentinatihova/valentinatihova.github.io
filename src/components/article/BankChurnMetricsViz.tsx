@@ -27,6 +27,7 @@ export const BankChurnMetricsViz: React.FC = () => {
       .style('height', 'auto');
 
     svg.selectAll('*').remove();
+    svg.append('title').text('Bar chart comparing F1 scores across churn prediction models: default tree, default forest, and class-weighted random forest');
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
     const x = d3
@@ -120,7 +121,7 @@ export const BankChurnMetricsViz: React.FC = () => {
           Horizontal bars show how far default tree/forest baselines were from the final class-weighted random forest on
           validation and test. The amber guide marks the project success threshold (F1 ≥ 0.59).
         </p>
-        <svg ref={ref} className="mt-8 w-full" aria-label="F1 score bar chart for churn models" />
+        <svg ref={ref} role="img" className="mt-8 w-full" aria-label="F1 score bar chart for churn models" />
       </div>
     </div>
   );

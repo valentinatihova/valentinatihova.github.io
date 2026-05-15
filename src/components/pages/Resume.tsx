@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Layout } from '../components/layout/Layout';
 import { FileText, Briefcase, GraduationCap, Award, ExternalLink, Send, X } from 'lucide-react';
-import { profile } from '../data/profile';
+import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useDocumentHead } from '../hooks/useDocumentHead';
-import { SITE_URL } from '../config/site';
-import { trackEvent } from '../lib/analytics';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
+import { SITE_URL } from '../../config/site';
+import { trackEvent } from '../../lib/analytics';
 
 export const Resume: React.FC = () => {
   const [activeCertificationIndex, setActiveCertificationIndex] = useState<number | null>(null);
@@ -59,7 +58,7 @@ export const Resume: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <>
       <div className="container mx-auto px-4 py-12 md:py-24 max-w-5xl">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-8">
           <div>
@@ -292,6 +291,6 @@ export const Resume: React.FC = () => {
           </>
         )}
       </AnimatePresence>
-    </Layout>
+    </>
   );
 };

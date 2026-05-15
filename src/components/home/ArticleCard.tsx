@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { type Article } from '../../data/articles';
 import { ArrowRight, Clock, Calendar } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -23,8 +22,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
     >
-      <Link
-      to={`/article/${article.id}`}
+      <a
+      href={`/article/${article.id}`}
       onClick={() => trackEvent('article_open', { label: article.id })}
       className="group block h-full cursor-pointer overflow-hidden border-t border-stone-800 bg-transparent transition-all duration-300 hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
     >
@@ -74,7 +73,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
         </div>
       </div>
-      </Link>
+      </a>
     </motion.div>
   );
 };

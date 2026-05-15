@@ -14,6 +14,8 @@ dist-ssr
 
 # Local Cursor / tooling (do not publish to GitHub)
 .cursor/
+.claude/
+.astro/
 venv/
 **/__pycache__/
 *.pyc

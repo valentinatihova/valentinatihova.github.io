@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Mail, FileText, ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
+import { FileText, ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { BrandLockup, BrandMark } from '../brand/BrandMark';
@@ -20,68 +19,50 @@ const LinkedinIcon = () => (
   </svg>
 );
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation();
-  const isResumePage = location.pathname === '/resume';
-  const isArticleArea = location.pathname === '/' || location.pathname.startsWith('/article/');
+export default function SiteNav() {
+  const [pathname, setPathname] = useState('/');
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname, location.hash]);
+    setPathname(window.location.pathname);
+  }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      // Show button when scrolled down 400px
-      setShowBackToTop(window.scrollY > 400);
-    };
-
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setShowBackToTop(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
+  // Close mobile menu on hash navigation
   useEffect(() => {
-    if (!location.hash) return;
-
-    const targetId = location.hash.slice(1);
-    const scrollToHashTarget = () => {
-      const target = document.getElementById(targetId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    };
-
-    const timeoutId = window.setTimeout(scrollToHashTarget, 80);
-    return () => window.clearTimeout(timeoutId);
-  }, [location.hash, location.pathname]);
-
-  useEffect(() => {
-    if (location.hash) return;
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  }, [location.pathname, location.hash]);
+    const onHashChange = () => setMobileMenuOpen(false);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const scrollToTop = () => {
     trackEvent('scroll_to_top');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isResumePage = pathname === '/resume';
+  const isArticleArea = pathname === '/' || pathname.startsWith('/article/');
+
   const navItems = [
     {
-      to: '/#projects',
+      href: '/#projects',
       label: 'Articles',
       active: isArticleArea,
     },
     {
-      to: '/resume',
+      href: '/resume',
       label: 'Resume / CV',
       active: isResumePage,
       icon: <FileText className="w-4 h-4" />,
@@ -89,11 +70,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-stone-900 text-stone-50 font-serif relative">
+    <>
       <header className="sticky top-0 z-50 w-full border-b border-stone-700 bg-stone-900/90 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link
-            to="/"
+          <a
+            href="/"
             aria-label="Valentina Tihova — home"
             className="group inline-flex items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
           >
@@ -104,13 +85,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               wordmarkClassName="transition-colors group-hover:text-accent"
             />
             <BrandMark size={28} className="sm:hidden" title="Valentina Tihova" />
-          </Link>
+          </a>
 
           <nav className="hidden md:flex items-center gap-3 md:gap-6 text-sm font-medium text-stone-300 overflow-x-auto no-scrollbar">
             {navItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
+              <a
+                key={item.href}
+                href={item.href}
                 onClick={() => trackEvent('nav_click', { label: item.label })}
                 className={`transition-colors whitespace-nowrap flex items-center gap-2 ${
                   item.active ? 'text-accent' : 'text-stone-400 hover:text-stone-100'
@@ -118,7 +99,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               >
                 {item.icon}
                 {item.label}
-              </Link>
+              </a>
             ))}
             <div className="flex items-center gap-3 pl-2 border-l border-stone-700">
               <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" onClick={() => trackEvent('social_click', { label: 'linkedin_header' })} className="text-stone-400 hover:text-accent transition-colors">
@@ -164,9 +145,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-serif text-lg text-stone-50">Navigation</p>
-                    <p className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">
-                      Menu
-                    </p>
+                    <p className="mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-400">Menu</p>
                   </div>
                   <button
                     type="button"
@@ -183,13 +162,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <div className="space-y-3">
                   {navItems.map((item, index) => (
                     <motion.div
-                      key={item.to}
+                      key={item.href}
                       initial={shouldReduceMotion ? undefined : { opacity: 0, x: -8 }}
                       animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
                       transition={{ delay: shouldReduceMotion ? 0 : 0.03 * index }}
                     >
-                      <Link
-                        to={item.to}
+                      <a
+                        href={item.href}
+                        onClick={() => {
+                          trackEvent('nav_click', { label: item.label });
+                          setMobileMenuOpen(false);
+                        }}
                         className={`flex items-center justify-between rounded-2xl border px-4 py-4 transition-colors ${
                           item.active
                             ? 'border-accent/60 bg-stone-900 text-accent shadow-[0_0_0_1px_rgba(206,127,70,0.25)]'
@@ -201,7 +184,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           {item.label}
                         </span>
                         <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      </a>
                     </motion.div>
                   ))}
                 </div>
@@ -239,67 +222,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         )}
       </AnimatePresence>
 
-      <motion.main
-        key={location.pathname}
-        initial={shouldReduceMotion ? undefined : { opacity: 0, y: 10 }}
-        animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-        transition={{ duration: 0.32, ease: 'easeOut' }}
-        className="flex-1"
-      >
-        {children}
-      </motion.main>
-
-      <footer className="mt-32 border-t border-stone-800/80 bg-stone-900">
-        <div className="container mx-auto flex flex-col gap-5 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:py-6">
-          <p className="font-mono text-[12px] tracking-[0.18em] text-stone-300">
-            © {new Date().getFullYear()} {profile.name}
-          </p>
-          <div className="flex items-center gap-4 text-stone-300 sm:shrink-0">
-            <a
-              href={`mailto:${profile.email}`}
-              aria-label="Email"
-              onClick={() => trackEvent('social_click', { label: 'email_footer' })}
-              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
-            <a
-              href={profile.socials.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              onClick={() => trackEvent('social_click', { label: 'linkedin_footer' })}
-              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-            >
-              <LinkedinIcon />
-            </a>
-            <a
-              href={profile.socials.github}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              onClick={() => trackEvent('social_click', { label: 'github_footer' })}
-              className="transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 rounded"
-            >
-              <GithubIcon />
-            </a>
-          </div>
-        </div>
-      </footer>
-
-      {/* Back to Top Button */}
+      {/* Back to Top button */}
       <motion.button
         onClick={scrollToTop}
         initial={false}
         animate={showBackToTop ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.2 }}
         className={`fixed bottom-8 right-8 z-50 rounded-full border border-stone-700 bg-stone-950/85 p-3 text-stone-200 shadow-lg backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:text-accent ${
-          showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+          showBackToTop ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
         aria-label="Back to top"
       >
         <ArrowUp className="w-5 h-5" />
       </motion.button>
-    </div>
+    </>
   );
-};
+}
