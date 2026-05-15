@@ -46,8 +46,7 @@ export const HomeArticlesSection: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="container mx-auto px-4 py-20 md:py-32 relative bg-stone-900">
-      <div className="absolute top-1/2 right-0 h-96 w-96 rounded-full bg-accent/[0.06] blur-[100px] pointer-events-none" />
+    <section id="projects" className="container mx-auto px-4 py-20 md:py-32 relative">
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="mb-16">
           <div className="mb-4 flex items-center gap-4">
@@ -55,17 +54,16 @@ export const HomeArticlesSection: React.FC = () => {
             <span className="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-accent">Index</span>
             <span className="h-px w-16 bg-accent/40" />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 flex items-center gap-3 font-serif text-stone-50">
-            Case Studies & Ideas
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 flex items-center gap-3 font-serif text-stone-900">
+            Work
           </h2>
-          <p className="max-w-2xl text-stone-400 font-serif leading-relaxed">
-            <strong className="font-semibold text-stone-200">Case studies</strong> include a public GitHub repo.
-            <strong className="font-semibold text-stone-200"> Other pieces</strong> are long-form write-ups from the same
-            work&mdash;no client data or screenshots, just how things were built and measured.
+          <p className="max-w-2xl text-stone-500 font-serif leading-relaxed">
+            Case studies with public GitHub repos and long-form write-ups from production work —
+            no client data, just how things were built and measured.
           </p>
         </div>
 
-        <div className="mb-16 border-t border-stone-800 pt-6">
+        <div className="mb-16 border-t border-stone-200 pt-6">
           <TagFilter tags={allTags} selectedTags={selectedTags} onTagToggle={handleTagToggle} />
         </div>
 
@@ -79,19 +77,19 @@ export const HomeArticlesSection: React.FC = () => {
           >
             <a
               href={`/article/${featuredArticle.id}`}
-              className="group block border-t border-stone-800 transition-colors duration-300 hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+              className="group block border-t border-stone-200 transition-colors duration-300 hover:bg-stone-100/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
             >
               <div className="px-3 pt-6 pb-4">
                 <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-accent/45 bg-accent/15 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-accent">
+                    <span className="rounded-full border border-accent/45 bg-accent/10 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-accent">
                       Latest
                     </span>
-                    <span className="rounded-full border border-stone-700 bg-stone-950/70 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-stone-300">
+                    <span className="rounded-full border border-stone-300 bg-stone-100 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-stone-500">
                       {featuredArticle.tags[0] ?? 'Article'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 font-mono text-xs text-stone-300">
+                  <div className="flex items-center gap-4 font-mono text-xs text-stone-400">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="h-3.5 w-3.5" />
                       {new Date(featuredArticle.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
@@ -105,10 +103,10 @@ export const HomeArticlesSection: React.FC = () => {
               </div>
 
               <div className="flex flex-col px-3 pt-2 pb-10">
-                <h3 className="max-w-4xl font-serif text-3xl leading-[1.08] text-stone-50 md:text-[2.5rem] lg:text-[3rem]">
+                <h3 className="max-w-4xl font-serif text-3xl leading-[1.08] text-stone-900 md:text-[2.5rem] lg:text-[3rem]">
                   {featuredArticle.title}
                 </h3>
-                <p className="mt-5 max-w-3xl font-serif text-lg leading-[1.55] text-stone-300 md:text-xl">
+                <p className="mt-5 max-w-3xl font-serif text-lg leading-[1.55] text-stone-500 md:text-xl">
                   {featuredArticle.summary}
                 </p>
                 {featuredArticle.tags.length > 1 && (
@@ -116,15 +114,15 @@ export const HomeArticlesSection: React.FC = () => {
                     {featuredArticle.tags.slice(1, 5).map((tag, i, arr) => (
                       <span key={tag}>
                         {tag}
-                        {i < arr.length - 1 ? <span className="ml-3 text-stone-700">/</span> : null}
+                        {i < arr.length - 1 ? <span className="ml-3 text-stone-300">/</span> : null}
                       </span>
                     ))}
                     {featuredArticle.tags.length > 5 && (
-                      <span className="text-stone-600">+{featuredArticle.tags.length - 5}</span>
+                      <span className="text-stone-400">+{featuredArticle.tags.length - 5}</span>
                     )}
                   </div>
                 )}
-                <div className="mt-8 inline-flex items-center gap-2 font-mono text-sm text-stone-300 transition-colors group-hover:text-accent">
+                <div className="mt-8 inline-flex items-center gap-2 font-mono text-sm text-stone-500 transition-colors group-hover:text-accent">
                   Read article
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
@@ -140,11 +138,11 @@ export const HomeArticlesSection: React.FC = () => {
         </div>
 
         {filteredArticles.length === 0 && (
-          <div className="text-center py-24 border border-stone-700 border-dashed rounded-2xl bg-stone-800/30">
-            <p className="text-stone-400 font-serif text-lg">No articles found with the selected filters.</p>
+          <div className="text-center py-24 border border-stone-200 border-dashed rounded-2xl bg-stone-100/50">
+            <p className="text-stone-500 font-serif text-lg">No articles found with the selected filters.</p>
             <button
               onClick={() => setSelectedTags([])}
-              className="mt-6 rounded-lg border border-stone-700 bg-stone-900 px-6 py-3 font-medium text-stone-200 transition-all shadow-sm hover:border-stone-600 hover:text-stone-100"
+              className="mt-6 rounded-lg border border-stone-300 bg-stone-50 px-6 py-3 font-medium text-stone-600 transition-all shadow-sm hover:border-stone-400 hover:text-stone-900"
             >
               Clear filters
             </button>
