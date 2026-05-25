@@ -5,7 +5,6 @@ import { MDXComponents } from './MDXComponents';
 import { ReadingProgress } from './ReadingProgress';
 import { TableOfContents } from './TableOfContents';
 import { ReadNext } from './ReadNext';
-import { MDXProvider } from '@mdx-js/react';
 
 const FacebookIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -59,13 +58,13 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
       <ReadingProgress targetRef={articleWrapperRef} />
 
       {/* Engagement row */}
-      <div className="mt-4 flex flex-col items-center justify-between gap-6 border-t border-stone-800/40 pt-4 sm:flex-row mb-10">
+      <div className="mt-4 flex flex-col items-center justify-between gap-6 border-t border-stone-200 pt-4 sm:flex-row mb-10">
         <button
           onClick={handleLike}
           className={`inline-flex items-center gap-3 rounded-full border px-5 py-2 font-mono text-sm transition-all ${
             isLiked
-              ? 'border-accent/45 bg-accent/15 text-accent'
-              : 'border-stone-700 bg-transparent text-stone-300 hover:border-stone-500 hover:text-stone-100'
+              ? 'border-accent/45 bg-accent/10 text-accent'
+              : 'border-stone-300 bg-transparent text-stone-600 hover:border-stone-400 hover:text-stone-900'
           }`}
         >
           <Heart className={`w-4 h-4 ${isLiked ? 'fill-accent text-accent' : 'text-stone-400'}`} />
@@ -75,7 +74,7 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
           <span className="text-xs font-mono uppercase tracking-[0.22em] text-stone-400">Share</span>
           <button
             onClick={handleShareFacebook}
-            className="inline-flex items-center gap-2 font-mono text-sm text-stone-300 transition-colors hover:text-accent"
+            className="inline-flex items-center gap-2 font-mono text-sm text-stone-500 transition-colors hover:text-accent"
           >
             <FacebookIcon />
             Facebook
@@ -84,8 +83,8 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
       </div>
 
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_240px] xl:gap-12">
-        <div className="prose prose-invert w-full max-w-3xl text-stone-100">
-          <p className="mb-12 max-w-[58ch] text-xl leading-[1.55] text-stone-300 md:text-[1.45rem]">
+        <div className="prose w-full max-w-3xl text-stone-800">
+          <p className="mb-12 max-w-[58ch] text-xl leading-[1.55] text-stone-600 md:text-[1.45rem]">
             {articleSummary}
           </p>
 
@@ -93,15 +92,13 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
             <Suspense
               fallback={
                 <div className="animate-pulse space-y-4">
-                  <div className="h-3 bg-stone-700 rounded w-3/4" />
-                  <div className="h-3 bg-stone-700 rounded" />
-                  <div className="h-3 bg-stone-700 rounded w-5/6" />
+                  <div className="h-3 bg-stone-200 rounded w-3/4" />
+                  <div className="h-3 bg-stone-200 rounded" />
+                  <div className="h-3 bg-stone-200 rounded w-5/6" />
                 </div>
               }
             >
-              <MDXProvider components={MDXComponents}>
-                <MDXContent />
-              </MDXProvider>
+              <MDXContent components={MDXComponents} />
             </Suspense>
           </div>
         </div>

@@ -67,51 +67,59 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
   <article class="container mx-auto px-4 py-12 md:py-20">
     <div class="mx-auto grid max-w-6xl gap-12 xl:grid-cols-[minmax(0,1fr)_240px]">
       <div class="min-w-0">
+
+        <!-- Back link -->
         <a
           href="/"
-          class="mb-12 inline-flex items-center gap-2 text-sm font-medium font-mono text-stone-400 transition-colors hover:text-stone-100"
+          class="mb-12 inline-flex items-center gap-2 border border-stone-200 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-stone-500 transition-colors hover:border-stone-900 hover:text-stone-900"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-          Back to Articles
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Back
         </a>
 
         <!-- Static article header — fully indexed by search crawlers -->
         <header class="mb-12 max-w-3xl">
-          <div class="mb-8 flex items-center gap-4">
-            <span class="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-accent">
+
+          <!-- Eyebrow: kind label + tags -->
+          <div class="flex items-center gap-4 mb-8">
+            <span class="h-px w-6 bg-stone-400"></span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400">
               {kindLabel}
             </span>
-            <span class="h-px w-16 bg-accent/40"></span>
           </div>
 
-          <div class="mb-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-[0.18em] text-stone-400">
+          <div class="mb-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
             {article.tags.map((tag, i) => (
               <span>
                 {tag}
-                {i < article.tags.length - 1 ? <span class="ml-3 text-stone-700">/</span> : null}
+                {i < article.tags.length - 1 ? <span class="ml-3 text-stone-200">/</span> : null}
               </span>
             ))}
           </div>
 
-          <h1 class="mb-8 font-serif text-4xl font-bold leading-tight tracking-tight text-stone-50 md:text-5xl lg:text-6xl">
+          <!-- Title -->
+          <h1 class="mb-8 font-serif font-bold text-stone-900 leading-[1.0] tracking-[-0.02em] text-4xl md:text-5xl lg:text-6xl">
             {article.title}
           </h1>
 
-          <div class="mb-10 flex flex-wrap items-center gap-6 border-b border-stone-700 pb-10 text-sm font-mono text-stone-400">
-            <span class="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              {formattedDate}
-            </span>
-            <span class="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              {article.readTime}
-            </span>
+          <!-- Geometric rule -->
+          <div class="flex items-center gap-3 mb-8">
+            <div class="h-0.5 w-6 bg-stone-900 shrink-0"></div>
+            <div class="h-px flex-1 bg-stone-200"></div>
+            <div class="w-1.5 h-1.5 border border-stone-400 shrink-0" style="transform: rotate(45deg)"></div>
+            <div class="h-px w-8 bg-stone-200 shrink-0"></div>
+          </div>
+
+          <!-- Meta: date · readtime · github -->
+          <div class="mb-10 flex flex-wrap items-center gap-6 border-b border-stone-200 pb-8 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+            <span>{formattedDate}</span>
+            <span>{article.readTime}</span>
             {article.githubUrl && (
               <a
                 href={article.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                class="ml-auto flex items-center gap-2 text-stone-300 transition-colors hover:text-accent"
+                class="ml-auto flex items-center gap-2 transition-colors hover:text-stone-900"
               >
                 <Fragment set:html={GithubIcon} />
                 View Source Code
@@ -119,19 +127,20 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
             )}
           </div>
 
+          <!-- Case study frame -->
           {article.caseStudyFrame && (
-            <div class="not-prose mb-14 grid gap-8 border-y border-stone-800 py-8 md:grid-cols-3 md:gap-0">
+            <div class="not-prose mb-14 grid gap-8 border-y border-stone-200 py-8 md:grid-cols-3 md:gap-0">
               <div class="md:px-8 md:first:pl-0">
-                <p class="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">My role</p>
-                <p class="mt-3 font-serif text-[0.98rem] leading-[1.6] text-stone-200">{article.caseStudyFrame.role}</p>
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">My role</p>
+                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.role}</p>
               </div>
-              <div class="md:border-l md:border-stone-800 md:px-8">
-                <p class="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">Scope</p>
-                <p class="mt-3 font-serif text-[0.98rem] leading-[1.6] text-stone-200">{article.caseStudyFrame.scope}</p>
+              <div class="md:border-l md:border-stone-200 md:px-8">
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">Scope</p>
+                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.scope}</p>
               </div>
-              <div class="md:border-l md:border-stone-800 md:px-8 md:last:pr-0">
-                <p class="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">Why it matters</p>
-                <p class="mt-3 font-serif text-[0.98rem] leading-[1.6] text-stone-200">{article.caseStudyFrame.outcome}</p>
+              <div class="md:border-l md:border-stone-200 md:px-8 md:last:pr-0">
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">Why it matters</p>
+                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.outcome}</p>
               </div>
             </div>
           )}

@@ -46,7 +46,7 @@ function AnchoredHeading({
         <a
           href={`#${id}`}
           aria-label={`Link to "${text}"`}
-          className="ml-3 font-mono text-[0.7em] font-normal text-stone-600 opacity-0 transition-opacity group-hover:opacity-100 hover:text-accent focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+          className="ml-3 font-mono text-[0.7em] font-normal text-stone-400 opacity-0 transition-opacity group-hover:opacity-100 hover:text-accent focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           #
         </a>
@@ -59,32 +59,32 @@ export const MDXComponents = {
   h1: (props: any) => (
     <AnchoredHeading
       level={1}
-      className="mt-14 mb-5 border-b border-stone-800 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-50 md:text-[2.25rem]"
+      className="mt-14 mb-5 border-b border-stone-200 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-900 md:text-[2.25rem]"
       {...props}
     />
   ),
   h2: (props: any) => (
     <AnchoredHeading
       level={2}
-      className="mt-14 mb-5 border-b border-stone-800 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-50 md:text-[2.25rem]"
+      className="mt-14 mb-5 border-b border-stone-200 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-900 md:text-[2.25rem]"
       {...props}
     />
   ),
   h3: (props: any) => (
     <AnchoredHeading
       level={3}
-      className="mt-10 mb-4 text-[1.25rem] font-semibold tracking-normal text-stone-100 md:text-[1.5rem]"
+      className="mt-10 mb-4 text-[1.25rem] font-semibold tracking-normal text-stone-800 md:text-[1.5rem]"
       {...props}
     />
   ),
-  p: (props: any) => <p className="mb-6 max-w-[65ch] text-[1.0625rem] leading-[1.7] text-stone-200 md:text-[1.125rem]" {...props} />,
-  ul: (props: any) => <ul className="mb-6 max-w-[65ch] list-disc pl-6 text-[1.0625rem] leading-[1.7] text-stone-200 md:text-[1.125rem]" {...props} />,
-  ol: (props: any) => <ol className="mb-6 max-w-[65ch] list-decimal pl-6 text-[1.0625rem] leading-[1.7] text-stone-200 md:text-[1.125rem]" {...props} />,
+  p: (props: any) => <p className="mb-6 max-w-[65ch] text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
+  ul: (props: any) => <ul className="mb-6 max-w-[65ch] list-disc pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
+  ol: (props: any) => <ol className="mb-6 max-w-[65ch] list-decimal pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
   li: (props: any) => <li className="mb-2 pl-1" {...props} />,
   a: (props: any) => <a className="text-accent underline decoration-accent/35 underline-offset-4 transition-colors hover:text-accent/80" {...props} />,
   img: (props: any) => (
-    <span className="block my-10 overflow-hidden rounded-2xl border border-stone-700/80 bg-stone-900/70 p-2 shadow-[0_12px_40px_rgba(0,0,0,0.18)]">
-      <img className="mx-auto h-auto max-w-full rounded-[1rem] border border-stone-700/80" {...props} />
+    <span className="block my-10 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 p-2">
+      <img className="mx-auto h-auto max-w-full rounded-[1rem] border border-stone-100" {...props} />
     </span>
   ),
   pre: (props: any) => {
@@ -160,7 +160,7 @@ export const MDXComponents = {
   },
   code: (props: any) => {
     // Only style inline code here. Block code is handled by pre.
-    return <code className="rounded border border-stone-600 bg-stone-800 px-1.5 py-0.5 font-mono text-[0.9em] text-stone-100" {...props} />;
+    return <code className="rounded border border-stone-200 bg-stone-100 px-1.5 py-0.5 font-mono text-[0.9em] text-stone-800" {...props} />;
   },
 
   // --- Editorial primitives available inside any .mdx file -----------------
