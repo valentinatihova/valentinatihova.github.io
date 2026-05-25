@@ -57,8 +57,8 @@ export function Architecture({
   const vertical = orientation === 'vertical';
 
   return (
-    <figure className="not-prose my-14 overflow-hidden rounded-2xl border border-stone-800 bg-stone-950/50">
-      <figcaption className="border-b border-stone-800 bg-stone-900/40 px-6 py-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+    <figure className="not-prose my-14 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
+      <figcaption className="border-b border-stone-200 bg-white px-6 py-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
         {caption}
       </figcaption>
       <ArchitectureLayoutContext.Provider value={{ vertical }}>
@@ -74,7 +74,7 @@ export function Architecture({
         </div>
       </ArchitectureLayoutContext.Provider>
       {note && (
-        <div className="border-t border-stone-800 bg-stone-900/40 px-6 py-4 font-serif text-[0.9rem] italic leading-[1.55] text-stone-400 [&_a]:font-sans [&_a]:not-italic [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a]:underline-offset-2 [&_a]:transition-colors hover:[&_a]:text-accent/85">
+        <div className="border-t border-stone-200 bg-white px-6 py-4 font-serif text-[0.9rem] italic leading-[1.55] text-stone-500 [&_a]:font-sans [&_a]:not-italic [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a]:underline-offset-2 [&_a]:transition-colors hover:[&_a]:text-accent/85">
           {note}
         </div>
       )}
@@ -149,7 +149,7 @@ export function ArchitectureNode({ children, accent = false }: ArchitectureNodeP
         vertical && 'shrink-0',
         accent
           ? 'border-accent/50 bg-accent/10 text-accent'
-          : 'border-stone-700 bg-stone-900 text-stone-100',
+          : 'border-stone-200 bg-white text-stone-700',
       )}
     >
       {children}

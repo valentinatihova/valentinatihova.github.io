@@ -32,7 +32,7 @@ export function KeyMetric({ value, label, note, accent = false }: KeyMetricProps
           'font-serif leading-[1.05]',
           accent
             ? 'text-[2.5rem] font-semibold text-accent md:text-[3rem]'
-            : 'text-[2rem] font-medium text-stone-50 md:text-[2.25rem]',
+            : 'text-[2rem] font-medium text-stone-900 md:text-[2.25rem]',
         )}
       >
         {value}
@@ -65,12 +65,12 @@ export function KeyMetrics({ children, label = 'Observed distribution' }: KeyMet
   return (
     <section
       aria-label={label}
-      className="not-prose my-14 rounded-2xl border border-stone-800 bg-stone-950/40 p-8 md:p-10"
+      className="not-prose my-14 rounded-2xl border border-stone-200 bg-stone-50 p-8 md:p-10"
     >
       <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
         {label}
       </p>
-      <div className="grid gap-10 md:grid-cols-3 md:gap-0 md:[&>*]:px-8 md:[&>*:first-child]:pl-0 md:[&>*:last-child]:pr-0 md:[&>*:not(:first-child)]:border-l md:[&>*:not(:first-child)]:border-stone-800">
+      <div className="grid gap-10 md:grid-cols-3 md:gap-0 md:[&>*]:px-8 md:[&>*:first-child]:pl-0 md:[&>*:last-child]:pr-0 md:[&>*:not(:first-child)]:border-l md:[&>*:not(:first-child)]:border-stone-200">
         {children}
       </div>
     </section>

@@ -97,7 +97,7 @@ export function TableOfContents({ articleRef, label = 'Contents' }: TableOfConte
         <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">
           {label}
         </p>
-        <ol className="space-y-1.5 border-l border-stone-800">
+        <ol className="space-y-1.5 border-l border-stone-200">
           {headings.map((h) => {
             const isActive = h.id === activeId;
             return (
@@ -109,7 +109,7 @@ export function TableOfContents({ articleRef, label = 'Contents' }: TableOfConte
                     h.level === 3 && 'pl-6 text-[11.5px]',
                     isActive
                       ? 'border-accent text-accent'
-                      : 'border-transparent text-stone-400 hover:border-stone-600 hover:text-stone-200',
+                      : 'border-transparent text-stone-400 hover:border-stone-400 hover:text-stone-800',
                   )}
                 >
                   {h.text}

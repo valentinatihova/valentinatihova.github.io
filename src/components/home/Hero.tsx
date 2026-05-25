@@ -7,7 +7,17 @@ export const Hero: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-24 md:py-36 relative overflow-hidden">
+    <section className="py-20 md:py-32 relative overflow-hidden">
+
+      {/* Background watermark */}
+      <div
+        aria-hidden="true"
+        className="absolute right-[-1rem] top-[-1rem] select-none pointer-events-none font-serif font-bold text-stone-100 leading-none"
+        style={{ fontSize: 'clamp(8rem, 22vw, 18rem)', letterSpacing: '-0.05em', opacity: 0.55 }}
+      >
+        DATA
+      </div>
+
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={shouldReduceMotion ? undefined : { opacity: 0 }}
@@ -15,39 +25,83 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="max-w-5xl mx-auto"
         >
-          <p className="mb-6 font-mono text-[12px] font-medium uppercase tracking-[0.28em] text-stone-400">
-            Valencia, Spain · EU work authorized · Remote
-          </p>
+          {/* Eyebrow */}
+          <div className="flex items-center gap-4 mb-8">
+            <span className="h-px w-6 bg-stone-400" aria-hidden="true" />
+            <p className="font-mono text-[10px] font-medium uppercase tracking-[0.3em] text-stone-400">
+              Senior Data &amp; MarTech Engineer
+            </p>
+          </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.05] font-serif text-stone-900">
-            Valentina Tihova
-          </h1>
-
-          <p className="mb-8 max-w-3xl font-serif text-[1.75rem] italic leading-[1.15] text-stone-700 md:text-[2.25rem]">
-            I build data systems that don&apos;t lie<br className="hidden md:block" /> to the people who rely on them.
-          </p>
-
-          <p className="max-w-[58ch] font-serif text-lg leading-[1.6] text-stone-500 md:text-xl">
-            Senior Data &amp; MarTech engineer. 8 years in fintech, retail, and telecom — from requirements to production, observable and testable.
-          </p>
-
-          <div className="mt-12 pt-10 border-t border-stone-200 flex flex-wrap items-center gap-4">
-            <a
-              href="/resume"
-              onClick={() => trackEvent('hero_cta_click', { label: 'view_resume' })}
-              className="inline-flex items-center gap-2 rounded border border-accent/50 bg-accent/10 px-7 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-accent transition-all shadow-sm hover:-translate-y-0.5 hover:bg-accent/20"
+          {/* Name */}
+          <div className="mb-6">
+            <div className="flex items-end justify-between gap-4">
+              <h1
+                className="font-serif font-bold text-stone-900 leading-[0.88]"
+                style={{ fontSize: 'clamp(4rem, 12vw, 9rem)', letterSpacing: '-0.04em' }}
+              >
+                Valentina
+              </h1>
+              <div className="hidden md:block text-right font-serif italic text-sm text-stone-400 leading-relaxed pb-3 shrink-0">
+                8 years in fintech,<br />retail &amp; telecom
+              </div>
+            </div>
+            <h1
+              className="font-serif font-bold text-stone-900 leading-[0.88]"
+              style={{ fontSize: 'clamp(4rem, 12vw, 9rem)', letterSpacing: '-0.04em' }}
             >
-              <FileText className="w-4 h-4" />
-              View Resume
-            </a>
-            <a
-              href="#projects"
-              onClick={() => trackEvent('hero_cta_click', { label: 'see_work' })}
-              className="inline-flex items-center gap-2 rounded border border-stone-300 bg-transparent px-6 py-3.5 font-mono text-sm font-medium uppercase tracking-[0.14em] text-stone-600 transition-all hover:-translate-y-0.5 hover:border-stone-400 hover:text-stone-900"
-            >
-              See work
-              <ArrowRight className="w-4 h-4" />
-            </a>
+              Tihova
+            </h1>
+          </div>
+
+          {/* Geometric rule */}
+          <div className="flex items-center gap-3 my-8">
+            <div className="h-0.5 w-7 bg-stone-900 shrink-0" />
+            <div className="h-px flex-1 bg-stone-200" />
+            <div
+              aria-hidden="true"
+              className="w-1.5 h-1.5 border border-stone-400 shrink-0"
+              style={{ transform: 'rotate(45deg)' }}
+            />
+            <div className="h-px w-10 bg-stone-200 shrink-0" />
+          </div>
+
+          {/* Tagline */}
+          <div className="mb-10">
+            <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-stone-400 mb-3">
+              — Statement
+            </p>
+            <p className="font-serif italic text-2xl md:text-3xl text-stone-600 leading-[1.3] max-w-2xl">
+              I build data systems that don&apos;t{' '}
+              <em className="not-italic text-stone-900 font-semibold">lie</em>
+              <br className="hidden md:block" />
+              {' '}to the people who rely on them.
+            </p>
+          </div>
+
+          {/* CTAs */}
+          <div className="flex items-center justify-between flex-wrap gap-4 pt-8 border-t border-stone-200">
+            <div className="flex items-center gap-5 flex-wrap">
+              <a
+                href="/resume"
+                onClick={() => trackEvent('hero_cta_click', { label: 'view_resume' })}
+                className="inline-flex items-center gap-2 border border-stone-900 bg-transparent px-6 py-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-900 transition-all hover:bg-stone-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                View Resume
+              </a>
+              <a
+                href="#projects"
+                onClick={() => trackEvent('hero_cta_click', { label: 'see_work' })}
+                className="inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+              >
+                See work
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+              Valencia, Spain · Remote · EU Auth
+            </p>
           </div>
         </motion.div>
       </div>

@@ -50,36 +50,36 @@ export function ReadNext({ currentId, limit = 2 }: ReadNextProps) {
         <span className="font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-accent">
           Read next
         </span>
-        <span className="h-px flex-1 bg-stone-800" />
+        <span className="h-px flex-1 bg-stone-200" />
       </div>
 
-      <div className="grid gap-0 border-t border-stone-800">
+      <div className="grid gap-0 border-t border-stone-200">
         {related.map((a) => (
           <a
             key={a.id}
             href={`/article/${a.id}`}
             onClick={() => trackEvent('article_read_next', { label: a.id, value: currentId })}
-            className="group block border-b border-stone-800 px-3 py-8 transition-colors hover:bg-stone-900/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+            className="group block border-b border-stone-200 px-3 py-8 transition-colors hover:bg-stone-100/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
           >
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full border border-stone-700 bg-stone-950/70 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-stone-300">
+                <span className="rounded-full border border-stone-300 bg-stone-100 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-stone-500">
                   {a.tags[0] ?? 'Article'}
                 </span>
               </div>
-              <span className="flex items-center gap-1.5 font-mono text-xs text-stone-300">
+              <span className="flex items-center gap-1.5 font-mono text-xs text-stone-500">
                 <Clock className="h-3.5 w-3.5" />
                 {a.readTime}
               </span>
             </div>
 
-            <h3 className="mt-5 max-w-3xl font-serif text-2xl leading-[1.15] text-stone-50 md:text-[1.75rem]">
+            <h3 className="mt-5 max-w-3xl font-serif text-2xl leading-[1.15] text-stone-900 md:text-[1.75rem]">
               {a.title}
             </h3>
-            <p className="mt-3 max-w-2xl font-serif text-[1rem] leading-[1.55] text-stone-400">
+            <p className="mt-3 max-w-2xl font-serif text-[1rem] leading-[1.55] text-stone-500">
               {a.summary}
             </p>
-            <span className="mt-5 inline-flex items-center gap-2 font-mono text-sm text-stone-300 transition-colors group-hover:text-accent">
+            <span className="mt-5 inline-flex items-center gap-2 font-mono text-sm text-stone-500 transition-colors group-hover:text-accent">
               Read article
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
