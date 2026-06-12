@@ -94,7 +94,7 @@ export const Hero: React.FC = () => {
               <a
                 href="mailto:valentina.tikhova1@gmail.com"
                 onClick={() => trackEvent('hero_cta_click', { label: 'email' })}
-                className="inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-700 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                className="inline-flex items-center gap-2 py-2 -my-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-700 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 <Mail className="w-3.5 h-3.5" />
                 Email
@@ -102,7 +102,7 @@ export const Hero: React.FC = () => {
               <a
                 href="#projects"
                 onClick={() => trackEvent('hero_cta_click', { label: 'see_work' })}
-                className="inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+                className="inline-flex items-center gap-2 py-2 -my-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 See work
                 <ArrowRight className="w-3.5 h-3.5" />
