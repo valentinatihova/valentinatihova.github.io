@@ -20,6 +20,7 @@ export const TagFilter: React.FC<TagFilterProps> = ({ tags, selectedTags, onTagT
       className="flex flex-wrap gap-2 mb-8"
     >
       <button
+        aria-pressed={selectedTags.length === 0}
         onClick={() => { trackEvent('tag_filter', { label: 'all' }); onTagToggle('all'); }}
         className={`cursor-pointer border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
           selectedTags.length === 0
@@ -35,6 +36,7 @@ export const TagFilter: React.FC<TagFilterProps> = ({ tags, selectedTags, onTagT
         return (
           <button
             key={tag}
+            aria-pressed={isSelected}
             onClick={() => { trackEvent('tag_filter', { label: tag }); onTagToggle(tag); }}
             className={`cursor-pointer border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
               isSelected

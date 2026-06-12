@@ -83,12 +83,12 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
           <!-- Eyebrow: kind label + tags -->
           <div class="flex items-center gap-4 mb-8">
             <span class="h-px w-6 bg-stone-400"></span>
-            <span class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400">
+            <span class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500">
               {kindLabel}
             </span>
           </div>
 
-          <div class="mb-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+          <div class="mb-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
             {article.tags.map((tag, i) => (
               <span>
                 {tag}
@@ -111,7 +111,7 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
           </div>
 
           <!-- Meta: date · readtime · github -->
-          <div class="mb-10 flex flex-wrap items-center gap-6 border-b border-stone-200 pb-8 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400">
+          <div class="mb-10 flex flex-wrap items-center gap-6 border-b border-stone-200 pb-8 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
             <span>{formattedDate}</span>
             <span>{article.readTime}</span>
             {article.githubUrl && (
@@ -131,15 +131,15 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
           {article.caseStudyFrame && (
             <div class="not-prose mb-14 grid gap-8 border-y border-stone-200 py-8 md:grid-cols-3 md:gap-0">
               <div class="md:px-8 md:first:pl-0">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">My role</p>
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">My role</p>
                 <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.role}</p>
               </div>
               <div class="md:border-l md:border-stone-200 md:px-8">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">Scope</p>
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">Scope</p>
                 <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.scope}</p>
               </div>
               <div class="md:border-l md:border-stone-200 md:px-8 md:last:pr-0">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-400 mb-3">Why it matters</p>
+                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">Why it matters</p>
                 <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.outcome}</p>
               </div>
             </div>
