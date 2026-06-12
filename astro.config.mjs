@@ -25,7 +25,29 @@ export default defineConfig({
   ],
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      // MDX files are compiled by @astrojs/mdx with jsxImportSource:"astro",
+      // which produces Astro VNodes incompatible with React. This plugin swaps
+      // the runtime to react/jsx-runtime so that MDX loaded via import.meta.glob
+      // in ArticleBody renders as React elements. The swap runs for BOTH the SSR
+      // and client passes: ArticleBody is now `client:load`, so Astro must
+      // server-render the MDX React tree (putting article prose in static HTML)
+      // as well as hydrate it. MDX is only ever consumed as React here.
+      {
+        name: 'mdx-react-compat',
+        enforce: 'post',
+        transform(code, id) {
+          if (!id.endsWith('.mdx')) return;
+          return {
+            code: code
+              .replace(/from ['"]astro\/jsx-runtime['"]/g, 'from "react/jsx-runtime"')
+              .replace(/from ['"]astro\/jsx-dev-runtime['"]/g, 'from "react/jsx-dev-runtime"'),
+            map: null,
+          };
+        },
+      },
+    ],
     // Preserve chunk splitting strategy from the old Vite config.
     build: {
       rollupOptions: {
