@@ -10,6 +10,7 @@ import { getTextContent, slugify } from '../../lib/text';
 import { Callout } from './Callout';
 import { KeyMetric, KeyMetrics } from './KeyMetric';
 import { Architecture, ArchitectureNode, ArchitectureEdge, ArchitectureStep } from './Architecture';
+import { ClientOnly } from './ClientOnly';
 
 SyntaxHighlighter.registerLanguage('python', python);
 SyntaxHighlighter.registerLanguage('sql', sql);
@@ -155,8 +156,17 @@ export const MDXComponents = {
       }
     }
     
-    // Fallback if it's not a standard code block
-    return <pre className="custom-scrollbar my-8 overflow-x-auto rounded-xl border border-stone-700 bg-stone-800 p-5 text-sm text-stone-100 font-mono" {...props} />;
+    // Fallback if it's not a standard code block. rehype-pretty-code emits a
+    // lowercase `tabindex` HTML attribute on its <pre>; React expects `tabIndex`,
+    // so normalize it here to avoid an invalid-DOM-property hydration warning.
+    const { tabindex, tabIndex, ...rest } = props as any;
+    return (
+      <pre
+        className="custom-scrollbar my-8 overflow-x-auto rounded-xl border border-stone-700 bg-stone-800 p-5 text-sm text-stone-100 font-mono"
+        tabIndex={tabIndex ?? (tabindex !== undefined ? Number(tabindex) : undefined)}
+        {...rest}
+      />
+    );
   },
   code: (props: any) => {
     // Only style inline code here. Block code is handled by pre.
@@ -173,4 +183,5 @@ export const MDXComponents = {
   ArchitectureStep,
   ArchitectureNode,
   ArchitectureEdge,
+  ClientOnly,
 };

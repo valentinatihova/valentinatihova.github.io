@@ -1,20 +1,12 @@
 import { BankChurnViz } from '../../components/article/BankChurnViz';
 import { BankChurnMetricsViz } from '../../components/article/BankChurnMetricsViz';
 
-<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-200 bg-stone-50 p-6 backdrop-blur-sm md:p-8">
   <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
     Churn modeling · public tabular data
 </div>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    A bank&apos;s cheapest customer is the one they already have. The hardest part of churn modeling isn&apos;t the
-    algorithm — it&apos;s getting F1 to a useful level when the leaving class is 20% of the data and every oversampling
-    method introduces its own form of leakage.
-  </p>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    This page covers the engineering argument behind the key decisions: how the data was split without leakage, why a
-    weighted random forest beat upsampling, and what actually moved F1. The full record — imports, splits, every metric
-    — is in the GitHub notebook. What follows is the subset of decisions that matter before you open the repo.
-  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">A bank&apos;s cheapest customer is the one they already have. The hardest part of churn modeling isn&apos;t the algorithm — it&apos;s getting F1 to a useful level when the leaving class is 20% of the data and every oversampling method introduces its own form of leakage.</p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">This page covers the engineering argument behind the key decisions: how the data was split without leakage, why a weighted random forest beat upsampling, and what actually moved F1. The full record — imports, splits, every metric — is in the GitHub notebook. What follows is the subset of decisions that matter before you open the repo.</p>
 </div>
 
 ## Problem framing
@@ -28,12 +20,10 @@ AUC-ROC stayed in the room as a sanity check on ranking quality, not as the opti
 The **Bank Customer Churn Modeling** dataset on Kaggle (10k rows, mixed numeric and categorical fields, binary
 `Exited`) is public benchmark data — useful for comparing techniques without conflating results with any live portfolio.
 
-<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-700 bg-stone-900/70 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
+<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-200 bg-white p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
   <div className="min-w-0 flex flex-col justify-center">
     <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Notebook</p>
-    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-200">
-      Full experiment: cells, outputs, and figures. The header link on this article opens the same tree.
-    </p>
+    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-600">Full experiment: cells, outputs, and figures. The header link on this article opens the same tree.</p>
 </div>
   <a
     href="https://github.com/valentinatihova/DS_projects/tree/main/bank_churn_prediction"
