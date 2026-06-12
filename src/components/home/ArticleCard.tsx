@@ -32,12 +32,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, index = 0 }) 
         {/* Top row: index + tags + date */}
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-4">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-stone-300 shrink-0">{num}</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400 border border-stone-200 px-2.5 py-1">
+            <span className="font-mono text-[10px] tracking-[0.2em] text-stone-500 shrink-0">{num}</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 border border-stone-200 px-2.5 py-1">
               {article.tags[0] ?? 'Article'}
             </span>
           </div>
-          <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-stone-300 shrink-0 pt-0.5">
+          <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500 shrink-0 pt-0.5">
             {formattedDate} · {article.readTime}
           </span>
         </div>
@@ -55,17 +55,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, index = 0 }) 
         {/* Tags + read link */}
         <div className="flex items-center justify-between gap-4">
           {article.tags.length > 1 && (
-            <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-400">
+            <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500">
               {article.tags.slice(1, 4).map((tag, i, arr) => (
                 <span key={tag}>
                   {tag}
-                  {i < arr.length - 1 && <span className="ml-3 text-stone-300">/</span>}
+                  {i < arr.length - 1 && <span className="ml-3 text-stone-500">/</span>}
                 </span>
               ))}
               {article.tags.length > 4 && <span>+{article.tags.length - 4}</span>}
             </div>
           )}
-          <span className="ml-auto flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-400 transition-colors group-hover:text-stone-900 shrink-0">
+          <span className="ml-auto flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500 transition-colors group-hover:text-stone-900 shrink-0">
             Read
             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
           </span>
