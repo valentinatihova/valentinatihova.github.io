@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
@@ -10,6 +10,7 @@ export default function SiteNav() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setPathname(window.location.pathname);
@@ -31,6 +32,15 @@ export default function SiteNav() {
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
+
+  // Close the mobile menu on Escape and move focus into it when it opens.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    closeBtnRef.current?.focus();
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mobileMenuOpen]);
 
   const scrollToTop = () => {
     trackEvent('scroll_to_top');
@@ -70,7 +80,7 @@ export default function SiteNav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => trackEvent('nav_click', { label: item.label })}
-                className={`font-mono text-[11px] uppercase tracking-[0.2em] transition-colors ${
+                className={`rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
                   item.active ? 'text-accent' : 'text-stone-500 hover:text-stone-900'
                 }`}
               >
@@ -82,19 +92,21 @@ export default function SiteNav() {
                 href={profile.socials.linkedin}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="LinkedIn profile (opens in a new tab)"
                 onClick={() => trackEvent('social_click', { label: 'linkedin_header' })}
-                className="font-mono text-[11px] uppercase tracking-[0.2em] text-stone-400 hover:text-stone-900 transition-colors"
+                className="rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] text-stone-500 hover:text-stone-900 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
-                LI
+                LinkedIn
               </a>
               <a
                 href={profile.socials.github}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="GitHub profile (opens in a new tab)"
                 onClick={() => trackEvent('social_click', { label: 'github_header' })}
-                className="font-mono text-[11px] uppercase tracking-[0.2em] text-stone-400 hover:text-stone-900 transition-colors"
+                className="rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] text-stone-500 hover:text-stone-900 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
-                GH
+                GitHub
               </a>
             </div>
           </nav>
@@ -129,6 +141,9 @@ export default function SiteNav() {
               animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
               exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Site navigation"
               className="fixed inset-x-3 top-3 z-[80] overflow-hidden border border-stone-200 bg-white md:hidden"
             >
               <div className="border-b border-stone-100 px-5 py-4 flex items-center justify-between">
@@ -137,9 +152,10 @@ export default function SiteNav() {
                   <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-500">Menu</p>
                 </div>
                 <button
+                  ref={closeBtnRef}
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="inline-flex items-center justify-center border border-stone-200 p-2 text-stone-600 transition-colors hover:border-stone-400"
+                  className="inline-flex items-center justify-center border border-stone-200 p-2 text-stone-600 transition-colors hover:border-stone-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   aria-label="Close navigation menu"
                 >
                   <X className="w-4 h-4" />

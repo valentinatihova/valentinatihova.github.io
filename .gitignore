@@ -30,3 +30,6 @@ venv/
 *.njsproj
 *.sln
 *.sw?
+
+# Local SEO audit workspace (report + deps, not part of the site)
+seo-audit/

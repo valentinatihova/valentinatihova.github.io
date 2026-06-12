@@ -94,7 +94,7 @@ export function TableOfContents({ articleRef, label = 'Contents' }: TableOfConte
       aria-label="Table of contents"
     >
       <nav className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4">
-        <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">
+        <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">
           {label}
         </p>
         <ol className="space-y-1.5 border-l border-stone-200">
@@ -109,7 +109,7 @@ export function TableOfContents({ articleRef, label = 'Contents' }: TableOfConte
                     h.level === 3 && 'pl-6 text-[11.5px]',
                     isActive
                       ? 'border-accent text-accent'
-                      : 'border-transparent text-stone-400 hover:border-stone-400 hover:text-stone-800',
+                      : 'border-transparent text-stone-500 hover:border-stone-400 hover:text-stone-800',
                   )}
                 >
                   {h.text}

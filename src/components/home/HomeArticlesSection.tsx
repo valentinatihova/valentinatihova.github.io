@@ -52,7 +52,7 @@ export const HomeArticlesSection: React.FC = () => {
         <div className="mb-16 border-t border-stone-200 pt-12">
           <div className="flex items-start gap-10 mb-8">
             <div className="shrink-0">
-              <p className="font-mono text-[10px] tracking-[0.22em] text-stone-400 mb-1">02</p>
+              <p className="font-mono text-[10px] tracking-[0.22em] text-stone-500 mb-1">02</p>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-stone-600">Work</p>
             </div>
             <div className="flex-1">
@@ -94,11 +94,11 @@ export const HomeArticlesSection: React.FC = () => {
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white bg-stone-900 px-3 py-1">
                     Latest
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-400 border border-stone-200 px-2.5 py-1">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 border border-stone-200 px-2.5 py-1">
                     {featuredArticle.tags[0] ?? 'Article'}
                   </span>
                 </div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-stone-300">
+                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500">
                   {new Date(featuredArticle.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                   {' '}·{' '}{featuredArticle.readTime}
                 </span>
@@ -117,11 +117,11 @@ export const HomeArticlesSection: React.FC = () => {
               {/* Tags + read */}
               <div className="flex items-center justify-between gap-4">
                 {featuredArticle.tags.length > 1 && (
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-400">
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500">
                     {featuredArticle.tags.slice(1, 5).map((tag, i, arr) => (
                       <span key={tag}>
                         {tag}
-                        {i < arr.length - 1 && <span className="ml-3 text-stone-300">/</span>}
+                        {i < arr.length - 1 && <span className="ml-3 text-stone-500">/</span>}
                       </span>
                     ))}
                     {featuredArticle.tags.length > 5 && (
