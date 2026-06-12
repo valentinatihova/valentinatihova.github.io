@@ -6,21 +6,12 @@ import {
   ZyfraTotalConcentrationCharts,
 } from '../../components/article/ZyfraViz';
 
-<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-200 bg-stone-50 p-6 backdrop-blur-sm md:p-8">
   <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
     Industrial regression · public process data
   </div>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    Every time a recovery model overestimates output, a plant commits energy and reagents to a batch it should have
-    rejected. The question isn&apos;t whether the model is accurate in the abstract — it&apos;s whether it holds when
-    sensors drift and the input distribution shifts between shifts.
-  </p>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    This note covers the design decisions that matter: how targets are defined from process physics, how train and test
-    differ by measurement latency, which anomalies to cut before fitting, and why sMAPE is the right loss function here.
-    The executable notebook is on GitHub (<code className="rounded border border-stone-700 bg-stone-800 px-1.5 py-0.5 font-mono text-[0.85em] text-stone-100">grand_project_2.ipynb</code>);
-    the figures follow the same EDA layout, with on-site rendering.
-  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">Every time a recovery model overestimates output, a plant commits energy and reagents to a batch it should have rejected. The question isn&apos;t whether the model is accurate in the abstract — it&apos;s whether it holds when sensors drift and the input distribution shifts between shifts.</p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">This note covers the design decisions that matter: how targets are defined from process physics, how train and test differ by measurement latency, which anomalies to cut before fitting, and why sMAPE is the right loss function here. The executable notebook is on GitHub (<code className="rounded border border-stone-200 bg-stone-100 px-1.5 py-0.5 font-mono text-[0.85em] text-stone-700">grand_project_2.ipynb</code>); the figures follow the same EDA layout, with on-site rendering.</p>
 </div>
 
 ## Problem framing
@@ -39,12 +30,10 @@ Any model that silently keeps test-invisible columns in `X` would be cheating; t
 intersection and rebuilds targets by **date-indexed joins** into `full`, so rougher and final recovery on test rows are
 only taken where timestamps exist in the complete log.
 
-<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-700 bg-stone-900/70 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
+<div className="not-prose my-10 grid gap-6 rounded-xl border border-stone-200 bg-white p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-8 md:p-7">
   <div className="min-w-0 flex flex-col justify-center">
     <p className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Notebook</p>
-    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-200">
-      Full pipeline, grids, and numeric outputs: <code className="font-mono text-stone-300">ml_model_for_Zyfra/grand_project_2.ipynb</code>.
-    </p>
+    <p className="mt-2 max-w-xl font-serif text-[1.02rem] leading-relaxed text-stone-600">Full pipeline, grids, and numeric outputs: <code className="font-mono text-stone-500">ml_model_for_Zyfra/grand_project_2.ipynb</code>.</p>
   </div>
   <a
     href="https://github.com/valentinatihova/DS_projects/tree/main/ml_model_for_Zyfra"

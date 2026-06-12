@@ -1,7 +1,28 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Component } from 'react';
 import { Heart } from 'lucide-react';
 import { trackEvent } from '../../lib/analytics';
 import { MDXComponents } from './MDXComponents';
+
+class MDXErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="my-8 rounded border border-red-200 bg-red-50 p-6 font-mono text-sm text-red-700">
+          <p className="font-semibold mb-2">MDX render error:</p>
+          <pre className="whitespace-pre-wrap text-xs">{this.state.error.message}</pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 import { ReadingProgress } from './ReadingProgress';
 import { TableOfContents } from './TableOfContents';
 import { ReadNext } from './ReadNext';
@@ -12,7 +33,12 @@ const FacebookIcon = () => (
   </svg>
 );
 
-const mdxModules = import.meta.glob('../../content/articles/*.mdx');
+// Eager glob so the selected MDX module is available synchronously during SSR
+// (lazy() + Suspense would only render the skeleton fallback server-side, leaving
+// the article prose out of the static HTML).
+const mdxModules = import.meta.glob('../../content/articles/*.mdx', { eager: true });
+
+const MDXFallback = () => <div className="text-stone-300">Content coming soon…</div>;
 
 interface ArticleBodyProps {
   articleId: string;
@@ -44,14 +70,8 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
   };
 
   const mdxPath = `../../content/articles/${articleId}.mdx`;
-  const MDXContent = React.useMemo(() => {
-    return lazy(() => {
-      if (mdxPath in mdxModules) {
-        return mdxModules[mdxPath]() as Promise<{ default: React.ComponentType<any> }>;
-      }
-      return Promise.resolve({ default: () => <div className="text-stone-300">Content coming soon…</div> });
-    });
-  }, [mdxPath]);
+  const MDXContent =
+    (mdxModules[mdxPath] as { default: React.ComponentType<any> } | undefined)?.default ?? MDXFallback;
 
   return (
     <div ref={articleWrapperRef}>
@@ -89,17 +109,9 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
           </p>
 
           <div ref={articleBodyRef}>
-            <Suspense
-              fallback={
-                <div className="animate-pulse space-y-4">
-                  <div className="h-3 bg-stone-200 rounded w-3/4" />
-                  <div className="h-3 bg-stone-200 rounded" />
-                  <div className="h-3 bg-stone-200 rounded w-5/6" />
-                </div>
-              }
-            >
+            <MDXErrorBoundary>
               <MDXContent components={MDXComponents} />
-            </Suspense>
+            </MDXErrorBoundary>
           </div>
         </div>
 

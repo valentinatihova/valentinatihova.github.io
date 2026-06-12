@@ -1,7 +1,9 @@
 import { FeedingClockInfographic } from '../../components/article/FeedingClockInfographic';
 import { FeedingTimelineDiary } from '../../components/article/FeedingTimelineDiary';
 
-<FeedingClockInfographic />
+<ClientOnly>
+  <FeedingClockInfographic />
+</ClientOnly>
 
 ## The source: twenty-four hours in a spreadsheet
 
@@ -18,7 +20,9 @@ about three seconds.
 The clock poster below still uses **one representative eight-feeding day** for the radial sketch. The strip chart
 is the full scan from the paper diary. Pick a calendar day to see times and volumes on a straight 24-hour axis.
 
-<FeedingTimelineDiary />
+<ClientOnly>
+  <FeedingTimelineDiary />
+</ClientOnly>
 
 ## The day at a glance
 

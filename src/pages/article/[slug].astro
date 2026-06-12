@@ -146,8 +146,9 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
           )}
         </header>
 
-        <!-- Client-hydrated article body: MDX content + D3 charts + interactions -->
-        <ArticleBody client:only="react" articleId={article.id} articleSummary={article.summary} />
+        <!-- Server-rendered article body (prose + code + editorial in static HTML),
+             then hydrated for D3 charts, TOC scroll-spy, and interactions. -->
+        <ArticleBody client:load articleId={article.id} articleSummary={article.summary} />
       </div>
 
       <!-- TOC is part of ArticleBody (client island) so it can scroll-spy -->

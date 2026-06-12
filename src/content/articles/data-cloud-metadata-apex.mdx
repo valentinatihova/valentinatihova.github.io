@@ -1,15 +1,9 @@
-<div className="not-prose my-10 rounded-[1.75rem] border border-stone-800 bg-stone-950/50 p-6 backdrop-blur-sm md:p-8">
+<div className="not-prose my-10 rounded-[1.75rem] border border-stone-200 bg-stone-50 p-6 backdrop-blur-sm md:p-8">
   <div className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
     Data Cloud metadata · Apex extraction
   </div>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    A Data Cloud implementation can have a clean UI and still leave the delivery team with a fragile handover:
-    stream names copied into a spreadsheet, field mappings checked by hand, and DMO relationships rebuilt from memory.
-  </p>
-  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-200 md:text-[1.125rem]">
-    This case shows a safer pattern: use Apex HTTP callouts against the Data Cloud REST API to extract stream inventory,
-    field mappings, and DMO relationships into a documentation layer that can be regenerated.
-  </p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">A Data Cloud implementation can have a clean UI and still leave the delivery team with a fragile handover: stream names copied into a spreadsheet, field mappings checked by hand, and DMO relationships rebuilt from memory.</p>
+  <p className="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-600 md:text-[1.125rem]">This case shows a safer pattern: use Apex HTTP callouts against the Data Cloud REST API to extract stream inventory, field mappings, and DMO relationships into a documentation layer that can be regenerated.</p>
 </div>
 
 ## Why not SOQL or the UI
@@ -98,19 +92,19 @@ I treated the documentation task as three questions:
   ].map((item, index) => (
     <div
       key={item.script}
-      className="rounded-2xl border border-stone-800 bg-stone-950/45 p-5 shadow-sm md:grid md:grid-cols-[auto_minmax(0,1fr)_minmax(220px,0.9fr)] md:items-start md:gap-5"
+      className="rounded-2xl border border-stone-200 bg-stone-50 p-5 shadow-sm md:grid md:grid-cols-[auto_minmax(0,1fr)_minmax(220px,0.9fr)] md:items-start md:gap-5"
     >
       <div className="mb-3 flex h-8 w-8 items-center justify-center rounded-full border border-accent/50 font-mono text-xs font-semibold text-accent md:mb-0">
         {index + 1}
       </div>
       <div>
         <div className="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-stone-500">Question</div>
-        <p className="mt-2 max-w-xl font-serif text-[1.05rem] leading-relaxed text-stone-100">{item.question}</p>
-        <code className="mt-3 inline-flex rounded border border-stone-700 bg-stone-900 px-2 py-1 font-mono text-[0.78rem] text-stone-200">
+        <p className="mt-2 max-w-xl font-serif text-[1.05rem] leading-relaxed text-stone-700">{item.question}</p>
+        <code className="mt-3 inline-flex rounded border border-stone-200 bg-stone-100 px-2 py-1 font-mono text-[0.78rem] text-stone-600">
           {item.script}
         </code>
       </div>
-      <div className="mt-4 rounded-xl border border-stone-800 bg-stone-900/70 p-3 md:mt-0">
+      <div className="mt-4 rounded-xl border border-stone-200 bg-white p-3 md:mt-0">
         <div className="font-mono text-[10px] font-medium uppercase tracking-[0.22em] text-stone-500">Endpoint</div>
         <code className="mt-2 block break-words font-mono text-[0.8rem] leading-relaxed text-accent">
           {item.endpoint}
