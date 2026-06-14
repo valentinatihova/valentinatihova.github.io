@@ -6,6 +6,14 @@ export interface Article {
   readTime: string;
   tags: string[];
   githubUrl?: string;
+  /**
+   * When true the article is excluded from the site: no route is generated,
+   * it is hidden from the home index, and it is never suggested in ReadNext.
+   * The MDX content and viz components stay in the repo — flip this back to
+   * re-enable. The authoritative visibility filter is applied to the
+   * `articles` export below.
+   */
+  hidden?: boolean;
   caseStudyFrame?: {
     role: string;
     scope: string;
@@ -35,7 +43,7 @@ export const ARTICLE_KIND_LABEL: Record<ArticleKind, string> = {
   idea: 'Idea',
 };
 
-export const articles: Article[] = [
+const allArticles: Article[] = [
   {
     id: "data-cloud-metadata-apex",
     title: "Data Cloud Documentation Should Not Be Written by Hand",
@@ -84,6 +92,7 @@ export const articles: Article[] = [
     date: "2026-04-20",
     readTime: "12 min read",
     tags: ["Machine Learning"],
+    hidden: true,
     githubUrl: "https://github.com/valentinatihova/DS_projects/tree/main/ml_model_for_Zyfra",
     caseStudyFrame: {
       role: "Write-up plus notebook; on-page charts line up with the EDA in the repo.",
@@ -99,6 +108,7 @@ export const articles: Article[] = [
     date: "2026-04-20",
     readTime: "10 min read",
     tags: ["Machine Learning"],
+    hidden: true,
     githubUrl: "https://github.com/valentinatihova/DS_projects/tree/main/bank_churn_prediction",
     caseStudyFrame: {
       role: "Method write-up with reproducible notebook; argument on-site, cells and metrics on GitHub",
@@ -107,3 +117,10 @@ export const articles: Article[] = [
     }
   },
 ];
+
+/**
+ * Public, site-visible articles. Everything that consumes the article list
+ * (home index, /article/[slug] route generation, ReadNext) imports this, so
+ * marking an entry `hidden: true` in `allArticles` removes it everywhere.
+ */
+export const articles: Article[] = allArticles.filter((article) => !article.hidden);
