@@ -1,6 +1,8 @@
 # https://valentinatihova.com
 User-agent: *
 Allow: /
+# Unlisted page — accessible by direct link only, kept out of search
+Disallow: /kts-day1-quiz-f0dd076f/
 
 # AI / answer-engine crawlers — explicitly welcomed
 User-agent: GPTBot

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>KTS Data Cloud — Day 1 · Inecobank × T1A</title>
+<style>
+  /* ============================================================
+     THEME — T1A orange is the live accent (from the logo).
+     Switch --brand to Inecobank's color if you prefer.
+     ============================================================ */
+  :root{
+    --ink:#0F1B2D;          /* primary text */
+    --slate:#4A5567;        /* CLM motif tone — muted text / lines */
+    --muted:#6B7688;
+    --line:#E4E8EF;
+    --paper:#F5F7FA;
+    --surface:#FFFFFF;
+    --brand:#FF6D00;        /* T1A orange — live accent */
+    --ink2:#13243B;
+    --ok:#1E8E5A;
+    --bad:#B42318;
+    --star:#B8860B;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.5;
+       -webkit-font-smoothing:antialiased;font-size:16px}
+
+  .rail{position:sticky;top:0;z-index:50;height:4px;background:var(--line)}
+  .rail>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ink),var(--brand));
+             transition:width .35s ease}
+  @media (prefers-reduced-motion:reduce){.rail>span{transition:none}}
+
+  /* co-brand header with faint CLM motif */
+  header{background:var(--surface);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .clm-bg{position:absolute;right:-30px;top:50%;transform:translateY(-50%);
+          opacity:.07;pointer-events:none;width:320px;max-width:55%}
+  .clm-bg svg{width:100%;height:auto;display:block}
+  .lockup{max-width:760px;margin:0 auto;padding:18px 20px;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+  .lockup .logo{display:flex;align-items:center}
+  .lockup .ineco img{height:30px;width:auto;display:block}
+  .lockup .ineco .fallback{font-weight:700;font-size:18px;color:var(--ink)}
+  .lockup .t1a svg{height:22px;width:auto;display:block}
+  .lockup .divider{width:1px;height:26px;background:var(--line)}
+  .lockup .meta{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);line-height:1.35}
+  .lockup .meta b{display:block;color:var(--ink);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+
+  main{max-width:760px;margin:0 auto;padding:28px 20px 120px;position:relative}
+
+  .intro h1{font-size:26px;line-height:1.15;margin:.2em 0 .3em;letter-spacing:-.01em}
+  .intro p{color:var(--muted);margin:.2em 0;font-size:14.5px}
+
+  .namecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+            box-shadow:var(--shadow);padding:18px;margin:22px 0 8px}
+  .namecard label{display:block;font-weight:600;margin-bottom:8px;font-size:14px}
+  .namecard .hint{color:var(--muted);font-size:12.5px;margin:6px 0 0}
+  input[type=text]{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;
+                   font:inherit;color:var(--ink);background:#fff}
+  input[type=text]:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+
+  .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+     box-shadow:var(--shadow);padding:20px 18px;margin:16px 0}
+  .q .eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.06em;
+              text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .q .num{font-weight:700;color:var(--ink);background:var(--paper);border:1px solid var(--line);
+          border-radius:8px;padding:2px 8px;letter-spacing:.02em}
+  .q.bonus{border-color:#EAD9A6;background:linear-gradient(180deg,#FFFDF6,#fff)}
+  .q.bonus .num{color:var(--star);border-color:#EAD9A6;background:#FFF8E6}
+  .q .pts{margin-left:auto;font-weight:600;color:var(--muted)}
+  .q .stem{font-size:16.5px;font-weight:600;margin:0 0 4px}
+  .q .ctx{font-size:12.5px;color:var(--slate);margin:6px 0 12px;font-weight:600}
+
+  .opt{display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid var(--line);
+       border-radius:11px;margin:8px 0;cursor:pointer;background:#fff;transition:border-color .15s,background .15s}
+  .opt:hover{border-color:var(--brand)}
+  .opt input{margin-top:3px;accent-color:var(--brand)}
+  .opt .lab{flex:1}
+  .opt.sel{border-color:var(--brand);background:#FFF4EC}
+  .q.bonus .opt.sel{border-color:var(--star);background:#FFF8E6}
+
+  textarea{width:100%;min-height:64px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+           font:inherit;color:var(--ink);background:#fff;resize:vertical}
+  .twofield{display:flex;gap:12px;flex-wrap:wrap}
+  .twofield .f{flex:1;min-width:140px}
+  .twofield label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
+  .twofield input{width:100%}
+  .proof-note{font-size:12px;color:var(--muted);margin-top:8px}
+
+  .order{list-style:none;margin:6px 0 0;padding:0}
+  .order li{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+            border-radius:11px;padding:10px;margin:8px 0}
+  .order li.dragging{opacity:.5}
+  .order .letter{font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:8px;
+                 padding:3px 9px;color:var(--ink)}
+  .order .label{flex:1;font-size:14.5px}
+  .order .handle{cursor:grab;color:var(--muted);font-size:18px;user-select:none;padding:0 2px}
+  .order .moves{display:flex;flex-direction:column;gap:3px}
+  .order .moves button{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:22px;
+                       cursor:pointer;color:var(--ink);font-size:12px;line-height:1}
+  .order .moves button:hover{border-color:var(--brand)}
+  .order .moves button:disabled{opacity:.35;cursor:default}
+
+  .actions{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.92);
+           backdrop-filter:saturate(1.2) blur(6px);border-top:1px solid var(--line);padding:12px 16px;z-index:40}
+  .actions .wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:14px}
+  .actions .count{font-size:13px;color:var(--muted)}
+  .btn{margin-left:auto;background:var(--brand);color:#fff;border:none;border-radius:11px;
+       padding:13px 22px;font:inherit;font-weight:700;cursor:pointer;letter-spacing:.01em}
+  .btn:disabled{background:#C9D2DE;cursor:not-allowed}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+  .fb{margin-top:10px;font-size:13.5px;border-radius:10px;padding:9px 11px;display:none}
+  .fb.show{display:block}
+  .fb.good{background:#E9F6EF;color:#136c43;border:1px solid #BFE6CF}
+  .fb.poor{background:#FBEBEA;color:#8a1d15;border:1px solid #F2C9C5}
+  .fb b{font-weight:700}
+  .result{display:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+          box-shadow:var(--shadow);padding:24px 20px;margin:8px 0 16px;text-align:center;position:relative;overflow:hidden}
+  .result.show{display:block}
+  .result .score{font-size:44px;font-weight:800;letter-spacing:-.02em;margin:6px 0}
+  .result .score small{font-size:18px;color:var(--muted);font-weight:600}
+  .result .verdict{font-weight:700;font-size:16px}
+  .result .verdict.pass{color:var(--ok)}
+  .result .verdict.fail{color:var(--bad)}
+  .result .bonus{margin-top:6px;color:var(--star);font-weight:600;font-size:14px}
+  .result .sent{margin-top:12px;font-size:12.5px;color:var(--muted)}
+
+  .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
+  .err.show{display:block}
+</style>
+</head>
+<body>
+<div class="rail"><span id="rail"></span></div>
+
+<header>
+  <div class="clm-bg" aria-hidden="true"><svg viewBox="0 0 505 183" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M89.1191 7.77734C89.8994 5.66887 92.8129 5.6025 93.7266 7.5791L93.8086 7.77734L115.22 65.6396C115.552 66.5378 116.237 67.2581 117.11 67.6367L117.287 67.708L175.15 89.1191C177.259 89.8993 177.325 92.8129 175.349 93.7266L175.15 93.8086L117.287 115.22C116.389 115.552 115.67 116.237 115.291 117.11L115.22 117.287L93.8086 175.15C93.0284 177.259 90.1149 177.325 89.2012 175.349L89.1191 175.15L67.708 117.287C67.3757 116.389 66.6909 115.67 65.8174 115.291L65.6396 115.22L7.77734 93.8086C5.66889 93.0284 5.60257 90.1148 7.5791 89.2012L7.77734 89.1191L65.6396 67.708C66.5377 67.3757 67.2581 66.691 67.6367 65.8174L67.708 65.6396L89.1191 7.77734Z" stroke="#4A5567"/>
+<path d="M250.095 7.77734C250.876 5.66887 253.789 5.6025 254.703 7.5791L254.785 7.77734L276.196 65.6396C276.528 66.5378 277.213 67.2581 278.087 67.6367L278.263 67.708L336.127 89.1191C338.235 89.8993 338.301 92.8129 336.325 93.7266L336.127 93.8086L278.263 115.22C277.365 115.552 276.646 116.237 276.267 117.11L276.196 117.287L254.785 175.15C254.005 177.259 251.091 177.325 250.177 175.349L250.095 175.15L228.684 117.287C228.352 116.389 227.667 115.67 226.794 115.291L226.616 115.22L168.754 93.8086C166.645 93.0284 166.579 90.1148 168.555 89.2012L168.754 89.1191L226.616 67.708C227.514 67.3757 228.234 66.691 228.613 65.8174L228.684 65.6396L250.095 7.77734Z" stroke="#4A5567"/>
+<path d="M411.072 7.77734C411.852 5.66887 414.765 5.6025 415.679 7.5791L415.761 7.77734L437.172 65.6396C437.504 66.5378 438.189 67.2581 439.063 67.6367L439.24 67.708L497.103 89.1191C499.211 89.8993 499.277 92.8129 497.301 93.7266L497.103 93.8086L439.24 115.22C438.342 115.552 437.622 116.237 437.243 117.11L437.172 117.287L415.761 175.15C414.981 177.259 412.067 177.325 411.154 175.349L411.072 175.15L389.66 117.287C389.328 116.389 388.643 115.67 387.77 115.291L387.592 115.22L329.73 93.8086C327.621 93.0284 327.555 90.1148 329.532 89.2012L329.73 89.1191L387.592 67.708C388.49 67.3757 389.211 66.691 389.589 65.8174L389.66 65.6396L411.072 7.77734Z" stroke="#4A5567"/>
+<path d="M89.0371 11.918C89.6432 9.46295 93.0423 9.38612 93.8232 11.6875L93.8906 11.918L108.653 71.7158C108.945 72.8987 109.829 73.8384 110.979 74.208L111.212 74.2744L171.01 89.0371C173.465 89.6434 173.541 93.0422 171.24 93.8232L171.01 93.8906L111.212 108.653C110.029 108.945 109.088 109.829 108.719 110.979L108.653 111.212L93.8906 171.01C93.2844 173.465 89.8844 173.542 89.1035 171.24L89.0371 171.01L74.2744 111.212C73.9823 110.029 73.0984 109.088 71.9492 108.719L71.7158 108.653L11.918 93.8906C9.46282 93.2845 9.38587 89.8843 11.6875 89.1035L11.918 89.0371L71.7158 74.2744C72.8987 73.9823 73.8383 73.0982 74.208 71.9492L74.2744 71.7158L89.0371 11.918Z" stroke="#4A5567"/>
+<path d="M250.013 11.918C250.62 9.46295 254.019 9.38612 254.8 11.6875L254.867 11.918L269.63 71.7158C269.922 72.8987 270.806 73.8384 271.955 74.208L272.188 74.2744L331.986 89.0371C334.441 89.6434 334.518 93.0422 332.217 93.8232L331.986 93.8906L272.188 108.653C271.005 108.945 270.065 109.829 269.695 110.979L269.63 111.212L254.867 171.01C254.261 173.465 250.861 173.542 250.08 171.24L250.013 171.01L235.251 111.212C234.959 110.029 234.075 109.088 232.926 108.719L232.692 108.653L172.894 93.8906C170.439 93.2845 170.362 89.8843 172.664 89.1035L172.894 89.0371L232.692 74.2744C233.875 73.9823 234.815 73.0982 235.184 71.9492L235.251 71.7158L250.013 11.918Z" stroke="#4A5567"/>
+<path d="M410.99 11.918C411.596 9.46295 414.995 9.38612 415.776 11.6875L415.843 11.918L430.606 71.7158C430.898 72.8987 431.782 73.8384 432.931 74.208L433.164 74.2744L492.962 89.0371C495.417 89.6434 495.494 93.0422 493.193 93.8232L492.962 93.8906L433.164 108.653C431.981 108.945 431.041 109.829 430.671 110.979L430.606 111.212L415.843 171.01C415.237 173.465 411.837 173.542 411.056 171.24L410.99 171.01L396.227 111.212C395.935 110.029 395.051 109.088 393.902 108.719L393.668 108.653L333.87 93.8906C331.415 93.2845 331.338 89.8843 333.64 89.1035L333.87 89.0371L393.668 74.2744C394.851 73.9823 395.791 73.0982 396.16 71.9492L396.227 71.7158L410.99 11.918Z" stroke="#4A5567"/>
+<path d="M88.9863 21.8223C89.3678 19.0303 93.2898 18.9431 93.8926 21.5605L93.9404 21.8223L101.654 78.2793C101.854 79.7387 102.942 80.9061 104.36 81.2217L104.648 81.2734L161.105 88.9863C163.897 89.3679 163.984 93.2896 161.367 93.8926L161.105 93.9404L104.648 101.654C103.189 101.854 102.022 102.942 101.706 104.36L101.654 104.648L93.9404 161.105C93.5588 163.897 89.637 163.985 89.0342 161.367L88.9863 161.105L81.2734 104.648C81.074 103.189 79.9848 102.021 78.5664 101.706L78.2793 101.654L21.8223 93.9404C19.0303 93.5589 18.9429 89.6369 21.5605 89.0342L21.8223 88.9863L78.2793 81.2734C79.739 81.0739 80.9064 79.9847 81.2217 78.5664L81.2734 78.2793L88.9863 21.8223Z" stroke="#4A5567"/>
+<path d="M249.963 21.8223C250.344 19.0303 254.266 18.9431 254.869 21.5605L254.917 21.8223L262.631 78.2793C262.83 79.7387 263.919 80.9061 265.337 81.2217L265.625 81.2734L322.082 88.9863C324.874 89.3679 324.961 93.2896 322.344 93.8926L322.082 93.9404L265.625 101.654C264.165 101.854 262.998 102.942 262.682 104.36L262.631 104.648L254.917 161.105C254.535 163.897 250.613 163.985 250.01 161.367L249.963 161.105L242.25 104.648C242.05 103.189 240.961 102.021 239.543 101.706L239.256 101.654L182.799 93.9404C180.007 93.5589 179.919 89.6369 182.537 89.0342L182.799 88.9863L239.256 81.2734C240.715 81.0739 241.883 79.9847 242.198 78.5664L242.25 78.2793L249.963 21.8223Z" stroke="#4A5567"/>
+<path d="M410.939 21.8223C411.32 19.0303 415.242 18.9431 415.845 21.5605L415.893 21.8223L423.607 78.2793C423.806 79.7387 424.895 80.9061 426.313 81.2217L426.601 81.2734L483.058 88.9863C485.85 89.3679 485.937 93.2896 483.32 93.8926L483.058 93.9404L426.601 101.654C425.141 101.854 423.974 102.942 423.658 104.36L423.607 104.648L415.893 161.105C415.511 163.897 411.589 163.985 410.987 161.367L410.939 161.105L403.226 104.648C403.026 103.189 401.937 102.021 400.519 101.706L400.232 101.654L343.775 93.9404C340.983 93.5589 340.895 89.6369 343.513 89.0342L343.775 88.9863L400.232 81.2734C401.691 81.0739 402.859 79.9847 403.174 78.5664L403.226 78.2793L410.939 21.8223Z" stroke="#4A5567"/>
+<path d="M95.3516 84.2637C95.4421 85.9975 96.7868 87.3933 98.498 87.5635L98.6641 87.5762L173.318 91.4639L98.6641 95.3516C96.9302 95.442 95.5334 96.7867 95.3633 98.498L95.3516 98.6641L91.4639 173.318L87.5762 98.6641C87.4857 96.9302 86.1409 95.5335 84.4297 95.3633L84.2637 95.3516L9.6084 91.4639L84.2637 87.5762C85.9974 87.4856 87.3932 86.1408 87.5635 84.4297L87.5762 84.2637L91.4639 9.6084L95.3516 84.2637Z" stroke="#4A5567"/>
+<path d="M256.328 84.2637C256.418 85.9975 257.763 87.3933 259.474 87.5635L259.64 87.5762L334.295 91.4639L259.64 95.3516C257.906 95.442 256.51 96.7867 256.34 98.498L256.328 98.6641L252.44 173.318L248.552 98.6641C248.462 96.9302 247.117 95.5335 245.406 95.3633L245.24 95.3516L170.585 91.4639L245.24 87.5762C246.974 87.4856 248.37 86.1408 248.54 84.4297L248.552 84.2637L252.44 9.6084L256.328 84.2637Z" stroke="#4A5567"/>
+<path d="M417.304 84.2637C417.395 85.9975 418.739 87.3933 420.45 87.5635L420.616 87.5762L495.271 91.4639L420.616 95.3516C418.883 95.442 417.486 96.7867 417.316 98.498L417.304 98.6641L413.416 173.318L409.529 98.6641C409.438 96.9302 408.093 95.5335 406.382 95.3633L406.216 95.3516L331.561 91.4639L406.216 87.5762C407.95 87.4856 409.346 86.1408 409.516 84.4297L409.529 84.2637L413.416 9.6084L417.304 84.2637Z" stroke="#4A5567"/>
+</svg></div>
+  <div class="lockup">
+    <span class="logo ineco">
+      <img src="assets/inecobank-logo.svg" alt="Inecobank"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span class="fallback" style="display:none">Inecobank</span>
+    </span>
+    <span class="divider"></span>
+    <span class="logo t1a"><svg viewBox="0 0 911 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M112 66H9.49949e-08V-2.38419e-05H305V66H193V350H112V66ZM481.602 -2.38419e-05V350H400.602V65H330.602V-2.38419e-05H481.602ZM794.902 275H632.402L601.402 350H518.402L674.402 -2.38419e-05H754.402L910.902 350H825.902L794.902 275ZM769.402 213.5L713.902 79.5L658.402 213.5H769.402Z" fill="#FF6D00"/>
+</svg></span>
+    <span class="meta"><b>KTS · Data Cloud</b>Day 1 · Architecture, Ingestion &amp; Data Model</span>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <h1>Day 1 — Architecture, Ingestion &amp; Data Model</h1>
+    <p>A short knowledge check on what we covered today. Auto-graded; answers are explained on submit. ★ = optional bonus.</p>
+  </section>
+
+  <div class="namecard">
+    <label for="name">Your name / surname</label>
+    <input type="text" id="name" autocomplete="name" placeholder="Ilona Bakhshiyan" />
+    <p class="hint">No login required — your name is the only identifier.</p>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <div class="verdict" id="verdict"></div>
+    <div class="score" id="scoreNum"></div>
+    <div class="bonus" id="bonusLine"></div>
+    <div class="sent" id="sentLine"></div>
+  </div>
+  <div class="err" id="err"></div>
+</main>
+
+<div class="actions">
+  <div class="wrap">
+    <span class="count" id="count">0 answered</span>
+    <button class="btn" id="submit">Submit &amp; see score</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1) PASTE YOUR APPS SCRIPT WEB APP URL BELOW.
+      Leave as-is to preview locally (results just won't be sent).
+   ============================================================ */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6Ostt1uRJdajeBYp6Ad2WuynQC10H_8htuFMWiYJB7CPpQvhy0CfYbrOsyue0jD9n/exec";
+const DAY = "Day 1";
+const PASS_PCT = 70; // % of base points
+
+/* ============================================================
+   2) QUESTIONS. Types: mcq | short | order | twofield | proof
+      To make Day 2 / Day 3, copy this file and swap this array.
+   ============================================================ */
+const QUESTIONS = [
+  { id:"Q1", type:"mcq", points:10, slide:"slides 9–10, 34",
+    en:"\"John Doe\" (CRM) and john.doe@email.com (web logs) — which task makes Data Cloud treat them as one person?",
+    options:[{en:"Data Ingestion"},{en:"Data Harmonization"},{en:"Identity Resolution"},{en:"Data Activation"}],
+    correct:2 },
+
+  { id:"Q2", type:"mcq", points:10, slide:"slides 15, 17",
+    en:"How is Salesforce CRM data ingested into Data Cloud?",
+    options:[{en:"Custom Apex code"},{en:"Proprietary Salesforce API — no code"},{en:"Manual CSV uploads"},{en:"Website SDK"}],
+    correct:1 },
+
+  { id:"Q3", type:"mcq", points:10, slide:"slides 16, 24, 25",
+    en:"How must Boolean values be formatted in the source before mapping?",
+    options:[{en:"0 / 1"},{en:"Y / N"},{en:"true / false"},{en:"Yes / No"}],
+    correct:2 },
+
+  { id:"Q4", type:"mcq", points:10, slide:"slide 18",
+    en:"Every Data Lake Object (DLO) is one of three types. Which trio is correct?",
+    options:[{en:"Profile / Engagement / Other"},{en:"Source / Target / Reference"},{en:"Individual / Account / Contact"},{en:"Raw / Mapped / Unified"}],
+    correct:0 },
+
+  { id:"Q5", type:"short", points:10, slide:"slides 24, 26",
+    en:"Which field links the Individual DMO to the Contact Point DMO for Identity Resolution? (one word)",
+    placeholder:"one word",
+    accepted:["party","party field"], showAnswer:"Party — Individual.Id = Contact.Party" },
+
+  { id:"Q6", type:"mcq", points:10, slide:"slides 30–31",
+    en:"In the Account Split Transformation, Is Person Account = true routes records to which output object?",
+    options:[{en:"Account_Account_T"},{en:"Individual_Account_T"},{en:"IssuedCard"},{en:"ClientContact__c"}],
+    correct:1 },
+
+  { id:"Q7", type:"order", points:10, slide:"slide 9",
+    en:"Put the 6 Data Cloud tasks in the correct execution order (drag, or use ▲▼).",
+    items:[ {letter:"A", en:"Calculated Insights"},
+            {letter:"B", en:"Data Activation"},
+            {letter:"C", en:"Segmentation"},
+            {letter:"D", en:"Data Ingestion"},
+            {letter:"E", en:"Identity Resolution"},
+            {letter:"F", en:"Data Harmonization"} ],
+    correctOrder:["D","F","E","A","C","B"] },
+
+  { id:"Q8", type:"proof", slide:"slides 14, 20",
+    en:"Hands-on: New Data Stream → File Upload (CSV: name, email, client_id, segment). DLO = Training_<YourName>_dlm, Category = Profile, PK = client_id. Report the exact DLO API name + number of records ingested." },
+
+  { id:"Q9", type:"proof", slide:"slides 29–31",
+    en:"Hands-on: in Data Explorer open the Account_Account_T DLO (business accounts). Report the total record count." },
+
+  { id:"Q10", type:"short", points:10, slide:"slide 30",
+    en:"Open the Individual DMO. What is its Primary Key field (the one Identity Resolution unifies on)?",
+    placeholder:"field name",
+    accepted:["individual id","individualid","id"], showAnswer:"Individual Id" },
+
+  { id:"Q11", type:"twofield", points:8, bonus:true, slide:"slides 26, 34",
+    en:"★ Bonus — a client has 3 phone numbers and 2 emails in the source. After mapping to Contact Point DMOs and running Identity Resolution, how many Contact Point records and how many Individual (unified) records exist?",
+    fields:[ {key:"contactPoints", label:"Contact Points", accepted:["5"]},
+             {key:"individuals",   label:"Individuals",    accepted:["1"]} ],
+    showAnswer:"5 Contact Points, 1 Individual" },
+
+  { id:"Q12", type:"short", points:7, bonus:true, slide:"slide 24",
+    en:"★ Bonus — for Inecobank (Armenia) phone Contact Points to match in Identity Resolution, numbers must carry the country code +___. What is Armenia's country code?",
+    placeholder:"+___",
+    accepted:["+374","374"], showAnswer:"+374" }
+];
+
+/* ============================================================
+   3) RENDER
+   ============================================================ */
+const quiz = document.getElementById("quiz");
+const state = {};
+function norm(s){ return (s||"").toString().trim().toLowerCase().replace(/\s+/g," "); }
+
+QUESTIONS.forEach((q) => {
+  const card = document.createElement("section");
+  card.className = "q" + (q.bonus ? " bonus" : "");
+  card.id = "card-" + q.id;
+  const ptsTxt = q.type === "proof" ? "proof" : (q.bonus?("★ +"+q.points):(q.points+" pts"));
+
+  let inner = `<div class="eyebrow"><span class="num">${q.bonus?"★ ":""}${q.id}</span>
+      <span>${q.bonus?"Bonus":(q.type==="proof"?"Hands-on":"Question")}</span>
+      <span class="pts">${ptsTxt}</span></div>
+    <p class="stem">${q.en}</p>
+    ${q.slide?`<div class="ctx">KTS · ${q.slide}</div>`:""}`;
+
+  if(q.type==="mcq"){
+    inner += q.options.map((o,idx)=>`
+      <label class="opt" data-q="${q.id}" data-idx="${idx}">
+        <input type="radio" name="${q.id}" value="${idx}">
+        <span class="lab">${o.en}</span>
+      </label>`).join("");
+  } else if(q.type==="short"){
+    inner += `<input type="text" id="in-${q.id}" placeholder="${q.placeholder||""}">`;
+  } else if(q.type==="proof"){
+    inner += `<textarea id="in-${q.id}" placeholder="Type your result here"></textarea>
+      <p class="proof-note">Reviewed manually — captured for the trainer.</p>`;
+  } else if(q.type==="twofield"){
+    inner += `<div class="twofield">` + q.fields.map(f=>`
+      <div class="f"><label>${f.label}</label><input type="text" id="in-${q.id}-${f.key}" inputmode="numeric"></div>`).join("") + `</div>`;
+  } else if(q.type==="order"){
+    inner += `<ul class="order" id="ord-${q.id}"></ul>`;
+  }
+  inner += `<div class="fb" id="fb-${q.id}"></div>`;
+  card.innerHTML = inner;
+  quiz.appendChild(card);
+});
+
+quiz.querySelectorAll(".opt").forEach(opt=>{
+  opt.addEventListener("click", ()=>{
+    const id = opt.dataset.q, idx = +opt.dataset.idx;
+    state[id] = idx;
+    opt.parentNode.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel"));
+    opt.classList.add("sel");
+    opt.querySelector("input").checked = true;
+    updateCount();
+  });
+});
+
+QUESTIONS.forEach(q=>{
+  if(q.type==="short"||q.type==="proof"){
+    const el=document.getElementById("in-"+q.id);
+    el.addEventListener("input",()=>{ state[q.id]=el.value; updateCount(); });
+  } else if(q.type==="twofield"){
+    q.fields.forEach(f=>{
+      const el=document.getElementById(`in-${q.id}-${f.key}`);
+      el.addEventListener("input",()=>{ state[q.id]=state[q.id]||{}; state[q.id][f.key]=el.value; updateCount(); });
+    });
+  }
+});
+
+QUESTIONS.filter(q=>q.type==="order").forEach(q=>{
+  const ul=document.getElementById("ord-"+q.id);
+  let order=q.items.map(it=>it.letter);
+  state[q.id]=order.slice();
+  function render(){
+    ul.innerHTML="";
+    order.forEach((letter,pos)=>{
+      const it=q.items.find(x=>x.letter===letter);
+      const li=document.createElement("li");
+      li.draggable=true; li.dataset.letter=letter;
+      li.innerHTML=`<span class="handle" aria-hidden="true">⠿</span>
+        <span class="letter">${letter}</span>
+        <span class="label">${it.en}</span>
+        <span class="moves">
+          <button type="button" aria-label="Move up" ${pos===0?"disabled":""} data-dir="-1">▲</button>
+          <button type="button" aria-label="Move down" ${pos===order.length-1?"disabled":""} data-dir="1">▼</button>
+        </span>`;
+      li.querySelectorAll(".moves button").forEach(b=>{
+        b.addEventListener("click",()=>{
+          const dir=+b.dataset.dir, np=pos+dir;
+          if(np<0||np>=order.length)return;
+          [order[pos],order[np]]=[order[np],order[pos]];
+          state[q.id]=order.slice(); render(); updateCount();
+        });
+      });
+      li.addEventListener("dragstart",e=>{li.classList.add("dragging");e.dataTransfer.setData("text/plain",letter);});
+      li.addEventListener("dragend",()=>li.classList.remove("dragging"));
+      li.addEventListener("dragover",e=>{e.preventDefault();});
+      li.addEventListener("drop",e=>{
+        e.preventDefault();
+        const from=e.dataTransfer.getData("text/plain");
+        const fi=order.indexOf(from), ti=order.indexOf(letter);
+        if(fi<0||ti<0||fi===ti)return;
+        order.splice(ti,0,order.splice(fi,1)[0]);
+        state[q.id]=order.slice(); render(); updateCount();
+      });
+      ul.appendChild(li);
+    });
+  }
+  render();
+});
+
+function answeredCount(){
+  let n=0;
+  QUESTIONS.forEach(q=>{
+    const v=state[q.id];
+    if(q.type==="mcq" && v!=null) n++;
+    else if((q.type==="short"||q.type==="proof") && v && v.trim()) n++;
+    else if(q.type==="twofield" && v && q.fields.every(f=>(v[f.key]||"").trim())) n++;
+    else if(q.type==="order") n++;
+  });
+  return n;
+}
+function updateCount(){
+  const n=answeredCount(), total=QUESTIONS.length;
+  document.getElementById("count").textContent=`${n} / ${total} answered`;
+  document.getElementById("rail").style.width=(100*n/total)+"%";
+}
+updateCount();
+
+/* ============================================================
+   4) GRADE + SUBMIT
+   ============================================================ */
+function gradeOrder(q){ return JSON.stringify(state[q.id])===JSON.stringify(q.correctOrder); }
+function gradeShort(q){ return (q.accepted||[]).map(norm).includes(norm(state[q.id])); }
+function gradeTwo(q){ const v=state[q.id]||{}; return q.fields.every(f=>(f.accepted||[]).map(norm).includes(norm(v[f.key]))); }
+
+document.getElementById("submit").addEventListener("click", submit);
+
+async function submit(){
+  const name=document.getElementById("name").value.trim();
+  const err=document.getElementById("err");
+  if(!name){ err.textContent="Please enter your name first."; err.classList.add("show");
+             document.getElementById("name").focus(); return; }
+  err.classList.remove("show");
+
+  let baseScore=0, baseMax=0, bonusScore=0, bonusMax=0;
+  const answers={};
+
+  QUESTIONS.forEach(q=>{
+    const fb=document.getElementById("fb-"+q.id);
+    let ok=null, ansText="";
+
+    if(q.type==="proof"){
+      ansText=(state[q.id]||"").trim();
+      answers[q.id]={a:ansText, ok:""};
+      fb.className="fb show good";
+      fb.innerHTML=`<b>Recorded.</b> Reviewed by the trainer.`;
+      return;
+    }
+    if(q.type==="mcq"){ ok = state[q.id]===q.correct; ansText = state[q.id]!=null?["A","B","C","D","E","F"][state[q.id]]:""; }
+    else if(q.type==="short"){ ok=gradeShort(q); ansText=state[q.id]||""; }
+    else if(q.type==="twofield"){ ok=gradeTwo(q); const v=state[q.id]||{}; ansText=q.fields.map(f=>`${f.label}=${v[f.key]||""}`).join(", "); }
+    else if(q.type==="order"){ ok=gradeOrder(q); ansText=(state[q.id]||[]).join(","); }
+
+    if(q.bonus){ bonusMax+=q.points; if(ok) bonusScore+=q.points; }
+    else { baseMax+=q.points; if(ok) baseScore+=q.points; }
+    answers[q.id]={a:ansText, ok:ok};
+
+    let right="";
+    if(q.type==="mcq") right=q.options[q.correct].en;
+    else if(q.showAnswer) right=q.showAnswer;
+    else if(q.type==="order") right=q.correctOrder.join(",");
+    fb.className="fb show "+(ok?"good":"poor");
+    fb.innerHTML = ok ? `<b>Correct.</b> ${q.slide?("KTS "+q.slide):""}`
+                      : `<b>Not quite.</b> Answer: <b>${right}</b>. ${q.slide?("KTS "+q.slide):""}`;
+  });
+
+  const basePct = baseMax? Math.round(100*baseScore/baseMax) : 0;
+  const pass = basePct>=PASS_PCT;
+  const total = baseScore+bonusScore;
+
+  const res=document.getElementById("result");
+  document.getElementById("verdict").textContent = pass ? "Passed ✓ — well done!" : "Below pass mark — review and retry";
+  document.getElementById("verdict").className="verdict "+(pass?"pass":"fail");
+  document.getElementById("scoreNum").innerHTML=`${baseScore}<small> / ${baseMax} · ${basePct}%</small>`;
+  document.getElementById("bonusLine").textContent = bonusMax? `★ Bonus: ${bonusScore} / ${bonusMax}` : "";
+  res.classList.add("show");
+
+  const payload={ submittedAt:new Date().toISOString(), name, day:DAY,
+    baseScore, baseMax, basePct, bonusScore, bonusMax, totalScore:total, answers };
+  const sent=document.getElementById("sentLine");
+  if(APPS_SCRIPT_URL && !APPS_SCRIPT_URL.startsWith("PASTE_")){
+    try{
+      await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",
+        headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)});
+      sent.textContent="Result sent to the trainer.";
+    }catch(e){ sent.textContent="Could not send result — show this screen to the trainer."; }
+  } else {
+    sent.textContent="(Preview mode — no endpoint set, result not sent.)";
+  }
+  document.getElementById("submit").disabled=true;
+  document.getElementById("submit").textContent="Submitted ✓";
+  res.scrollIntoView({behavior:"smooth",block:"center"});
+}
+</script>
+</body>
+</html>
