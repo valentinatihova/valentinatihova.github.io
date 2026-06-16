@@ -4,42 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex, nofollow" />
-<title>KTS Data Cloud — Day 1 · Inecobank × T1A</title>
+<title>KTS Data Cloud — Day 2 · Inecobank × T1A</title>
 <style>
-  /* ============================================================
-     THEME — T1A orange is the live accent (from the logo).
-     Switch --brand to Inecobank's color if you prefer.
-     ============================================================ */
   :root{
-    --ink:#0F1B2D;          /* primary text */
-    --slate:#4A5567;        /* CLM motif tone — muted text / lines */
-    --muted:#6B7688;
-    --line:#E4E8EF;
-    --paper:#F5F7FA;
-    --surface:#FFFFFF;
-    --brand:#FF6D00;        /* T1A orange — live accent */
-    --ink2:#13243B;
-    --ok:#1E8E5A;
-    --bad:#B42318;
-    --star:#B8860B;
-    --radius:14px;
-    --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);
+    --ink:#0F1B2D; --slate:#4A5567; --muted:#6B7688; --line:#E4E8EF;
+    --paper:#F5F7FA; --surface:#FFFFFF; --brand:#FF6D00; --ink2:#13243B;
+    --ok:#1E8E5A; --bad:#B42318; --star:#B8860B;
+    --radius:14px; --shadow:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);
     --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);line-height:1.5;
        -webkit-font-smoothing:antialiased;font-size:16px}
-
   .rail{position:sticky;top:0;z-index:50;height:4px;background:var(--line)}
-  .rail>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ink),var(--brand));
-             transition:width .35s ease}
+  .rail>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ink),var(--brand));transition:width .35s ease}
   @media (prefers-reduced-motion:reduce){.rail>span{transition:none}}
-
-  /* co-brand header with faint CLM motif */
   header{background:var(--surface);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
-  .clm-bg{position:absolute;right:-30px;top:50%;transform:translateY(-50%);
-          opacity:.07;pointer-events:none;width:320px;max-width:55%}
+  .clm-bg{position:absolute;right:-30px;top:50%;transform:translateY(-50%);opacity:.07;pointer-events:none;width:320px;max-width:55%}
   .clm-bg svg{width:100%;height:auto;display:block}
   .lockup{max-width:760px;margin:0 auto;padding:18px 20px;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
   .lockup .logo{display:flex;align-items:center}
@@ -49,78 +31,57 @@
   .lockup .divider{width:1px;height:26px;background:var(--line)}
   .lockup .meta{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);line-height:1.35}
   .lockup .meta b{display:block;color:var(--ink);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
-
   main{max-width:760px;margin:0 auto;padding:28px 20px 120px;position:relative}
-
   .intro h1{font-size:26px;line-height:1.15;margin:.2em 0 .3em;letter-spacing:-.01em}
   .intro p{color:var(--muted);margin:.2em 0;font-size:14.5px}
-
-  .namecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-            box-shadow:var(--shadow);padding:18px;margin:22px 0 8px}
+  .namecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin:22px 0 8px}
   .namecard label{display:block;font-weight:600;margin-bottom:8px;font-size:14px}
   .namecard .hint{color:var(--muted);font-size:12.5px;margin:6px 0 0}
-  input[type=text]{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;
-                   font:inherit;color:var(--ink);background:#fff}
+  input[type=text]{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff}
   input[type=text]:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
-
-  .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-     box-shadow:var(--shadow);padding:20px 18px;margin:16px 0}
-  .q .eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.06em;
-              text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-  .q .num{font-weight:700;color:var(--ink);background:var(--paper);border:1px solid var(--line);
-          border-radius:8px;padding:2px 8px;letter-spacing:.02em}
+  .q{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 18px;margin:16px 0}
+  .q .eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .q .num{font-weight:700;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:2px 8px;letter-spacing:.02em}
   .q.bonus{border-color:#EAD9A6;background:linear-gradient(180deg,#FFFDF6,#fff)}
   .q.bonus .num{color:var(--star);border-color:#EAD9A6;background:#FFF8E6}
   .q .pts{margin-left:auto;font-weight:600;color:var(--muted)}
   .q .stem{font-size:16.5px;font-weight:600;margin:0 0 4px}
   .q .ctx{font-size:12.5px;color:var(--slate);margin:6px 0 12px;font-weight:600}
-
-  .opt{display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid var(--line);
-       border-radius:11px;margin:8px 0;cursor:pointer;background:#fff;transition:border-color .15s,background .15s}
+  .opt{display:flex;gap:11px;align-items:flex-start;padding:12px 13px;border:1px solid var(--line);border-radius:11px;margin:8px 0;cursor:pointer;background:#fff;transition:border-color .15s,background .15s}
   .opt:hover{border-color:var(--brand)}
   .opt input{margin-top:3px;accent-color:var(--brand)}
   .opt .lab{flex:1}
   .opt.sel{border-color:var(--brand);background:#FFF4EC}
   .q.bonus .opt.sel{border-color:var(--star);background:#FFF8E6}
-
-  textarea{width:100%;min-height:64px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
-           font:inherit;color:var(--ink);background:#fff;resize:vertical}
+  textarea{width:100%;min-height:64px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;color:var(--ink);background:#fff;resize:vertical}
   .twofield{display:flex;gap:12px;flex-wrap:wrap}
   .twofield .f{flex:1;min-width:140px}
   .twofield label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
   .twofield input{width:100%}
   .proof-note{font-size:12px;color:var(--muted);margin-top:8px}
-
+  .multi-note{font-size:12px;color:var(--muted);margin:0 0 6px}
   .order{list-style:none;margin:6px 0 0;padding:0}
-  .order li{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
-            border-radius:11px;padding:10px;margin:8px 0}
+  .order li{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;margin:8px 0}
   .order li.dragging{opacity:.5}
-  .order .letter{font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:8px;
-                 padding:3px 9px;color:var(--ink)}
+  .order .letter{font-weight:700;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px 9px;color:var(--ink)}
   .order .label{flex:1;font-size:14.5px}
   .order .handle{cursor:grab;color:var(--muted);font-size:18px;user-select:none;padding:0 2px}
   .order .moves{display:flex;flex-direction:column;gap:3px}
-  .order .moves button{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:22px;
-                       cursor:pointer;color:var(--ink);font-size:12px;line-height:1}
+  .order .moves button{border:1px solid var(--line);background:#fff;border-radius:7px;width:30px;height:22px;cursor:pointer;color:var(--ink);font-size:12px;line-height:1}
   .order .moves button:hover{border-color:var(--brand)}
   .order .moves button:disabled{opacity:.35;cursor:default}
-
-  .actions{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.92);
-           backdrop-filter:saturate(1.2) blur(6px);border-top:1px solid var(--line);padding:12px 16px;z-index:40}
+  .actions{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.2) blur(6px);border-top:1px solid var(--line);padding:12px 16px;z-index:40}
   .actions .wrap{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:14px}
   .actions .count{font-size:13px;color:var(--muted)}
-  .btn{margin-left:auto;background:var(--brand);color:#fff;border:none;border-radius:11px;
-       padding:13px 22px;font:inherit;font-weight:700;cursor:pointer;letter-spacing:.01em}
+  .btn{margin-left:auto;background:var(--brand);color:#fff;border:none;border-radius:11px;padding:13px 22px;font:inherit;font-weight:700;cursor:pointer;letter-spacing:.01em}
   .btn:disabled{background:#C9D2DE;cursor:not-allowed}
   .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-
   .fb{margin-top:10px;font-size:13.5px;border-radius:10px;padding:9px 11px;display:none}
   .fb.show{display:block}
   .fb.good{background:#E9F6EF;color:#136c43;border:1px solid #BFE6CF}
   .fb.poor{background:#FBEBEA;color:#8a1d15;border:1px solid #F2C9C5}
   .fb b{font-weight:700}
-  .result{display:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-          box-shadow:var(--shadow);padding:24px 20px;margin:8px 0 16px;text-align:center;position:relative;overflow:hidden}
+  .result{display:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px;margin:8px 0 16px;text-align:center;position:relative;overflow:hidden}
   .result.show{display:block}
   .result .score{font-size:44px;font-weight:800;letter-spacing:-.02em;margin:6px 0}
   .result .score small{font-size:18px;color:var(--muted);font-weight:600}
@@ -129,14 +90,12 @@
   .result .verdict.fail{color:var(--bad)}
   .result .bonus{margin-top:6px;color:var(--star);font-weight:600;font-size:14px}
   .result .sent{margin-top:12px;font-size:12.5px;color:var(--muted)}
-
   .err{color:var(--bad);font-size:13px;margin-top:8px;display:none}
   .err.show{display:block}
 </style>
 </head>
 <body>
 <div class="rail"><span id="rail"></span></div>
-
 <header>
   <div class="clm-bg" aria-hidden="true"><svg viewBox="0 0 505 183" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M89.1191 7.77734C89.8994 5.66887 92.8129 5.6025 93.7266 7.5791L93.8086 7.77734L115.22 65.6396C115.552 66.5378 116.237 67.2581 117.11 67.6367L117.287 67.708L175.15 89.1191C177.259 89.8993 177.325 92.8129 175.349 93.7266L175.15 93.8086L117.287 115.22C116.389 115.552 115.67 116.237 115.291 117.11L115.22 117.287L93.8086 175.15C93.0284 177.259 90.1149 177.325 89.2012 175.349L89.1191 175.15L67.708 117.287C67.3757 116.389 66.6909 115.67 65.8174 115.291L65.6396 115.22L7.77734 93.8086C5.66889 93.0284 5.60257 90.1148 7.5791 89.2012L7.77734 89.1191L65.6396 67.708C66.5377 67.3757 67.2581 66.691 67.6367 65.8174L67.708 65.6396L89.1191 7.77734Z" stroke="#4A5567"/>
@@ -162,24 +121,20 @@
     <span class="logo t1a"><svg viewBox="0 0 911 350" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M112 66H9.49949e-08V-2.38419e-05H305V66H193V350H112V66ZM481.602 -2.38419e-05V350H400.602V65H330.602V-2.38419e-05H481.602ZM794.902 275H632.402L601.402 350H518.402L674.402 -2.38419e-05H754.402L910.902 350H825.902L794.902 275ZM769.402 213.5L713.902 79.5L658.402 213.5H769.402Z" fill="#FF6D00"/>
 </svg></span>
-    <span class="meta"><b>KTS · Data Cloud</b>Day 1 · Architecture, Ingestion &amp; Data Model</span>
+    <span class="meta"><b>KTS · Data Cloud</b>Day 2 · Segmentation, Integrations, Reporting & Einstein</span>
   </div>
 </header>
-
 <main>
   <section class="intro">
-    <h1>Day 1 — Architecture, Ingestion &amp; Data Model</h1>
+    <h1>Day 2 — Segmentation, Integrations, Reporting & Einstein</h1>
     <p>A short knowledge check on what we covered today. Auto-graded; answers are explained on submit. ★ = optional bonus.</p>
   </section>
-
   <div class="namecard">
     <label for="name">Your name / surname</label>
     <input type="text" id="name" autocomplete="name" placeholder="Ilona Bakhshiyan" />
     <p class="hint">No login required — your name is the only identifier.</p>
   </div>
-
   <div id="quiz"></div>
-
   <div class="result" id="result">
     <div class="verdict" id="verdict"></div>
     <div class="score" id="scoreNum"></div>
@@ -188,89 +143,67 @@
   </div>
   <div class="err" id="err"></div>
 </main>
-
 <div class="actions">
   <div class="wrap">
     <span class="count" id="count">0 answered</span>
     <button class="btn" id="submit">Submit &amp; see score</button>
   </div>
 </div>
-
 <script>
-/* ============================================================
-   1) PASTE YOUR APPS SCRIPT WEB APP URL BELOW.
-      Leave as-is to preview locally (results just won't be sent).
-   ============================================================ */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0gqB5G00ZndjKuyWaS-ulxMg3SoacIo-ie7YPmkubnXFEzl9cd7_o6kX8cX1vPwjV/exec";
-const DAY = "Day 1";
-const PASS_PCT = 70; // % of base points
+const DAY = "Day 2";
+const PASS_PCT = 70;
+const LET = ["A","B","C","D","E","F","G","H"];
 
-/* ============================================================
-   2) QUESTIONS. Types: mcq | short | order | twofield | proof
-      To make Day 2 / Day 3, copy this file and swap this array.
-   ============================================================ */
 const QUESTIONS = [
-  { id:"Q1", type:"mcq", points:10, slide:"slides 9–10, 34",
-    en:"\"John Doe\" (CRM) and john.doe@email.com (web logs) — which task makes Data Cloud treat them as one person?",
-    options:[{en:"Data Ingestion"},{en:"Data Harmonization"},{en:"Identity Resolution"},{en:"Data Activation"}],
-    correct:2 },
-
-  { id:"Q2", type:"mcq", points:10, slide:"slides 15, 17",
-    en:"How is Salesforce CRM data ingested into Data Cloud?",
-    options:[{en:"Custom Apex code"},{en:"Proprietary Salesforce API — no code"},{en:"Manual CSV uploads"},{en:"Website SDK"}],
-    correct:1 },
-
-  { id:"Q3", type:"mcq", points:10, slide:"slides 16, 24, 25",
-    en:"How must Boolean values be formatted in the source before mapping?",
-    options:[{en:"0 / 1"},{en:"Y / N"},{en:"true / false"},{en:"Yes / No"}],
-    correct:2 },
-
-  { id:"Q4", type:"mcq", points:10, slide:"slide 18",
-    en:"Every Data Lake Object (DLO) is one of three types. Which trio is correct?",
-    options:[{en:"Profile / Engagement / Other"},{en:"Source / Target / Reference"},{en:"Individual / Account / Contact"},{en:"Raw / Mapped / Unified"}],
-    correct:0 },
-
-  { id:"Q5", type:"short", points:10, slide:"slides 24, 26",
-    en:"Which field links the Individual DMO to the Contact Point DMO for Identity Resolution? (one word)",
-    placeholder:"one word",
-    accepted:["party","party field"], showAnswer:"Party — Individual.Id = Contact.Party" },
-
-  { id:"Q6", type:"mcq", points:10, slide:"slides 30–31",
-    en:"In the Account Split Transformation, Is Person Account = true routes records to which output object?",
-    options:[{en:"Account_Account_T"},{en:"Individual_Account_T"},{en:"IssuedCard"},{en:"ClientContact__c"}],
-    correct:1 },
-
-  { id:"Q7", type:"order", points:10, slide:"slide 9",
-    en:"Put the 6 Data Cloud tasks in the correct execution order (drag, or use ▲▼).",
-    items:[ {letter:"A", en:"Calculated Insights"},
-            {letter:"B", en:"Data Activation"},
-            {letter:"C", en:"Segmentation"},
-            {letter:"D", en:"Data Ingestion"},
-            {letter:"E", en:"Identity Resolution"},
-            {letter:"F", en:"Data Harmonization"} ],
-    correctOrder:["D","F","E","A","C","B"] },
-
-  { id:"Q8", type:"proof", slide:"slides 14, 20",
-    en:"Hands-on: New Data Stream → File Upload (CSV: name, email, client_id, segment). DLO = Training_<YourName>_dlm, Category = Profile, PK = client_id. Report the exact DLO API name + number of records ingested." },
-
-  { id:"Q9", type:"proof", slide:"slides 29–31",
-    en:"Hands-on: in Data Explorer open the Account_Account_T DLO (business accounts). Report the total record count." },
-
-  { id:"Q10", type:"short", points:10, slide:"slide 30",
-    en:"Open the Individual DMO. What is its Primary Key field (the one Identity Resolution unifies on)?",
-    placeholder:"field name",
-    accepted:["individual id","individualid","id"], showAnswer:"Individual Id" },
-
-  { id:"Q11", type:"twofield", points:8, bonus:true, slide:"slides 26, 34",
-    en:"★ Bonus — a client has 3 phone numbers and 2 emails in the source. After mapping to Contact Point DMOs and running Identity Resolution, how many Contact Point records and how many Individual (unified) records exist?",
-    fields:[ {key:"contactPoints", label:"Contact Points", accepted:["5"]},
-             {key:"individuals",   label:"Individuals",    accepted:["1"]} ],
-    showAnswer:"5 Contact Points, 1 Individual" }
+  { id:"Q1", type:"mcq", points:10, slide:"slides 39, 45",
+    en:"Which segment type creates a prioritised list that prevents audience overlap and \"message fatigue\"?",
+    options:[{en:"Standard"},{en:"Waterfall"},{en:"Real-Time"},{en:"Dynamic"}], correct:1 },
+  { id:"Q2", type:"multi", points:10, slide:"slide 40",
+    en:"Which of the following are EXCLUDE criteria of the ClickLoan6M segment?",
+    options:[{en:"Users with overdue"},{en:"Risk class = 1"},{en:"Premium clients"},{en:"Non-residents"},{en:"1-click loan active 6+ months"}],
+    correct:[0,2,3] },
+  { id:"Q3", type:"mcq", points:10, slide:"slide 41",
+    en:"Correct end-to-end order from a campaigner's request to an active SFMC audience?",
+    options:[{en:"Build \u2192 Request \u2192 Activate \u2192 Validate"},{en:"Request \u2192 Build \u2192 Validate \u2192 Activate"},{en:"Request \u2192 Validate \u2192 Build \u2192 Activate"},{en:"Build \u2192 Validate \u2192 Request \u2192 Activate"}], correct:1 },
+  { id:"Q4", type:"short", points:10, slide:"slide 44",
+    en:"Segment Activation directly populates SFMC ________ for Email/SMS/Push \u2014 no manual export. (2 words)",
+    placeholder:"2 words", accepted:["data extensions","data extension","de"], showAnswer:"Data Extensions" },
+  { id:"Q5", type:"mcq", points:10, slide:"slides 54\u201355, 57",
+    en:"Correct flow to visualise a complex metric on a dashboard?",
+    options:[{en:"DMO \u2192 Dashboard \u2192 Report"},{en:"Calculated Insight \u2192 Report \u2192 Dashboard"},{en:"Report \u2192 DLO \u2192 Calculated Insight"},{en:"Dashboard \u2192 Calculated Insight \u2192 Report"}], correct:1 },
+  { id:"Q6", type:"mcq", points:10, slide:"slide 48",
+    en:"Composite primary key of the ExternalCredits ingestion (Oracle CBS \u2192 MuleSoft \u2192 Ingestion API)?",
+    options:[{en:"ClientCode only"},{en:"SSN + \"|\" + CREDIT_NUMBER"},{en:"CREDIT_NUMBER only"},{en:"NEWID()"}], correct:1 },
+  { id:"Q7", type:"mcq", points:10, slide:"slides 48\u201349",
+    en:"The ExternalCredit DMO joins to Account via which field pair?",
+    options:[{en:"SSN \u2192 Account.Id"},{en:"ExternalCredit.ClientCode \u2192 Account.ClientCode__c"},{en:"CreditNumber \u2192 Account.Name"},{en:"Id \u2192 Account.Party"}], correct:1 },
+  { id:"Q8", type:"order", points:10, slide:"slides 48\u201349",
+    en:"Put the 7 ExternalCredits ingestion steps in the correct order (drag, or use \u25b2\u25bc).",
+    items:[ {letter:"A", en:"Records land in the ExternalCredits DLO (raw, queryable)"},
+            {letter:"B", en:"MuleSoft queries Oracle V_ACRA_CREDITS via JDBC (UTF-8)"},
+            {letter:"C", en:"Map DLO \u2192 ExternalCredit DMO; join ClientCode \u2192 Account.ClientCode__c"},
+            {letter:"D", en:"POST /ingest/.../ExternalCredits \u2192 HTTP 202 Accepted"},
+            {letter:"E", en:"MuleSoft builds JSON payload (composite PK SSN+\"|\"+CREDIT_NUMBER)"},
+            {letter:"F", en:"Score & filter clients by external credit data in Segmentation"},
+            {letter:"G", en:"Create ExternalCredit DMO (Category: Other, PascalCase)"} ],
+    correctOrder:["B","E","D","A","G","C","F"] },
+  { id:"Q9", type:"proof", slide:"slides 40\u201341",
+    en:"Hands-on: build a NEW segment \"DepositUpsell_SalaryReceivers\" on UnifiedAccount. INCLUDE (AND): Salary Receiver = true; Term Deposit Balance = 0 AMD; Risk Level = 1; Age between 25 and 55; Demand Account Balances > 500,000 AMD. EXCLUDE (OR): PEP = true; Bank Employee = true; RA Resident = false; Active = false OR Dead = true; Enforced Frozen Amount > 0 AMD; Responses.response type = UNSUBSCRIBE (Lookback P2Y). Save \u2192 Publish/Refresh. Report: (a) member count, (b) the API name you gave it, (c) which single EXCLUDE rule removed the most records." },
+  { id:"Q10", type:"proof", slide:"slides 42\u201343",
+    en:"Hands-on: in Developer Console (SQL) return the distinct values of Risk Level on the Individual/UnifiedAccount DMO. Report the distinct count and paste your query. (No SELECT * in derived tables.)" },
+  { id:"Q11", type:"proof", slide:"slide 44",
+    en:"Hands-on: on your new segment \u2192 Activations, configure an SFMC activation. Report the target Data Extension name + 2 attributes mapped for personalisation." },
+  { id:"Q12", type:"mcq", points:8, bonus:true, slide:"existing Loan segment",
+    en:"\u2605 Bonus \u2014 FinancialAccountCustom stores both loans and deposits in one object. When building a deposit-only segment, which field must you filter on to avoid pulling loans?",
+    options:[{en:"AgreementSubtype"},{en:"Type (Is Equal To Deposit)"},{en:"LoanTerm"},{en:"OverdueInterest"}], correct:1 },
+  { id:"Q13", type:"mcq", points:9, bonus:true, slide:"profile vs engagement",
+    en:"\u2605 Bonus \u2014 Risk Level = 1 needs no time window, but Responses.response type = UNSUBSCRIBE needs a Lookback Period (P2Y). Why?",
+    options:[{en:"Risk Level is encrypted"},{en:"Risk Level is a direct profile attribute (point-in-time); Responses is a related engagement object evaluated over a time window, so it needs a lookback"},{en:"Lookback is required on every rule"},{en:"Because AMD currency needs conversion"}], correct:1 },
+  { id:"Q14", type:"proof", bonus:true, slide:"reproduce the pool",
+    en:"\u2605 Bonus \u2014 write a Developer Console SQL that finds Individuals with Term Deposit Balance = 0 AND Demand Account Balances > 1,000,000 AMD AND Salary Receiver = true (the raw pool behind Q9). Paste the query + report the row count." }
 ];
 
-/* ============================================================
-   3) RENDER
-   ============================================================ */
 const quiz = document.getElementById("quiz");
 const state = {};
 function norm(s){ return (s||"").toString().trim().toLowerCase().replace(/\s+/g," "); }
@@ -279,20 +212,23 @@ QUESTIONS.forEach((q) => {
   const card = document.createElement("section");
   card.className = "q" + (q.bonus ? " bonus" : "");
   card.id = "card-" + q.id;
-  const ptsTxt = q.type === "proof" ? "proof" : (q.bonus?("★ +"+q.points):(q.points+" pts"));
+  const isGraded = !(q.type==="proof"||q.type==="choice");
+  const ptsTxt = !isGraded ? (q.type==="choice"?"":"proof") : (q.bonus?("★ +"+q.points):(q.points+" pts"));
+  const tag = q.bonus?"Bonus":(q.type==="proof"?"Hands-on":(q.type==="choice"?"About you":"Question"));
 
   let inner = `<div class="eyebrow"><span class="num">${q.bonus?"★ ":""}${q.id}</span>
-      <span>${q.bonus?"Bonus":(q.type==="proof"?"Hands-on":"Question")}</span>
-      <span class="pts">${ptsTxt}</span></div>
+      <span>${tag}</span><span class="pts">${ptsTxt}</span></div>
     <p class="stem">${q.en}</p>
     ${q.slide?`<div class="ctx">KTS · ${q.slide}</div>`:""}`;
 
-  if(q.type==="mcq"){
+  if(q.type==="mcq"||q.type==="choice"){
     inner += q.options.map((o,idx)=>`
-      <label class="opt" data-q="${q.id}" data-idx="${idx}">
-        <input type="radio" name="${q.id}" value="${idx}">
-        <span class="lab">${o.en}</span>
-      </label>`).join("");
+      <label class="opt" data-q="${q.id}" data-idx="${idx}" data-mode="radio">
+        <input type="radio" name="${q.id}" value="${idx}"><span class="lab">${o.en}</span></label>`).join("");
+  } else if(q.type==="multi"){
+    inner += `<p class="multi-note">Select all that apply.</p>` + q.options.map((o,idx)=>`
+      <label class="opt" data-q="${q.id}" data-idx="${idx}" data-mode="check">
+        <input type="checkbox" name="${q.id}" value="${idx}"><span class="lab">${o.en}</span></label>`).join("");
   } else if(q.type==="short"){
     inner += `<input type="text" id="in-${q.id}" placeholder="${q.placeholder||""}">`;
   } else if(q.type==="proof"){
@@ -309,13 +245,22 @@ QUESTIONS.forEach((q) => {
   quiz.appendChild(card);
 });
 
-quiz.querySelectorAll(".opt").forEach(opt=>{
+quiz.querySelectorAll('.opt[data-mode="radio"]').forEach(opt=>{
   opt.addEventListener("click", ()=>{
-    const id = opt.dataset.q, idx = +opt.dataset.idx;
-    state[id] = idx;
-    opt.parentNode.querySelectorAll(".opt").forEach(o=>o.classList.remove("sel"));
-    opt.classList.add("sel");
-    opt.querySelector("input").checked = true;
+    const id=opt.dataset.q, idx=+opt.dataset.idx;
+    state[id]=idx;
+    opt.parentNode.querySelectorAll('.opt[data-q="'+id+'"]').forEach(o=>o.classList.remove("sel"));
+    opt.classList.add("sel"); opt.querySelector("input").checked=true; updateCount();
+  });
+});
+quiz.querySelectorAll('.opt[data-mode="check"]').forEach(opt=>{
+  opt.addEventListener("click",(e)=>{
+    if(e.target.tagName!=="INPUT"){ const cb=opt.querySelector("input"); cb.checked=!cb.checked; }
+    const id=opt.dataset.q, idx=+opt.dataset.idx;
+    state[id]=state[id]||[];
+    const i=state[id].indexOf(idx);
+    if(opt.querySelector("input").checked){ if(i<0) state[id].push(idx); opt.classList.add("sel"); }
+    else { if(i>=0) state[id].splice(i,1); opt.classList.remove("sel"); }
     updateCount();
   });
 });
@@ -343,8 +288,7 @@ QUESTIONS.filter(q=>q.type==="order").forEach(q=>{
       const li=document.createElement("li");
       li.draggable=true; li.dataset.letter=letter;
       li.innerHTML=`<span class="handle" aria-hidden="true">⠿</span>
-        <span class="letter">${letter}</span>
-        <span class="label">${it.en}</span>
+        <span class="letter">${letter}</span><span class="label">${it.en}</span>
         <span class="moves">
           <button type="button" aria-label="Move up" ${pos===0?"disabled":""} data-dir="-1">▲</button>
           <button type="button" aria-label="Move down" ${pos===order.length-1?"disabled":""} data-dir="1">▼</button>
@@ -378,10 +322,11 @@ function answeredCount(){
   let n=0;
   QUESTIONS.forEach(q=>{
     const v=state[q.id];
-    if(q.type==="mcq" && v!=null) n++;
-    else if((q.type==="short"||q.type==="proof") && v && v.trim()) n++;
-    else if(q.type==="twofield" && v && q.fields.every(f=>(v[f.key]||"").trim())) n++;
-    else if(q.type==="order") n++;
+    if(q.type==="mcq"||q.type==="choice"){ if(v!=null) n++; }
+    else if(q.type==="multi"){ if(Array.isArray(v)&&v.length) n++; }
+    else if(q.type==="short"||q.type==="proof"){ if(v&&v.trim()) n++; }
+    else if(q.type==="twofield"){ if(v&&q.fields.every(f=>(v[f.key]||"").trim())) n++; }
+    else if(q.type==="order"){ n++; }
   });
   return n;
 }
@@ -392,20 +337,17 @@ function updateCount(){
 }
 updateCount();
 
-/* ============================================================
-   4) GRADE + SUBMIT
-   ============================================================ */
 function gradeOrder(q){ return JSON.stringify(state[q.id])===JSON.stringify(q.correctOrder); }
 function gradeShort(q){ return (q.accepted||[]).map(norm).includes(norm(state[q.id])); }
 function gradeTwo(q){ const v=state[q.id]||{}; return q.fields.every(f=>(f.accepted||[]).map(norm).includes(norm(v[f.key]))); }
+function gradeMulti(q){ const sel=(state[q.id]||[]).slice().sort((a,b)=>a-b); return JSON.stringify(sel)===JSON.stringify(q.correct.slice().sort((a,b)=>a-b)); }
 
 document.getElementById("submit").addEventListener("click", submit);
 
 async function submit(){
   const name=document.getElementById("name").value.trim();
   const err=document.getElementById("err");
-  if(!name){ err.textContent="Please enter your name first."; err.classList.add("show");
-             document.getElementById("name").focus(); return; }
+  if(!name){ err.textContent="Please enter your name first."; err.classList.add("show"); document.getElementById("name").focus(); return; }
   err.classList.remove("show");
 
   let baseScore=0, baseMax=0, bonusScore=0, bonusMax=0;
@@ -416,13 +358,15 @@ async function submit(){
     let ok=null, ansText="";
 
     if(q.type==="proof"){
-      ansText=(state[q.id]||"").trim();
-      answers[q.id]={a:ansText, ok:""};
-      fb.className="fb show good";
-      fb.innerHTML=`<b>Recorded.</b> Reviewed by the trainer.`;
-      return;
+      ansText=(state[q.id]||"").trim(); answers[q.id]={a:ansText, ok:""};
+      fb.className="fb show good"; fb.innerHTML=`<b>Recorded.</b> Reviewed by the trainer.`; return;
     }
-    if(q.type==="mcq"){ ok = state[q.id]===q.correct; ansText = state[q.id]!=null?["A","B","C","D","E","F"][state[q.id]]:""; }
+    if(q.type==="choice"){
+      const idx=state[q.id]; ansText=idx!=null?q.options[idx].en:""; answers[q.id]={a:ansText, ok:""};
+      fb.className="fb show good"; fb.innerHTML=`<b>Recorded.</b>`; return;
+    }
+    if(q.type==="mcq"){ ok=state[q.id]===q.correct; ansText=state[q.id]!=null?LET[state[q.id]]:""; }
+    else if(q.type==="multi"){ ok=gradeMulti(q); ansText=(state[q.id]||[]).slice().sort((a,b)=>a-b).map(i=>LET[i]).join(""); }
     else if(q.type==="short"){ ok=gradeShort(q); ansText=state[q.id]||""; }
     else if(q.type==="twofield"){ ok=gradeTwo(q); const v=state[q.id]||{}; ansText=q.fields.map(f=>`${f.label}=${v[f.key]||""}`).join(", "); }
     else if(q.type==="order"){ ok=gradeOrder(q); ansText=(state[q.id]||[]).join(","); }
@@ -433,6 +377,7 @@ async function submit(){
 
     let right="";
     if(q.type==="mcq") right=q.options[q.correct].en;
+    else if(q.type==="multi") right=q.correct.map(i=>q.options[i].en).join(", ");
     else if(q.showAnswer) right=q.showAnswer;
     else if(q.type==="order") right=q.correctOrder.join(",");
     fb.className="fb show "+(ok?"good":"poor");
@@ -460,9 +405,7 @@ async function submit(){
         headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)});
       sent.textContent="Result sent to the trainer.";
     }catch(e){ sent.textContent="Could not send result — show this screen to the trainer."; }
-  } else {
-    sent.textContent="(Preview mode — no endpoint set, result not sent.)";
-  }
+  } else { sent.textContent="(Preview mode — no endpoint set, result not sent.)"; }
   document.getElementById("submit").disabled=true;
   document.getElementById("submit").textContent="Submitted ✓";
   res.scrollIntoView({behavior:"smooth",block:"center"});
