@@ -5,6 +5,7 @@ Allow: /
 Disallow: /kts-day1-quiz-f0dd076f/
 Disallow: /kts-day2-quiz-275c9a21/
 Disallow: /kts-day3-quiz-49aa1db0/
+Disallow: /kts-sfmc-day1-quiz-97ccf331/
 
 # AI / answer-engine crawlers — explicitly welcomed
 User-agent: GPTBot
