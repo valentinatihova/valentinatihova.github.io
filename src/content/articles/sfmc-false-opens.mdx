@@ -171,14 +171,17 @@ After finding suspicious timing behavior in aggregate, I used a focused query to
 send in context. This is where `_Job` becomes useful: it lets the analysis move from abstract anomaly detection to a
 concrete journey or email asset.
 
+`_Job` has no journey columns, so the journey is resolved through `_JourneyActivity` and `_Journey`. All three queries
+are in the [sfmc-false-opens repo on GitHub](https://github.com/valentinatihova/sfmc-false-opens).
+
 ```sql
 SELECT
     sub.EmailAddress,
     o.SubscriberKey,
     s.JobID,
-    j.JourneyID,
+    jr.JourneyID,
+    jr.JourneyName,
     j.EmailName,
-    j.JobName,
     s.EventDate AS SendDate,
     o.EventDate AS OpenDate,
     DATEDIFF(second, s.EventDate, o.EventDate) AS OpenDelaySeconds
@@ -192,6 +195,10 @@ INNER JOIN _Subscribers sub
     ON s.SubscriberKey = sub.SubscriberKey
 INNER JOIN _Job j
     ON s.JobID = j.JobID
+LEFT JOIN _JourneyActivity ja
+    ON j.TriggererSendDefinitionObjectID = ja.JourneyActivityObjectID
+LEFT JOIN _Journey jr
+    ON ja.VersionID = jr.VersionID
 WHERE o.EventDate > DATEADD(day, -7, GETDATE())
   AND sub.EmailAddress = 'subscriber@example.com'
   AND DATEDIFF(second, s.EventDate, o.EventDate) <= 5
