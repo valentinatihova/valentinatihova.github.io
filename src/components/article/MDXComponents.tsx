@@ -10,7 +10,6 @@ import { getTextContent, slugify } from '../../lib/text';
 import { Callout } from './Callout';
 import { KeyMetric, KeyMetrics } from './KeyMetric';
 import { Architecture, ArchitectureNode, ArchitectureEdge, ArchitectureStep } from './Architecture';
-import { ClientOnly } from './ClientOnly';
 
 SyntaxHighlighter.registerLanguage('python', python);
 SyntaxHighlighter.registerLanguage('sql', sql);
@@ -184,5 +183,4 @@ export const MDXComponents = {
   ArchitectureStep,
   ArchitectureNode,
   ArchitectureEdge,
-  ClientOnly,
 };

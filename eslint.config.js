@@ -13,10 +13,6 @@ export default defineConfig([
     '.cursor',
     'seo-audit',
     'graphify-out',
-    // shortcut: charts of the hidden ML articles, deleted in fix/remove-content
-    'src/components/article/ZyfraViz.tsx',
-    'src/components/article/BankChurnViz.tsx',
-    'src/components/article/BankChurnMetricsViz.tsx',
   ]),
   {
     files: ['**/*.{ts,tsx}'],

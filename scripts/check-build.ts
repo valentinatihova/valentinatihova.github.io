@@ -16,7 +16,6 @@ const strict = process.argv.includes('--strict');
 
 // Each entry is removed by the branch that fixes it.
 const KNOWN = new Map([
-  ['hidden-content-published', 'fix/remove-content'],
   ['canonical-trailing-slash', 'positioning batch'],
 ]);
 
@@ -77,7 +76,8 @@ for (const f of html) {
 
   // 4. Canonical is the page's own URL, with a trailing slash.
   const canonical = page.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
-  if (canonical && !rel.startsWith('/404') && canonical !== SITE + rel) {
+  const redirect = /http-equiv="refresh"/.test(page);
+  if (canonical && !redirect && !rel.startsWith('/404') && canonical !== SITE + rel) {
     fail('canonical-trailing-slash', `${rel} canonical is ${canonical}`);
   }
 }
