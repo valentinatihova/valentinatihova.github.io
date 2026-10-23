@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ExternalLink, Send, X } from 'lucide-react';
+import React from 'react';
+import { ExternalLink, Send } from 'lucide-react';
 import { profile } from '../../data/profile';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useDocumentHead } from '../../hooks/useDocumentHead';
-import { SITE_URL } from '../../config/site';
 
 /* ── shared editorial section-header ── */
 const SectionHeader = ({ num, label }: { num: string; label: string }) => (
@@ -25,62 +22,6 @@ const SectionHeader = ({ num, label }: { num: string; label: string }) => (
 );
 
 export const Resume: React.FC = () => {
-  const [activeCertificationIndex, setActiveCertificationIndex] = useState<number | null>(null);
-  const shouldReduceMotion = useReducedMotion();
-
-  useDocumentHead({
-    title: 'Resume | Valentina Tihova — Senior Data & MarTech Engineer',
-    description:
-      'Resume for Valentina Tihova, Senior Data & MarTech Engineer. Eight years in fintech, retail, and telecom. Remote in Europe, EU work authorized.',
-    url: `${SITE_URL}/resume`,
-  });
-
-  const activeCertification =
-    activeCertificationIndex !== null ? profile.certifications?.[activeCertificationIndex] : null;
-
-  // Close the certificate preview on Escape.
-  useEffect(() => {
-    if (activeCertificationIndex === null) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveCertificationIndex(null); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [activeCertificationIndex]);
-
-  const renderCertificationPreview = () => {
-    if (!activeCertification) return null;
-    const previewUrl = activeCertification.previewUrl?.trim();
-    if (!previewUrl) {
-      return (
-        <div className="flex min-h-[320px] items-center justify-center border border-dashed border-stone-300 bg-stone-50 p-8 text-center">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-stone-500">Preview not attached</p>
-            <p className="mt-3 max-w-md font-serif text-stone-600 leading-relaxed text-sm">
-              Place file in <code className="font-mono text-xs">public/certificates/</code> and set{' '}
-              <code className="font-mono text-xs">previewUrl</code> in <code className="font-mono text-xs">profile.ts</code>.
-            </p>
-          </div>
-        </div>
-      );
-    }
-    if (previewUrl.toLowerCase().endsWith('.pdf')) {
-      return (
-        <iframe
-          src={previewUrl}
-          title={activeCertification.name}
-          className="h-[65vh] w-full border border-stone-200 bg-white"
-        />
-      );
-    }
-    return (
-      <div className="border border-stone-200 bg-stone-50 p-2">
-        <img
-          src={previewUrl}
-          alt={activeCertification.name}
-          className="max-h-[65vh] w-full object-contain"
-        />
-      </div>
-    );
-  };
 
   return (
     <>
@@ -219,10 +160,11 @@ export const Resume: React.FC = () => {
           <SectionHeader num="04" label="Certifications" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {profile.certifications?.map((cert, index) => (
-              <button
+              <a
                 key={index}
-                type="button"
-                onClick={() => { setActiveCertificationIndex(index); }}
+                href={cert.previewUrl}
+                target="_blank"
+                rel="noreferrer"
                 className="group border border-stone-200 p-6 text-left transition-colors hover:border-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 <div className="flex justify-between items-start mb-3">
@@ -236,10 +178,10 @@ export const Resume: React.FC = () => {
                   </p>
                 )}
                 <div className="mt-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 transition-colors group-hover:text-stone-900">
-                  Preview certificate
+                  Open certificate (PDF)
                   <ExternalLink className="w-3 h-3" />
                 </div>
-              </button>
+              </a>
             ))}
           </div>
         </section>
@@ -261,52 +203,6 @@ export const Resume: React.FC = () => {
         </section>
       </div>
 
-      {/* ── Certificate modal ── */}
-      <AnimatePresence>
-        {activeCertification && (
-          <>
-            <motion.div
-              initial={shouldReduceMotion ? undefined : { opacity: 0 }}
-              animate={shouldReduceMotion ? undefined : { opacity: 1 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[90] bg-stone-900/25 backdrop-blur-sm"
-              onClick={() => setActiveCertificationIndex(null)}
-            />
-            <motion.div
-              initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16, scale: 0.98 }}
-              animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0, y: 16, scale: 0.98 }}
-              transition={{ duration: 0.24, ease: 'easeOut' }}
-              role="dialog"
-              aria-modal="true"
-              aria-label={`Certificate preview: ${activeCertification.name}`}
-              className="fixed inset-x-4 top-6 z-[100] mx-auto max-w-5xl border border-stone-200 bg-white shadow-[0_30px_90px_rgba(0,0,0,0.25)]"
-            >
-              <div className="flex items-start justify-between gap-4 border-b border-stone-200 px-6 py-5">
-                <div>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-2">Certificate preview</p>
-                  <h3 className="font-serif text-xl text-stone-900">{activeCertification.name}</h3>
-                  <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500">
-                    {activeCertification.issuer} · {activeCertification.date}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveCertificationIndex(null)}
-                  className="inline-flex items-center justify-center border border-stone-200 p-2.5 text-stone-600 transition-colors hover:border-stone-900 hover:text-stone-900"
-                  aria-label="Close certificate preview"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="max-h-[80vh] overflow-auto p-6">
-                {renderCertificationPreview()}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </>
   );
 };

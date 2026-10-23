@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { createContext, useContext } from 'react';
+import React from 'react';
 
 /**
  * Architecture diagram primitives.
@@ -29,12 +29,6 @@ import React, { createContext, useContext } from 'react';
  *     adds value" highlight). Accent on every step = no accent.
  */
 
-const ArchitectureLayoutContext = createContext<{ vertical: boolean }>({ vertical: false });
-
-function useArchitectureLayout() {
-  return useContext(ArchitectureLayoutContext);
-}
-
 interface ArchitectureProps {
   children: React.ReactNode;
   /** Short caption rendered as a monospace eyebrow. */
@@ -61,7 +55,6 @@ export function Architecture({
       <figcaption className="border-b border-stone-200 bg-white px-6 py-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
         {caption}
       </figcaption>
-      <ArchitectureLayoutContext.Provider value={{ vertical }}>
         <div
           className={clsx(
             'px-6 py-8 md:py-10',
@@ -72,7 +65,6 @@ export function Architecture({
         >
           {children}
         </div>
-      </ArchitectureLayoutContext.Provider>
       {note && (
         <div className="border-t border-stone-200 bg-white px-6 py-4 font-serif text-[0.9rem] italic leading-[1.55] text-stone-500 [&_a]:font-sans [&_a]:not-italic [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a]:underline-offset-2 [&_a]:transition-colors hover:[&_a]:text-accent/85">
           {note}
@@ -87,14 +79,15 @@ export function Architecture({
  * Label sits above the nodes as a mono eyebrow.
  */
 interface ArchitectureStepProps {
+  /** Set on every child of a vertical Architecture (Astro renders MDX children without React context). */
+  vertical?: boolean;
   label: string;
   children: React.ReactNode;
   /** Small caveat/caption under the nodes, mono 10px stone-500. */
   caveat?: string;
 }
 
-export function ArchitectureStep({ label, children, caveat }: ArchitectureStepProps) {
-  const { vertical } = useArchitectureLayout();
+export function ArchitectureStep({ label, children, caveat, vertical = false }: ArchitectureStepProps) {
 
   return (
     <div
@@ -135,12 +128,13 @@ export function ArchitectureStep({ label, children, caveat }: ArchitectureStepPr
  * Accent variant highlights the single point where the case delivers value.
  */
 interface ArchitectureNodeProps {
+  /** Set on every child of a vertical Architecture (Astro renders MDX children without React context). */
+  vertical?: boolean;
   children: React.ReactNode;
   accent?: boolean;
 }
 
-export function ArchitectureNode({ children, accent = false }: ArchitectureNodeProps) {
-  const { vertical } = useArchitectureLayout();
+export function ArchitectureNode({ children, accent = false, vertical = false }: ArchitectureNodeProps) {
 
   return (
     <span
@@ -163,12 +157,13 @@ export function ArchitectureNode({ children, accent = false }: ArchitectureNodeP
  * On narrow viewports collapses to a vertical arrow (mobile stack).
  */
 interface ArchitectureEdgeProps {
+  /** Set on every child of a vertical Architecture (Astro renders MDX children without React context). */
+  vertical?: boolean;
   label: string;
   accent?: boolean;
 }
 
-export function ArchitectureEdge({ label, accent = false }: ArchitectureEdgeProps) {
-  const { vertical } = useArchitectureLayout();
+export function ArchitectureEdge({ label, accent = false, vertical = false }: ArchitectureEdgeProps) {
 
   if (vertical) {
     return (
