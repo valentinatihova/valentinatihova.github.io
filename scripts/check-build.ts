@@ -16,7 +16,6 @@ const strict = process.argv.includes('--strict');
 
 // Each entry is removed by the branch that fixes it.
 const KNOWN = new Map([
-  ['first-screen-hidden', 'fix/first-screen'],
   ['hidden-content-published', 'fix/remove-content'],
   ['canonical-trailing-slash', 'positioning batch'],
 ]);
@@ -89,7 +88,10 @@ for (const a of allArticles.filter((a) => a.hidden)) {
   if (corpus.includes(a.title)) fail('hidden-content-published', `"${a.title}" is in dist/`);
 }
 
-// 6. Banned terms never reach the site. Terms are not printed.
+// 6. Only cookieless analytics: no Google Analytics.
+if (/googletagmanager\.com|gtag\(/.test(corpus)) fail('no-google-analytics', 'Google Analytics found in dist/');
+
+// 7. Banned terms never reach the site. Terms are not printed.
 const banned = (process.env.BANNED_TERMS ?? '').split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
 const lower = corpus.toLowerCase();
 banned.forEach((t, i) => lower.includes(t) && fail('banned-term', `term #${i + 1} from BANNED_TERMS found`));

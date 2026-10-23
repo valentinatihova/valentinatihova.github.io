@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, Component } from 'react';
 import { Heart } from 'lucide-react';
-import { trackEvent } from '../../lib/analytics';
 import { MDXComponents } from './MDXComponents';
 
 class MDXErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
@@ -58,13 +57,11 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
     setIsLiked((prev) => {
       const next = !prev;
       window.localStorage.setItem(`article-liked:${articleId}`, String(next));
-      trackEvent('article_like', { label: articleId, value: next ? 'liked' : 'unliked' });
       return next;
     });
   };
 
   const handleShareFacebook = () => {
-    trackEvent('article_share', { label: articleId, value: 'facebook' });
     const url = encodeURIComponent(window.location.href);
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
   };

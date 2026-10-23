@@ -1,8 +1,6 @@
 import React from 'react';
 import { type Article } from '../../data/articles';
 import { ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { trackEvent } from '../../lib/analytics';
 
 interface ArticleCardProps {
   article: Article;
@@ -10,7 +8,6 @@ interface ArticleCardProps {
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, index = 0 }) => {
-  const shouldReduceMotion = useReducedMotion();
   const formattedDate = new Date(article.date).toLocaleDateString('en-US', {
     month: 'short',
     year: 'numeric',
@@ -18,15 +15,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, index = 0 }) 
   const num = String(index + 1).padStart(2, '0');
 
   return (
-    <motion.div
-      initial={shouldReduceMotion ? undefined : { opacity: 0, y: 12 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+    <div
     >
       <a
         href={`/article/${article.id}`}
-        onClick={() => trackEvent('article_open', { label: article.id })}
         className="group block border-t border-stone-200 py-8 transition-colors hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent px-2 -mx-2"
       >
         {/* Top row: index + tags + date */}
@@ -71,6 +63,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, index = 0 }) 
           </span>
         </div>
       </a>
-    </motion.div>
+    </div>
   );
 };

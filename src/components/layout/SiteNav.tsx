@@ -3,7 +3,6 @@ import { ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { BrandMark } from '../brand/BrandMark';
-import { trackEvent } from '../../lib/analytics';
 
 const subscribeNever = () => () => {};
 
@@ -40,10 +39,7 @@ export default function SiteNav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [mobileMenuOpen]);
 
-  const scrollToTop = () => {
-    trackEvent('scroll_to_top');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const isResumePage = pathname === '/resume';
   const isArticleArea = pathname === '/' || pathname.startsWith('/article/');
@@ -77,7 +73,6 @@ export default function SiteNav() {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={() => trackEvent('nav_click', { label: item.label })}
                 className={`rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
                   item.active ? 'text-accent' : 'text-stone-500 hover:text-stone-900'
                 }`}
@@ -91,7 +86,6 @@ export default function SiteNav() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn profile (opens in a new tab)"
-                onClick={() => trackEvent('social_click', { label: 'linkedin_header' })}
                 className="rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] text-stone-500 hover:text-stone-900 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 LinkedIn
@@ -101,7 +95,6 @@ export default function SiteNav() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub profile (opens in a new tab)"
-                onClick={() => trackEvent('social_click', { label: 'github_header' })}
                 className="rounded-sm font-mono text-[11px] uppercase tracking-[0.2em] text-stone-500 hover:text-stone-900 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 GitHub
@@ -170,10 +163,7 @@ export default function SiteNav() {
                   >
                     <a
                       href={item.href}
-                      onClick={() => {
-                        trackEvent('nav_click', { label: item.label });
-                        setMobileMenuOpen(false);
-                      }}
+                      onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center justify-between border px-4 py-4 transition-colors ${
                         item.active
                           ? 'border-accent/40 bg-accent/5 text-accent'
@@ -193,7 +183,6 @@ export default function SiteNav() {
                     href={profile.socials.linkedin}
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() => trackEvent('social_click', { label: 'linkedin_mobile' })}
                     className="flex-1 border border-stone-200 px-4 py-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 hover:border-stone-400 hover:text-stone-900 transition-colors"
                   >
                     LinkedIn
@@ -202,7 +191,6 @@ export default function SiteNav() {
                     href={profile.socials.github}
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() => trackEvent('social_click', { label: 'github_mobile' })}
                     className="flex-1 border border-stone-200 px-4 py-3 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 hover:border-stone-400 hover:text-stone-900 transition-colors"
                   >
                     GitHub
