@@ -1,12 +1,9 @@
 import React from 'react';
 import { ArrowRight, FileText, Mail } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { trackEvent } from '../../lib/analytics';
 
 const nameStyle = { fontSize: 'clamp(4rem, 12vw, 9rem)', letterSpacing: '-0.04em' };
 
 export const Hero: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
@@ -21,10 +18,7 @@ export const Hero: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0 }}
-          animate={shouldReduceMotion ? undefined : { opacity: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+        <div
           className="max-w-5xl mx-auto"
         >
           {/* Eyebrow */}
@@ -85,7 +79,6 @@ export const Hero: React.FC = () => {
             <div className="flex items-center gap-5 flex-wrap">
               <a
                 href="/resume"
-                onClick={() => trackEvent('hero_cta_click', { label: 'view_resume' })}
                 className="inline-flex items-center gap-2 border border-stone-900 bg-transparent px-6 py-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-900 transition-all hover:bg-stone-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
                 <FileText className="w-3.5 h-3.5" />
@@ -93,7 +86,6 @@ export const Hero: React.FC = () => {
               </a>
               <a
                 href="mailto:valentina.tikhova1@gmail.com"
-                onClick={() => trackEvent('hero_cta_click', { label: 'email' })}
                 className="inline-flex items-center gap-2 py-2 -my-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-700 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 <Mail className="w-3.5 h-3.5" />
@@ -101,7 +93,6 @@ export const Hero: React.FC = () => {
               </a>
               <a
                 href="#projects"
-                onClick={() => trackEvent('hero_cta_click', { label: 'see_work' })}
                 className="inline-flex items-center gap-2 py-2 -my-2 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
               >
                 See work
@@ -112,7 +103,7 @@ export const Hero: React.FC = () => {
               <span className="font-medium text-accent">Open to roles</span> · Valencia · Remote · EU Auth
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -3,11 +3,9 @@ import { TagFilter } from './TagFilter';
 import { ArticleCard } from './ArticleCard';
 import { articles } from '../../data/articles';
 import { ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 
 export const HomeArticlesSection: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const shouldReduceMotion = useReducedMotion();
 
   const sortedArticles = useMemo(
     () => [...articles].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
@@ -77,11 +75,7 @@ export const HomeArticlesSection: React.FC = () => {
 
         {/* Featured article */}
         {featuredArticle && (
-          <motion.div
-            initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16 }}
-            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <div
             className="mb-16"
           >
             <a
@@ -135,7 +129,7 @@ export const HomeArticlesSection: React.FC = () => {
                 </span>
               </div>
             </a>
-          </motion.div>
+          </div>
         )}
 
         {/* Article grid — editorial rows, 2 columns */}
