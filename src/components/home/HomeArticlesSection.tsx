@@ -1,46 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { TagFilter } from './TagFilter';
+import React from 'react';
 import { ArticleCard } from './ArticleCard';
 import { articles } from '../../data/articles';
 import { ArrowRight } from 'lucide-react';
 
 export const HomeArticlesSection: React.FC = () => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-  const sortedArticles = useMemo(
-    () => [...articles].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
-    []
+  const [featuredArticle, ...remainingArticles] = [...articles].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
-
-  const allTags = useMemo(() => {
-    const tags = new Set<string>();
-    sortedArticles.forEach(article => article.tags.forEach(tag => tags.add(tag)));
-    return Array.from(tags).sort();
-  }, [sortedArticles]);
-
-  const filteredArticles = useMemo(() => {
-    if (selectedTags.length === 0) return sortedArticles;
-    return sortedArticles.filter(article =>
-      selectedTags.some(tag => article.tags.includes(tag))
-    );
-  }, [selectedTags, sortedArticles]);
-
-  const featuredArticle = useMemo(() => {
-    if (selectedTags.length > 0) return undefined;
-    return filteredArticles[0];
-  }, [filteredArticles, selectedTags]);
-
-  const remainingArticles = useMemo(() => {
-    if (!featuredArticle) return filteredArticles;
-    return filteredArticles.filter((article) => article.id !== featuredArticle.id);
-  }, [featuredArticle, filteredArticles]);
-
-  const handleTagToggle = (tag: string) => {
-    if (tag === 'all') { setSelectedTags([]); return; }
-    setSelectedTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    );
-  };
 
   return (
     <section id="projects" className="container mx-auto px-4 pb-24 md:pb-36">
@@ -70,7 +36,6 @@ export const HomeArticlesSection: React.FC = () => {
               </p>
             </div>
           </div>
-          <TagFilter tags={allTags} selectedTags={selectedTags} onTagToggle={handleTagToggle} />
         </div>
 
         {/* Featured article */}
@@ -139,24 +104,12 @@ export const HomeArticlesSection: React.FC = () => {
               <ArticleCard
                 key={article.id}
                 article={article}
-                index={featuredArticle ? i + 1 : i}
+                index={i + 1}
               />
             ))}
           </div>
         )}
 
-        {/* Empty state */}
-        {filteredArticles.length === 0 && (
-          <div className="text-center py-20 border border-stone-200 border-dashed">
-            <p className="text-stone-500 font-serif">No articles found with the selected filters.</p>
-            <button
-              onClick={() => setSelectedTags([])}
-              className="mt-6 border border-stone-300 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-600 transition-colors hover:border-stone-900 hover:text-stone-900"
-            >
-              Clear filters
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );

@@ -21,7 +21,8 @@ export default defineConfig({
       ],
     }),
     // Sitemap auto-generated from all static pages. Excludes /404 automatically.
-    sitemap(),
+    // The retired Apex article is only a browser redirect, keep it out of the sitemap.
+    sitemap({ filter: (page) => !page.includes('/article/data-cloud-metadata-apex') }),
   ],
 
   vite: {
@@ -54,7 +55,6 @@ export default defineConfig({
         output: {
           manualChunks(id) {
             if (id.includes('node_modules/framer-motion/')) return 'motion';
-            if (id.includes('node_modules/d3/') || id.includes('node_modules/d3-sankey/')) return 'data-viz';
             if (
               id.includes('node_modules/react-syntax-highlighter/') ||
               id.includes('node_modules/refractor/')
