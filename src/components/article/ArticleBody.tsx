@@ -4,7 +4,7 @@ import { trackEvent } from '../../lib/analytics';
 import { MDXComponents } from './MDXComponents';
 
 class MDXErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
-  constructor(props: any) {
+  constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { error: null };
   }
@@ -71,7 +71,7 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ articleId, articleSumm
 
   const mdxPath = `../../content/articles/${articleId}.mdx`;
   const MDXContent =
-    (mdxModules[mdxPath] as { default: React.ComponentType<any> } | undefined)?.default ?? MDXFallback;
+    (mdxModules[mdxPath] as { default: React.ComponentType<{ components?: typeof MDXComponents }> } | undefined)?.default ?? MDXFallback;
 
   return (
     <div ref={articleWrapperRef}>
