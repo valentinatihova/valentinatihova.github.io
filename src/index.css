@@ -67,6 +67,22 @@
   }
 }
 
+/* Inline code inside article prose (block code is styled below). */
+.prose :not(pre) > code {
+  @apply rounded border border-stone-200 bg-stone-100 px-1.5 py-0.5 font-mono text-[0.9em] text-stone-800;
+}
+
+/* Code blocks: highlighted at build time by rehype-pretty-code (one-dark-pro). */
+.prose figure[data-rehype-pretty-code-figure] {
+  @apply my-10;
+}
+.prose figure[data-rehype-pretty-code-figure] pre {
+  @apply m-0 overflow-x-auto rounded-xl border border-stone-700 bg-[#292524] p-6 text-sm leading-relaxed;
+}
+.prose figure[data-rehype-pretty-code-figure] code {
+  @apply grid bg-transparent p-0 text-[0.875rem];
+}
+
 /* Remove backticks from inline code added by typography plugin */
 .prose code::before {
   content: none !important;

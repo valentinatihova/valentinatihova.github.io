@@ -8,9 +8,8 @@ export interface Article {
   githubUrl?: string;
   /**
    * When true the article gets no route and is left out of the home index and
-   * ReadNext. Its MDX file is still bundled (ArticleBody imports every file in
-   * src/content/articles), so keep unpublished drafts outside that folder;
-   * `npm run check:build` fails if a hidden article's title reaches dist/.
+   * ReadNext, so its MDX is never rendered or bundled. `npm run check:build`
+   * fails if a hidden article's title reaches dist/.
    */
   hidden?: boolean;
   caseStudyFrame?: {

@@ -1,19 +1,25 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { ArticleBody } from '../../components/article/ArticleBody';
+import { getCollection, render } from 'astro:content';
+import { MDXComponents } from '../../components/article/MDXComponents';
+import { ReadNext } from '../../components/article/ReadNext';
 import { articles, ARTICLE_KIND_LABEL, getArticleKind } from '../../data/articles';
-import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 
 const SITE_URL = 'https://valentinatihova.com';
 
 export async function getStaticPaths() {
-  return articles.map((article) => ({
-    params: { slug: article.id },
-    props: { article },
-  }));
+  const entries = await getCollection('articles');
+  return articles.map((article) => {
+    const entry = entries.find((e) => e.slug === article.id);
+    // A typo in an id must fail the build, not ship an empty article.
+    if (!entry) throw new Error(`No MDX file in src/content/articles for article "${article.id}"`);
+    return { params: { slug: article.id }, props: { article, entry } };
+  });
 }
 
-const { article } = Astro.props;
+const { article, entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const kind = getArticleKind(article);
 const kindLabel = ARTICLE_KIND_LABEL[kind];
@@ -146,12 +152,40 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
           )}
         </header>
 
-        <!-- Server-rendered article body (prose + code + editorial in static HTML),
-             then hydrated for D3 charts, TOC scroll-spy, and interactions. -->
-        <ArticleBody client:load articleId={article.id} articleSummary={article.summary} />
-      </div>
+        <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_240px] xl:gap-12">
+          <div class="prose w-full max-w-3xl text-stone-800">
+            <p class="mb-12 max-w-[58ch] text-xl leading-[1.55] text-stone-600 md:text-[1.45rem]">
+              {article.summary}
+            </p>
+            <Content components={MDXComponents} />
+          </div>
 
-      <!-- TOC is part of ArticleBody (client island) so it can scroll-spy -->
+          {toc.length >= 2 && (
+            <aside class="hidden xl:block" aria-label="Table of contents">
+              <nav class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4">
+                <p class="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Contents</p>
+                <ol class="space-y-1.5 border-l border-stone-200">
+                  {toc.map((h) => (
+                    <li>
+                      <a
+                        href={`#${h.slug}`}
+                        class:list={[
+                          'block -ml-px border-l border-transparent py-1 pl-4 font-mono text-[12px] leading-snug text-stone-500 transition-colors hover:border-stone-400 hover:text-stone-800',
+                          h.depth === 3 && 'pl-6 text-[11.5px]',
+                        ]}
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            </aside>
+          )}
+        </div>
+
+        <ReadNext currentId={article.id} />
+      </div>
     </div>
   </article>
 </Layout>

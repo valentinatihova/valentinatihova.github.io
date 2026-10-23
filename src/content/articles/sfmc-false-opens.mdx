@@ -44,31 +44,21 @@ too immediate to trust at face value.
 <Architecture
   orientation="vertical"
   caption="Investigative data flow"
-  note={
-    <>
-      The only transform that changes the meaning of the metric is the delay filter. Everything upstream is SFMC system
-      state; everything downstream is a reporting interpretation of it. For how system tables are wired (columns and
-      relationships), see{' '}
-      <a href="https://dataviews.io" target="_blank" rel="noreferrer">
-        dataviews.io
-      </a>
-      .
-    </>
-  }
 >
-  <ArchitectureStep label="SFMC Data Views" caveat="System-managed tables">
-    <ArchitectureNode>_Sent</ArchitectureNode>
-    <ArchitectureNode>_Open</ArchitectureNode>
-    <ArchitectureNode>_Subscribers</ArchitectureNode>
-    <ArchitectureNode>_Job</ArchitectureNode>
+  <Fragment slot="note">The only transform that changes the meaning of the metric is the delay filter. Everything upstream is SFMC system state; everything downstream is a reporting interpretation of it. For how system tables are wired (columns and relationships), see <a href="https://dataviews.io" target="_blank" rel="noreferrer">dataviews.io</a>.</Fragment>
+  <ArchitectureStep vertical label="SFMC Data Views" caveat="System-managed tables">
+    <ArchitectureNode vertical>_Sent</ArchitectureNode>
+    <ArchitectureNode vertical>_Open</ArchitectureNode>
+    <ArchitectureNode vertical>_Subscribers</ArchitectureNode>
+    <ArchitectureNode vertical>_Job</ArchitectureNode>
   </ArchitectureStep>
-  <ArchitectureEdge label={"JOIN _Sent ↔ _Open on composite key\n(JobID · ListID · BatchID · SubscriberKey)"} />
-  <ArchitectureStep label="Compute">
-    <ArchitectureNode>FirstOpenDelay (sec)</ArchitectureNode>
+  <ArchitectureEdge vertical label={"JOIN _Sent ↔ _Open on composite key\n(JobID · ListID · BatchID · SubscriberKey)"} />
+  <ArchitectureStep vertical label="Compute">
+    <ArchitectureNode vertical>FirstOpenDelay (sec)</ArchitectureNode>
   </ArchitectureStep>
-  <ArchitectureEdge label={'Filter delay < 30s'} accent />
-  <ArchitectureStep label="Output">
-    <ArchitectureNode accent>Qualified-engagement signal</ArchitectureNode>
+  <ArchitectureEdge vertical label={'Filter delay < 30s'} accent />
+  <ArchitectureStep vertical label="Output">
+    <ArchitectureNode vertical accent>Qualified-engagement signal</ArchitectureNode>
   </ArchitectureStep>
 </Architecture>
 
