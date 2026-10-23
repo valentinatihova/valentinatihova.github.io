@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useSyncExternalStore } from 'react';
+
+const subscribeNever = () => () => {};
 
 /**
  * Renders its children only after the component has mounted in the browser.
@@ -13,7 +15,7 @@ import React, { useEffect, useState } from 'react';
  * these had under the previous `client:only` setup.
  */
 export function ClientOnly({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // false during SSR and hydration, true afterwards: no mismatch, no setState in an effect
+  const mounted = useSyncExternalStore(subscribeNever, () => true, () => false);
   return mounted ? <>{children}</> : null;
 }

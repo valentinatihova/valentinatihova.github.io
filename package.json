@@ -8,6 +8,8 @@
     "og": "tsx scripts/generate-og.tsx",
     "build": "npm run og && astro build",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p .",
+    "check:build": "tsx scripts/check-build.ts",
     "preview": "astro preview"
   },
   "dependencies": {

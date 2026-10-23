@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { ArrowUp, Menu, X, ArrowRight } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { BrandMark } from '../brand/BrandMark';
 import { trackEvent } from '../../lib/analytics';
 
+const subscribeNever = () => () => {};
+
 export default function SiteNav() {
-  const [pathname, setPathname] = useState('/');
+  const pathname = useSyncExternalStore(subscribeNever, () => window.location.pathname, () => '/');
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    setPathname(window.location.pathname);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setShowBackToTop(window.scrollY > 400);

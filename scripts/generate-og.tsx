@@ -40,12 +40,10 @@ const fonts = [
 
 const STONE_950 = '#0c0a09';
 const STONE_900 = '#1c1917';
-const STONE_800 = '#292524';
 const STONE_700 = '#44403c';
 const STONE_500 = '#78716c';
 const STONE_400 = '#a8a29e';
 const STONE_200 = '#e7e5e4';
-const STONE_100 = '#f5f5f4';
 const STONE_50 = '#fafaf9';
 const ACCENT = '#ce7f46';
 
@@ -343,7 +341,7 @@ function ArticleTemplate(article: ArticleMeta) {
   );
 }
 
-async function renderPng(element: any, outPath: string) {
+async function renderPng(element: Parameters<typeof satori>[0], outPath: string) {
   const svg = await satori(element, { width: 1200, height: 630, fonts });
   const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
   const png = resvg.render().asPng();

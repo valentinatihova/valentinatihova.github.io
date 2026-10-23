@@ -43,7 +43,7 @@ export const ARTICLE_KIND_LABEL: Record<ArticleKind, string> = {
   idea: 'Idea',
 };
 
-const allArticles: Article[] = [
+export const allArticles: Article[] = [
   {
     id: "data-cloud-metadata-apex",
     title: "Data Cloud Documentation Should Not Be Written by Hand",

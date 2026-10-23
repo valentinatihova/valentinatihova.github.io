@@ -57,49 +57,50 @@ function AnchoredHeading({
 }
 
 export const MDXComponents = {
-  h1: (props: any) => (
+  h1: (props: React.ComponentPropsWithoutRef<'h1'>) => (
     <AnchoredHeading
       level={1}
       className="mt-14 mb-5 border-b border-stone-200 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-900 md:text-[2.25rem]"
       {...props}
     />
   ),
-  h2: (props: any) => (
+  h2: (props: React.ComponentPropsWithoutRef<'h2'>) => (
     <AnchoredHeading
       level={2}
       className="mt-14 mb-5 border-b border-stone-200 pb-3 text-[1.875rem] font-bold tracking-[-0.015em] text-stone-900 md:text-[2.25rem]"
       {...props}
     />
   ),
-  h3: (props: any) => (
+  h3: (props: React.ComponentPropsWithoutRef<'h3'>) => (
     <AnchoredHeading
       level={3}
       className="mt-10 mb-4 text-[1.25rem] font-semibold tracking-normal text-stone-800 md:text-[1.5rem]"
       {...props}
     />
   ),
-  p: (props: any) => <p className="mb-6 max-w-[65ch] text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
-  ul: (props: any) => <ul className="mb-6 max-w-[65ch] list-disc pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
-  ol: (props: any) => <ol className="mb-6 max-w-[65ch] list-decimal pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
-  li: (props: any) => <li className="mb-2 pl-1" {...props} />,
-  a: (props: any) => <a className="text-accent underline decoration-accent/35 underline-offset-4 transition-colors hover:text-accent/80" {...props} />,
-  img: (props: any) => (
+  p: (props: React.ComponentPropsWithoutRef<'p'>) => <p className="mb-6 max-w-[65ch] text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
+  ul: (props: React.ComponentPropsWithoutRef<'ul'>) => <ul className="mb-6 max-w-[65ch] list-disc pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
+  ol: (props: React.ComponentPropsWithoutRef<'ol'>) => <ol className="mb-6 max-w-[65ch] list-decimal pl-6 text-[1.0625rem] leading-[1.7] text-stone-600 md:text-[1.125rem]" {...props} />,
+  li: (props: React.ComponentPropsWithoutRef<'li'>) => <li className="mb-2 pl-1" {...props} />,
+  a: (props: React.ComponentPropsWithoutRef<'a'>) => <a className="text-accent underline decoration-accent/35 underline-offset-4 transition-colors hover:text-accent/80" {...props} />,
+  img: (props: React.ComponentPropsWithoutRef<'img'>) => (
     <span className="block my-10 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50 p-2">
       <img className="mx-auto h-auto max-w-full rounded-[1rem] border border-stone-100" {...props} />
     </span>
   ),
-  pre: (props: any) => {
+  pre: (props: React.ComponentPropsWithoutRef<'pre'> & { tabindex?: string }) => {
     // Extract the code element from pre's children
-    let codeElement: any = null;
+    type CodeElement = React.ReactElement<{ className?: string; children?: unknown }>;
+    let codeElement: CodeElement | null = null;
     if (React.isValidElement(props.children)) {
-      codeElement = props.children;
+      codeElement = props.children as CodeElement;
     } else if (Array.isArray(props.children) && props.children.length > 0 && React.isValidElement(props.children[0])) {
-      codeElement = props.children[0];
+      codeElement = props.children[0] as CodeElement;
     }
     
     // Check if we have a child with props (which would be our code component)
     if (codeElement && codeElement.props) {
-      const childProps = codeElement.props as any;
+      const childProps = codeElement.props;
       const className = childProps.className || '';
       const match = /language-(\w+)/.exec(className);
       
@@ -144,7 +145,7 @@ export const MDXComponents = {
             
             {/* Code Content */}
             <SyntaxHighlighter
-              style={vscDarkPlus as any}
+              style={vscDarkPlus}
               language={lang === 'text' ? 'bash' : lang}
               PreTag="div"
               customStyle={{ margin: 0, padding: '1.5rem', background: 'transparent', fontSize: '0.875rem' }}
@@ -159,7 +160,7 @@ export const MDXComponents = {
     // Fallback if it's not a standard code block. rehype-pretty-code emits a
     // lowercase `tabindex` HTML attribute on its <pre>; React expects `tabIndex`,
     // so normalize it here to avoid an invalid-DOM-property hydration warning.
-    const { tabindex, tabIndex, ...rest } = props as any;
+    const { tabindex, tabIndex, ...rest } = props;
     return (
       <pre
         className="custom-scrollbar my-8 overflow-x-auto rounded-xl border border-stone-700 bg-stone-800 p-5 text-sm text-stone-100 font-mono"
@@ -168,7 +169,7 @@ export const MDXComponents = {
       />
     );
   },
-  code: (props: any) => {
+  code: (props: React.ComponentPropsWithoutRef<'code'>) => {
     // Only style inline code here. Block code is handled by pre.
     return <code className="rounded border border-stone-200 bg-stone-100 px-1.5 py-0.5 font-mono text-[0.9em] text-stone-800" {...props} />;
   },
