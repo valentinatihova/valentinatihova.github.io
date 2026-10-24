@@ -91,7 +91,10 @@ for (const a of allArticles.filter((a) => a.hidden)) {
 // 6. Only cookieless analytics: no Google Analytics.
 if (/googletagmanager\.com|gtag\(/.test(corpus)) fail('no-google-analytics', 'Google Analytics found in dist/');
 
-// 7. Banned terms never reach the site. Terms are not printed.
+// 7. Fonts are self-hosted: nothing loads from Google before first paint.
+if (/fonts\.(googleapis|gstatic)\.com/.test(corpus)) fail('self-hosted-fonts', 'Google Fonts URL found in dist/');
+
+// 8. Banned terms never reach the site. Terms are not printed.
 const banned = (process.env.BANNED_TERMS ?? '').split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
 const lower = corpus.toLowerCase();
 banned.forEach((t, i) => lower.includes(t) && fail('banned-term', `term #${i + 1} from BANNED_TERMS found`));
