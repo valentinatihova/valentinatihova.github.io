@@ -23,7 +23,7 @@ import React from 'react';
  *
  * Design contract (P39):
  *   - Nodes are `font-mono` — they're system objects, not prose.
- *   - Edges carry the transform label in 11px mono uppercase — that's the
+ *   - Edges carry the transform label in 11px mono — that's the
  *     actual engineering decision (what SQL/filter runs at this step).
  *   - One accent edge or node per diagram max (the "here's where the case
  *     adds value" highlight). Accent on every step = no accent.
@@ -52,7 +52,7 @@ export function Architecture({
 
   return (
     <figure className="not-prose my-14 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
-      <figcaption className="border-b border-stone-200 bg-white px-6 py-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+      <figcaption className="border-b border-stone-200 bg-white px-6 py-4 font-sans text-[15px] font-semibold text-accent">
         {caption}
       </figcaption>
         <div
@@ -98,7 +98,7 @@ export function ArchitectureStep({ label, children, caveat, vertical = false }: 
           : 'min-w-0 shrink-0 items-center md:min-w-[8.5rem] md:max-w-[13rem]',
       )}
     >
-      <span className="text-center font-mono text-[10px] font-medium uppercase tracking-[0.28em] text-stone-400">
+      <span className="text-center font-sans text-[13px] font-semibold text-stone-400">
         {label}
       </span>
       <div
@@ -112,7 +112,7 @@ export function ArchitectureStep({ label, children, caveat, vertical = false }: 
       {caveat && (
         <span
           className={clsx(
-            'text-center font-mono text-[10px] leading-[1.45] text-stone-500',
+            'text-center font-sans text-[13px] leading-[1.45] text-stone-500',
             vertical ? 'max-w-none px-1' : 'max-w-[18ch]',
           )}
         >
@@ -175,7 +175,7 @@ export function ArchitectureEdge({ label, accent = false, vertical = false }: Ar
       >
         <span
           className={clsx(
-            'w-full max-w-full whitespace-pre-line px-1 text-center font-mono text-[10px] font-medium uppercase leading-snug tracking-[0.12em] text-balance break-words',
+            'w-full max-w-full whitespace-pre-line px-1 text-center font-sans text-[13px] font-semibold leading-snug text-balance break-words',
             accent ? 'text-accent' : 'text-stone-400',
           )}
         >
@@ -200,7 +200,7 @@ export function ArchitectureEdge({ label, accent = false, vertical = false }: Ar
     >
       <span
         className={clsx(
-          'w-full text-center font-mono text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-balance break-words',
+          'w-full text-center font-sans text-[13px] font-semibold leading-snug text-balance break-words',
           accent ? 'text-accent' : 'text-stone-400',
         )}
       >

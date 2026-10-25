@@ -24,7 +24,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonicalUrl = canonical ?? Astro.url.href.replace(/\/$/, '');
+const canonicalUrl = canonical ?? Astro.url.href;
 const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
@@ -39,7 +39,7 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Valentina Tihova" />
-    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="theme-color" content="#F2F4F1" />
     {noindex
       ? <meta name="robots" content="noindex, nofollow" />
       : <meta name="robots" content="index, follow" />
@@ -89,48 +89,24 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     }
     </script>
   </head>
-  <body class="bg-white text-stone-900 antialiased font-serif">
-    <SiteNav />
+  <body class="antialiased">
+    {Astro.slots.has('field') ? (
+      <div class="field">
+        <SiteNav />
+        <slot name="field" />
+      </div>
+    ) : (
+      <SiteNav />
+    )}
     <slot />
-    <footer class="mt-32 border-t border-stone-200 bg-white">
-      <div class="container mx-auto px-4 py-8 sm:py-6">
-        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <!-- Left: brand + copy -->
-          <div class="flex items-center gap-6">
-            <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-500">
-              © {new Date().getFullYear()} Valentina Tihova
-            </p>
-            <span class="h-px w-6 bg-stone-200 hidden sm:block" />
-            <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 hidden sm:block">
-              Valencia, Spain
-            </p>
-          </div>
-          <!-- Right: contact links -->
-          <div class="flex items-center gap-5">
-            <a
-              href="mailto:valentina.tikhova1@gmail.com"
-              class="inline-flex items-center py-2 -my-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              Email
-            </a>
-            <a
-              href="https://www.linkedin.com/in/valentina-tihova/"
-              target="_blank"
-              rel="noreferrer"
-              class="inline-flex items-center py-2 -my-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/valentinatihova"
-              target="_blank"
-              rel="noreferrer"
-              class="inline-flex items-center py-2 -my-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 transition-colors hover:text-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
+    <footer class="mt-24 border-t border-rule">
+      <div class="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 pt-7 pb-10 text-[15px] text-stone-600 sm:px-6">
+        <span>Valentina Tihova, Valencia, Spain</span>
+        <ul class="flex gap-5">
+          <li><a href="mailto:valentina.tikhova1@gmail.com" class="text-fixed underline">Email</a></li>
+          <li><a href="https://www.linkedin.com/in/valentina-tihova/" target="_blank" rel="noreferrer" class="text-fixed underline">LinkedIn</a></li>
+          <li><a href="https://github.com/valentinatihova" target="_blank" rel="noreferrer" class="text-fixed underline">GitHub</a></li>
+        </ul>
       </div>
     </footer>
     <!-- Cloudflare Web Analytics (cookieless), production builds only so local visits are not counted -->

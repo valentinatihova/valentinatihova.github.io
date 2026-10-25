@@ -2,9 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 import { MDXComponents } from '../../components/article/MDXComponents';
-import { ReadNext } from '../../components/article/ReadNext';
+import ReadNext from '../../components/article/ReadNext.astro';
 import SchemaDriftStory from '../../components/article/SchemaDriftStory.astro';
-import { articles, ARTICLE_KIND_LABEL, getArticleKind } from '../../data/articles';
+import { articles } from '../../data/articles';
 
 const SITE_URL = 'https://valentinatihova.com';
 
@@ -22,14 +22,14 @@ const { article, entry } = Astro.props;
 const { Content, headings } = await render(entry);
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
-const kind = getArticleKind(article);
-const kindLabel = ARTICLE_KIND_LABEL[kind];
-const articleUrl = `${SITE_URL}/article/${article.id}`;
+const articleUrl = `${SITE_URL}/article/${article.id}/`;
+// Search results cut titles after about 60 characters, so add the name only when it fits.
+const pageTitle = article.title.length <= 41 ? `${article.title} | Valentina Tihova` : article.title;
 const ogImage = `${SITE_URL}/og/${article.id}.png`;
 
-const formattedDate = new Date(article.date).toLocaleDateString('en-US', {
-  month: 'long',
+const formattedDate = new Date(article.date).toLocaleDateString('en-GB', {
   day: 'numeric',
+  month: 'long',
   year: 'numeric',
 });
 
@@ -59,11 +59,10 @@ const articleJsonLd = {
   mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl },
 };
 
-const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a5.4 5.4 0 0 0-1.5-3.8 5.3 5.3 0 0 0-.1-3.8s-1.2-.4-3.9 1.4a13.3 13.3 0 0 0-7 0C6.2 1.5 5 1.9 5 1.9a5.3 5.3 0 0 0-.1 3.8 5.4 5.4 0 0 0-1.5 3.8c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4"/></svg>`;
 ---
 
 <Layout
-  title={`${article.title} | Valentina Tihova, Data & AI Analyst`}
+  title={pageTitle}
   description={article.summary}
   canonical={articleUrl}
   ogImage={ogImage}
@@ -71,124 +70,56 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
   ogType="article"
   jsonLd={articleJsonLd}
 >
-  <article class="container mx-auto px-4 py-12 md:py-20">
-    <div class="mx-auto grid max-w-6xl gap-12 xl:grid-cols-[minmax(0,1fr)_240px]">
-      <div class="min-w-0">
+  <div slot="field" class="mx-auto max-w-[1160px] px-4 sm:px-6">
+    <header class="pt-8 pb-12 lg:pt-10 lg:pb-14">
+      <h1 class="max-w-[17ch] text-[38px] leading-[1.06] sm:text-[52px] lg:text-[64px] lg:leading-[1.04]">{article.title}</h1>
+      <p class="mt-5 max-w-[34em] text-[19px] leading-[1.5] text-stone-600 sm:text-xl">{article.summary}</p>
+      <p class="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-[15px] text-stone-600">
+        <time datetime={article.date}>{formattedDate}</time>
+        <span>{article.readTime}</span>
+        {article.githubUrl && <a href={article.githubUrl} class="text-fixed underline">Code on GitHub</a>}
+      </p>
+      {article.caseStudyFrame && (
+        <dl class="mt-8 grid max-w-3xl grid-cols-1 gap-x-6 gap-y-1 border-t border-rule pt-5 text-[16px] sm:grid-cols-[140px_1fr]">
+          <dt class="text-stone-600">My role</dt><dd class="mb-2 sm:mb-0">{article.caseStudyFrame.role}</dd>
+          <dt class="text-stone-600">Scope</dt><dd class="mb-2 sm:mb-0">{article.caseStudyFrame.scope}</dd>
+          <dt class="text-stone-600">Why it matters</dt><dd>{article.caseStudyFrame.outcome}</dd>
+        </dl>
+      )}
+      {article.hero === 'schema-drift' && <div class="mt-9"><SchemaDriftStory /></div>}
+    </header>
+  </div>
 
-        <!-- Back link -->
-        <a
-          href="/"
-          class="mb-12 inline-flex items-center gap-2 border border-stone-200 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-stone-500 transition-colors hover:border-stone-900 hover:text-stone-900"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-          Back
-        </a>
+  <main class="mx-auto max-w-[1160px] px-4 sm:px-6">
+    <div class="grid gap-12 py-12 sm:py-14 lg:grid-cols-[minmax(0,680px)_220px] lg:gap-20">
+      <article class="article-prose min-w-0">
+        <Content components={MDXComponents} />
+      </article>
 
-        <!-- Static article header — fully indexed by search crawlers -->
-        <header class="mb-12 max-w-3xl">
-
-          <!-- Eyebrow: kind label + tags -->
-          <div class="flex items-center gap-4 mb-8">
-            <span class="h-px w-6 bg-stone-400"></span>
-            <span class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500">
-              {kindLabel}
-            </span>
-          </div>
-
-          <div class="mb-6 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
-            {article.tags.map((tag, i) => (
-              <span>
-                {tag}
-                {i < article.tags.length - 1 ? <span class="ml-3 text-stone-200">/</span> : null}
-              </span>
-            ))}
-          </div>
-
-          <!-- Title -->
-          <h1 class="mb-8 font-serif font-bold text-stone-900 leading-[1.0] tracking-[-0.02em] text-4xl md:text-5xl lg:text-6xl">
-            {article.title}
-          </h1>
-
-          <!-- Geometric rule -->
-          <div class="flex items-center gap-3 mb-8">
-            <div class="h-0.5 w-6 bg-stone-900 shrink-0"></div>
-            <div class="h-px flex-1 bg-stone-200"></div>
-            <div class="w-1.5 h-1.5 border border-stone-400 shrink-0" style="transform: rotate(45deg)"></div>
-            <div class="h-px w-8 bg-stone-200 shrink-0"></div>
-          </div>
-
-          <!-- Meta: date · readtime · github -->
-          <div class="mb-10 flex flex-wrap items-center gap-6 border-b border-stone-200 pb-8 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
-            <span>{formattedDate}</span>
-            <span>{article.readTime}</span>
-            {article.githubUrl && (
-              <a
-                href={article.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                class="ml-auto flex items-center gap-2 transition-colors hover:text-stone-900"
-              >
-                <Fragment set:html={GithubIcon} />
-                View Source Code
-              </a>
-            )}
-          </div>
-
-          <!-- Case study frame -->
-          {article.caseStudyFrame && (
-            <div class="not-prose mb-14 grid gap-8 border-y border-stone-200 py-8 md:grid-cols-3 md:gap-0">
-              <div class="md:px-8 md:first:pl-0">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">My role</p>
-                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.role}</p>
-              </div>
-              <div class="md:border-l md:border-stone-200 md:px-8">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">Scope</p>
-                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.scope}</p>
-              </div>
-              <div class="md:border-l md:border-stone-200 md:px-8 md:last:pr-0">
-                <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-3">Why it matters</p>
-                <p class="font-serif text-[0.98rem] leading-[1.6] text-stone-700">{article.caseStudyFrame.outcome}</p>
-              </div>
-            </div>
-          )}
-        </header>
-
-        {article.hero === 'schema-drift' && <SchemaDriftStory />}
-
-        <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_240px] xl:gap-12">
-          <div class="prose w-full max-w-3xl text-stone-800">
-            <p class="mb-12 max-w-[58ch] text-xl leading-[1.55] text-stone-600 md:text-[1.45rem]">
-              {article.summary}
-            </p>
-            <Content components={MDXComponents} />
-          </div>
-
-          {toc.length >= 2 && (
-            <aside class="hidden xl:block" aria-label="Table of contents">
-              <nav class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4">
-                <p class="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-500">Contents</p>
-                <ol class="space-y-1.5 border-l border-stone-200">
-                  {toc.map((h) => (
-                    <li>
-                      <a
-                        href={`#${h.slug}`}
-                        class:list={[
-                          'block -ml-px border-l border-transparent py-1 pl-4 font-mono text-[12px] leading-snug text-stone-500 transition-colors hover:border-stone-400 hover:text-stone-800',
-                          h.depth === 3 && 'pl-6 text-[11.5px]',
-                        ]}
-                      >
-                        {h.text}
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
-            </aside>
-          )}
-        </div>
-
-        <ReadNext currentId={article.id} />
-      </div>
+      {toc.length >= 2 && (
+        <aside class="hidden lg:block" aria-label="Table of contents">
+          <nav class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto text-[15px]">
+            <p class="mb-2.5 font-semibold">On this page</p>
+            <ol class="border-l border-rule">
+              {toc.map((h) => (
+                <li>
+                  <a
+                    href={`#${h.slug}`}
+                    class:list={[
+                      '-ml-px block border-l-2 border-transparent py-1.5 pl-3.5 leading-snug text-stone-600 no-underline hover:border-stone-400 hover:text-stone-900',
+                      h.depth === 3 && 'pl-6',
+                    ]}
+                  >
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+      )}
     </div>
-  </article>
+
+    <ReadNext currentId={article.id} />
+  </main>
 </Layout>

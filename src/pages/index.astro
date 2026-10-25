@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Hero } from '../components/home/Hero';
-import { HomeArticlesSection } from '../components/home/HomeArticlesSection';
+import Ledger from '../components/home/Ledger.astro';
+import { articles } from '../data/articles';
 
 const SITE_URL = 'https://valentinatihova.com';
+const [featured, ...rest] = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+const longDate = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const monthYear = (d: string) => new Date(d).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 ---
 
 <Layout
@@ -12,6 +15,70 @@ const SITE_URL = 'https://valentinatihova.com';
   canonical={SITE_URL + '/'}
   ogImage={SITE_URL + '/og-image.png'}
 >
-  <Hero />
-  <HomeArticlesSection />
+  <div slot="field" class="mx-auto max-w-[1160px] px-4 sm:px-6">
+    <div class="grid items-start gap-9 pt-8 pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:pt-12 lg:pb-16">
+      <div>
+        <p class="mb-4 text-[15px] font-semibold text-stone-600">Data &amp; AI Analyst</p>
+        <h1 class="text-[42px] leading-[1.04] sm:text-[56px] lg:text-[76px] lg:leading-[1.02]">
+          I find where a product's data misleads people, and fix it.
+        </h1>
+        <p class="mt-6 max-w-[30em] text-[19px] leading-[1.55] text-stone-600">
+          Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed,
+          and which numbers to trust.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+          {featured && (
+            <a
+              href={`/article/${featured.id}/`}
+              class="inline-flex min-h-11 items-center rounded-full bg-stone-900 px-5 font-semibold text-stone-100 no-underline hover:bg-stone-800"
+            >
+              Read the drift recipe
+            </a>
+          )}
+          <a href="https://github.com/valentinatihova/data360-autodoc" class="text-fixed underline">data360-autodoc on GitHub</a>
+        </div>
+      </div>
+      <Ledger />
+    </div>
+  </div>
+
+  <main class="mx-auto max-w-[1160px] px-4 sm:px-6">
+    <section id="writing" aria-labelledby="w-h" class="scroll-mt-4 pt-12 sm:pt-[72px]">
+      <div class="mb-7 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+        <h2 id="w-h" class="text-[32px] leading-[1.1] sm:text-[40px]">Writing</h2>
+        <p class="text-stone-600">How the fixes work and what they found.</p>
+      </div>
+
+      {featured && (
+        <a href={`/article/${featured.id}/`} class="group grid items-center gap-5 text-inherit no-underline md:grid-cols-[1.25fr_1fr] md:gap-10">
+          {featured.cover && (
+            <img src={featured.cover} alt="" width="862" height="484" loading="lazy" class="block h-auto w-full rounded-xl border border-rule" />
+          )}
+          <div>
+            <p class="mb-3 text-sm text-stone-600">{longDate(featured.date)}, {featured.readTime}</p>
+            <h3 class="text-[28px] leading-[1.12] text-stone-900 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-[6px] sm:text-[34px]">
+              {featured.title}
+            </h3>
+            <p class="mt-3.5 text-lg text-stone-600">{featured.summary}</p>
+          </div>
+        </a>
+      )}
+
+      {rest.length > 0 && (
+        <ul class="mt-10 border-t border-rule">
+          {rest.map((a) => (
+            <li class="grid gap-1 border-b border-rule py-5 sm:grid-cols-[180px_1fr] sm:gap-6">
+              <time datetime={a.date} class="text-[15px] text-stone-600">{monthYear(a.date)}</time>
+              <div>
+                <h3 class="text-[26px] leading-[1.2]">
+                  <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline">{a.title}</a>
+                </h3>
+                <p class="mt-1.5 text-stone-600">{a.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  </main>
 </Layout>

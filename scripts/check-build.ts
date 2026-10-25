@@ -15,9 +15,7 @@ const dist = resolve(import.meta.dirname, '..', 'dist');
 const strict = process.argv.includes('--strict');
 
 // Each entry is removed by the branch that fixes it.
-const KNOWN = new Map([
-  ['canonical-trailing-slash', 'positioning batch'],
-]);
+const KNOWN = new Map<string, string>([]);
 
 const failures: { check: string; detail: string }[] = [];
 const fail = (check: string, detail: string) => failures.push({ check, detail });
@@ -53,7 +51,9 @@ for (const [, loc] of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) {
   const page = read([join(dist, path, 'index.html'), join(dist, path)].find((p) => existsSync(p) && statSync(p).isFile())!);
   const h1 = (page.match(/<h1[\s>]/g) ?? []).length;
   if (h1 !== 1) fail('one-h1', `${path} has ${h1}`);
-  if (!/<title>[^<]+<\/title>/.test(page)) fail('title', path);
+  const title = page.match(/<title>([^<]+)<\/title>/)?.[1].replace(/&amp;/g, '&');
+  if (!title) fail('title', path);
+  else if (title.length > 60) fail('title-length', `${path} title is ${title.length} characters`);
   if (!/<meta name="description" content="[^"]+"/.test(page)) fail('description', path);
 }
 

@@ -8,6 +8,8 @@ export interface Article {
   githubUrl?: string;
   /** Animated figure shown under the article header. */
   hero?: 'schema-drift';
+  /** 16:9 still for the home page card. */
+  cover?: string;
   /**
    * When true the article gets no route and is left out of the home index and
    * ReadNext, so its MDX is never rendered or bundled. `npm run check:build`
@@ -54,6 +56,7 @@ export const allArticles: Article[] = [
     tags: ["Data 360", "CI"],
     githubUrl: "https://github.com/valentinatihova/data360-autodoc",
     hero: "schema-drift",
+    cover: "/articles/data360-drift/cover.png",
   },
   {
     id: "sfmc-false-opens",
