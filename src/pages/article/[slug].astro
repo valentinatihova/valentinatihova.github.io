@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 import { MDXComponents } from '../../components/article/MDXComponents';
 import { ReadNext } from '../../components/article/ReadNext';
+import SchemaDriftStory from '../../components/article/SchemaDriftStory.astro';
 import { articles, ARTICLE_KIND_LABEL, getArticleKind } from '../../data/articles';
 
 const SITE_URL = 'https://valentinatihova.com';
@@ -151,6 +152,8 @@ const GithubIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="1
             </div>
           )}
         </header>
+
+        {article.hero === 'schema-drift' && <SchemaDriftStory />}
 
         <div class="xl:grid xl:grid-cols-[minmax(0,1fr)_240px] xl:gap-12">
           <div class="prose w-full max-w-3xl text-stone-800">
