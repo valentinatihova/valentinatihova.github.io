@@ -142,9 +142,10 @@ in its first lines. Run it in a private repository.
 
 The JSON snapshot is deterministic: collections are sorted, and the same org produces identical
 output, so it is safe to commit and cheap to compare. Next to it, `generate` writes a Markdown data
-dictionary and a Mermaid graph of DLO → DMO mappings. For tools that do not render Mermaid, such as
-Confluence, `--diagram-image svg` (or `png`) also draws the graph as an image; it uses
-[mermaid-cli](https://github.com/mermaid-js/mermaid-cli) if it is installed.
+dictionary and a Mermaid graph of DLO → DMO mappings. With `--diagram-image svg` (or `png`) it also draws
+the graph as an image, ready to upload to a Confluence page or any other documentation that does
+not render Mermaid. It uses [mermaid-cli](https://github.com/mermaid-js/mermaid-cli) if it is
+installed.
 
 ![Sample output: DLO → DMO mapping graph and a DMO field table](/articles/data360-drift/sample-report.png)
 
