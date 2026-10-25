@@ -6,6 +6,8 @@ export interface Article {
   readTime: string;
   tags: string[];
   githubUrl?: string;
+  /** Animated figure shown under the article header. */
+  hero?: 'schema-drift';
   /**
    * When true the article gets no route and is left out of the home index and
    * ReadNext, so its MDX is never rendered or bundled. `npm run check:build`
@@ -42,6 +44,17 @@ export const ARTICLE_KIND_LABEL: Record<ArticleKind, string> = {
 };
 
 export const allArticles: Article[] = [
+  {
+    id: "data360-schema-drift-ci",
+    title: "A Failing Build When Your Data Cloud Data Model Changes",
+    summary:
+      "A free, open-source recipe: snapshot your Data 360 org, commit a baseline, and let a weekly GitHub Actions job tell you when the data model drifts.",
+    date: "2026-10-25",
+    readTime: "8 min read",
+    tags: ["Data 360", "CI"],
+    githubUrl: "https://github.com/valentinatihova/data360-autodoc",
+    hero: "schema-drift",
+  },
   {
     id: "sfmc-false-opens",
     title: "When Open Rate Lies: Detecting Suspicious Opens in SFMC",

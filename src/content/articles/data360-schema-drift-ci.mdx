@@ -1,0 +1,212 @@
+Most Data 360 (Data Cloud) teams I talk to have a good story for deployments. Data kits, the
+Salesforce CLI, a Git repository as the source of truth. That story covers what you deploy. It says
+nothing about what changes in the org between deployments.
+
+And things do change. Someone adds a Data Lake Object for a new source, deletes a field mapping,
+re-points a DLO to a different Data Model Object, or deactivates a relationship while cleaning
+up. Each change is reasonable on its own. A week later a segment returns fewer members or an
+activation ships blank values, and the team starts reverse-engineering what changed and when. One
+early reader put it well: in a setup where every developer has their own scratch org this rarely
+bites, but as soon as several people share one org, it gets chaotic quickly.
+
+This article is a recipe for that gap: a scheduled CI job that fails when the data model of an org
+changes, using [data360-autodoc](https://github.com/valentinatihova/data360-autodoc), a small
+MIT-licensed Python CLI. Everything below runs on a free Developer Edition org.
+
+## The idea in one paragraph
+
+Take a snapshot of the org's schema as a JSON file and commit it. That is your baseline. Once a week,
+CI takes a fresh snapshot and compares it with the baseline. If they differ, the job fails and the
+job summary lists exactly what changed. If the change was intended, you replace the baseline and
+commit it, so the Git history becomes a changelog of your data model, with an author and a reason
+for every accepted change.
+
+## Step 1: take a baseline
+
+You need Python 3.11+ and, for the easiest sign-in, the Salesforce CLI:
+
+```bash
+pipx install data360-autodoc
+sf org login web --alias my-org
+
+data360-autodoc generate --target-org my-org --org-name prod \
+  --format json --output snapshots
+git add snapshots/prod.json && git commit -m "Data 360 baseline"
+```
+
+`--target-org` reuses your existing `sf` login, so there is no connected app to set up for local use.
+`--org-name` keeps the file name stable (`prod.json`), which matters once CI starts comparing files
+by name.
+
+By default only the DMOs the org actually uses are captured: enabled standard DMOs plus all custom
+ones. A fresh org lists about a thousand standard DMOs, most of them disabled, and tracking all of
+them would only add noise. `--all-dmos` captures everything if you want it.
+
+## Step 2: let CI compare
+
+The job installs the tool and the Salesforce CLI, signs in with the JWT bearer flow from repository
+secrets, takes a fresh snapshot and diffs it against the baseline:
+
+```yaml
+name: Data 360 schema drift
+on:
+  schedule: [{ cron: "0 6 * * 1" }]   # weekly
+  pull_request: { paths: ["snapshots/**"] }
+jobs:
+  drift:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: |
+          pip install "data360-autodoc>=0.4.1,<0.5"
+          npm install --global @salesforce/cli@2
+      - name: Sign in (JWT, secrets from the repo settings)
+        env:
+          SF_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
+        run: |
+          printf '%s\n' "$SF_PRIVATE_KEY" > "$RUNNER_TEMP/server.pem"
+          sf org login jwt --instance-url "${{ secrets.SF_INSTANCE_URL }}" \
+            --client-id "${{ secrets.SF_CLIENT_ID }}" --username "${{ secrets.SF_USERNAME }}" \
+            --jwt-key-file "$RUNNER_TEMP/server.pem" --alias ci-org > /dev/null
+      - run: data360-autodoc generate --target-org ci-org --org-name prod --format json --output current --strict
+      - run: data360-autodoc diff snapshots/prod.json current/prod.json --output drift.md --fail-on-change
+      - if: always()
+        run: cat drift.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+```
+
+It runs weekly, and also on pull requests that touch the baseline, so updating the baseline is
+checked against the real org before it is merged. Pull requests from forks get no secrets, so the
+job skips them instead of failing. A fuller version, which also deletes the key file after sign-in
+and uploads the new snapshot as an artifact, is in the repository:
+[README: Run drift checks in CI](https://github.com/valentinatihova/data360-autodoc#run-drift-checks-in-ci)
+and [examples/github-actions/data360-drift.yml](https://github.com/valentinatihova/data360-autodoc/blob/main/examples/github-actions/data360-drift.yml).
+
+## Step 3: read the result
+
+`diff --fail-on-change` has three exit codes, and keeping them apart is what makes a red run mean
+one thing:
+
+- `0`: no drift;
+- `1`: the schema drifted;
+- `2`: something went wrong, such as an unreadable snapshot or a bad flag.
+
+A broken run is never mistaken for drift, and drift is never hidden by a broken run. When the job is
+red, the job summary shows the report. On the synthetic snapshots that ship with the tests, it starts
+like this:
+
+```markdown
+**18 changes detected.**
+
+| Area | Added | Removed | Changed |
+| --- | --- | --- | --- |
+| DMOs | 1 | 0 | 2 |
+| DMO fields | 2 | 0 | 1 |
+| DLOs | 1 | 1 | 2 |
+| DLO fields | 2 | 0 | 1 |
+| DLO → DMO object mappings | 1 | 1 | — |
+| DLO → DMO field mappings | 4 | 1 | — |
+| Relationships | 1 | 0 | 1 |
+```
+
+and then lists each change, for example a field whose type went from Text to Number, or a
+relationship whose status went from ACTIVE to INACTIVE. For scripts, `diff --format json` returns
+the same information with `has_changes`, `change_count` and a per-area summary.
+
+To accept a change, replace `snapshots/prod.json` with the new snapshot and commit it.
+
+## Why `--strict` exists
+
+The first version of this recipe had a flaw I only saw when I thought about what a red run would
+look like at 6 a.m. on a Monday.
+
+Fetching a schema means one call per DMO for its mappings and another for its relationships. If one
+of those calls fails, say a transient 503, the reasonable thing for a documentation tool is to skip
+that DMO, log a warning and still produce the rest. For documentation, that is fine. For a drift
+check, it is a false alarm: the snapshot is missing a DMO, so `diff` correctly reports "DMO removed",
+and someone spends the morning looking for a change nobody made.
+
+`generate --strict` turns that around. If any DMO could not be read, it writes nothing and exits
+with an error, so the job fails as an error, not as drift. In CI you want a missing snapshot rather
+than a wrong one.
+
+## One rule: keep it in a private repository
+
+The baseline, the job summary and the artifact list your org's objects and fields. For many teams
+that schema is confidential, and a public repository would publish it. The example workflow says so
+in its first lines. Run it in a private repository.
+
+## What the snapshot is built from
+
+The JSON snapshot is deterministic: collections are sorted, and the same org produces identical
+output, so it is safe to commit and cheap to compare. Next to it, `generate` writes a Markdown data
+dictionary and a Mermaid graph of DLO → DMO mappings.
+
+![Sample output: DLO → DMO mapping graph and a DMO field table](/articles/data360-drift/sample-report.png)
+
+*Real output from a Developer Edition org with only the standard data model and its built-in CRM
+data streams: 22 DMOs, 17 DLOs, 26 mappings.*
+
+A few choices keep the diff quiet:
+
+- **Identity is by API name**, not by label, so renaming a label shows up as a label change, not as
+  a removed and an added object.
+- **Noise is ignored on purpose.** The snapshot timestamp and display labels on mapping rows are not
+  schema changes, and a missing value and an empty string count as the same value.
+- **A re-pointed field mapping shows as one removal and one addition**, because that is what it is
+  for everything downstream.
+
+## What the Data 360 API taught me
+
+1. **The DMO list is large, slow and mostly disabled.** A new org lists about a thousand standard
+   DMOs, and the endpoint takes roughly 0.2 seconds per DMO, so a 500-row page did not finish within
+   a minute. The tool now reads it in pages of 100 and shows a live counter.
+2. **"Nothing here" has several spellings.** A DMO with no relationships answers `204 No Content`;
+   a DMO with no DLO mapping answers `404`. Both are empty results, not errors, and treating them as
+   errors silently dropped DMOs from the snapshot.
+3. **Paging is not uniform across endpoints.** Some listings page with `limit` and `offset`, some
+   ignore them. While testing on my Developer Edition org I found that `/ssot/metadata` returns the
+   full list whatever `limit` and `offset` say, which also affected a connector in another
+   open-source project. I reported it there with a fix
+   ([open-metadata/OpenMetadata#35999](https://github.com/open-metadata/OpenMetadata/issues/35999)).
+4. **An expired token must stop the run.** An early version treated a `401` on one DMO like any
+   other per-DMO error and skipped it, so an expired session could produce an empty snapshot. Now a
+   `401` stops the run with a one-line hint (`sf org login web --alias my-org`).
+
+## Limitations
+
+- Calculated Insights and Identity Resolution rulesets are not fetched yet.
+- A snapshot covers the whole org. Scoping it to a single data kit, to compare the same kit across
+  two orgs, is a good idea from a reader that is not built yet.
+- The Mermaid graph has no SVG or PNG export yet. Until then, `npx -p @mermaid-js/mermaid-cli mmdc
+  -i file.mmd -o file.svg` works for tools like Confluence that do not render Mermaid.
+- It has been tested against Developer Edition orgs. Try it on a sandbox first, and if your org has a
+  shape it does not handle, open an issue.
+
+## Where it fits
+
+If you use sfdx-hardis, its data dictionary command can now include Data Cloud objects and their
+relationships in the Excel workbook it generates (`hardis:doc:data-dictionary --datacloud`, a
+contribution of mine merged in October 2026). The two tools answer different questions: sfdx-hardis
+documents the org in the format your project already uses, while data360-autodoc focuses on a
+diff-friendly snapshot and drift checks.
+
+## Try it
+
+```bash
+pipx install data360-autodoc
+```
+
+The code, the sample report and the CI recipe are on
+[GitHub](https://github.com/valentinatihova/data360-autodoc) under the MIT license. Feedback is the
+most useful thing you can send: what would make this worth running on your org, and what is missing.
+Issues and pull requests are welcome.
+
+---
+
+*Also published on Medium, with this page as the original.*
+
+*data360-autodoc is an independent open-source project. It is not affiliated with, sponsored by or
+endorsed by Salesforce. Salesforce, Data Cloud and Data 360 are trademarks of Salesforce, Inc.*
