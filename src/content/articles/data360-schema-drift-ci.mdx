@@ -142,7 +142,10 @@ in its first lines. Run it in a private repository.
 
 The JSON snapshot is deterministic: collections are sorted, and the same org produces identical
 output, so it is safe to commit and cheap to compare. Next to it, `generate` writes a Markdown data
-dictionary and a Mermaid graph of DLO → DMO mappings.
+dictionary and a Mermaid graph of DLO → DMO mappings. With `--diagram-image svg` (or `png`) it also draws
+the graph as an image, ready to upload to a Confluence page or any other documentation that does
+not render Mermaid. It uses [mermaid-cli](https://github.com/mermaid-js/mermaid-cli) if it is
+installed.
 
 ![Sample output: DLO → DMO mapping graph and a DMO field table](/articles/data360-drift/sample-report.png)
 
@@ -180,8 +183,6 @@ A few choices keep the diff quiet:
 - Calculated Insights and Identity Resolution rulesets are not fetched yet.
 - A snapshot covers the whole org. Scoping it to a single data kit, to compare the same kit across
   two orgs, is a good idea from a reader that is not built yet.
-- The Mermaid graph has no SVG or PNG export yet. Until then, `npx -p @mermaid-js/mermaid-cli mmdc
-  -i file.mmd -o file.svg` works for tools like Confluence that do not render Mermaid.
 - It has been tested against Developer Edition orgs. Try it on a sandbox first, and if your org has a
   shape it does not handle, open an issue.
 
