@@ -102,7 +102,7 @@ export const Hero: React.FC = () => {
               </a>
             </div>
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
-              <span className="font-medium text-accent">Open to roles</span> · Valencia · Remote · EU Auth
+              Valencia, Spain
             </p>
           </div>
         </div>

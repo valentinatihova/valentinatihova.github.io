@@ -212,7 +212,7 @@ function RootTemplate() {
             textTransform: 'uppercase',
           }}
         >
-          <span>8+ years  ·  fintech · retail · telecom  ·  remote in europe</span>
+          <span>8+ years  ·  fintech · retail · telecom  ·  valencia, spain</span>
           <span style={{ color: STONE_500 }}>valentinatihova.com</span>
         </div>
       </div>
