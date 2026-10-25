@@ -159,7 +159,7 @@ function RootTemplate() {
             textTransform: 'uppercase',
           }}
         >
-          Senior Data &amp; MarTech Engineer
+          Data &amp; AI Analyst
         </div>
 
         <div
