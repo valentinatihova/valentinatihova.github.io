@@ -1,11 +1,9 @@
 export const profile = {
   name: "Valentina Tihova",
-  title: "Senior Data & MarTech Engineer",
-  about: "Senior Data & MarTech Engineer, 8+ years. I've shipped and run data pipelines, real-time decisioning, reporting, and customer lifecycle work in fintech, retail, and telecom. Day to day: turn requirements into something deployable, then keep it testable and observable. Recent work includes 15+ analytics builds for a large bank and migrating five marketing flows off a legacy CRM to a new stack.",
+  title: "Data & AI Analyst",
+  about: "Data and AI analyst, 8+ years. I find where a product's data misleads people, and fix it; my open-source work makes Salesforce customer data platforms legible to data engineers. I've shipped and run data pipelines, real-time decisioning, reporting, and customer lifecycle work in fintech, retail, and telecom. Day to day: turn requirements into something deployable, then keep it testable and observable. Recent work includes 15+ analytics builds for a large bank and migrating five marketing flows off a legacy CRM to a new stack.",
   email: "valentina.tikhova1@gmail.com",
   location: "Valencia, Spain",
-  hiringContext: "Remote in Europe",
-  workAuthorization: "EU work authorized",
   telegram: {
     handle: "@Tihova_Valentina",
     url: "https://t.me/Tihova_Valentina"

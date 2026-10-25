@@ -25,7 +25,7 @@ export const Hero: React.FC = () => {
           <div className="flex items-center gap-4 mb-8">
             <span className="h-px w-6 bg-stone-400" aria-hidden="true" />
             <p className="font-mono text-[10px] font-medium uppercase tracking-[0.3em] text-stone-500">
-              Senior Data &amp; MarTech Engineer
+              Data &amp; AI Analyst
             </p>
           </div>
 
@@ -67,10 +67,12 @@ export const Hero: React.FC = () => {
               — Statement
             </p>
             <p className="font-serif italic text-2xl md:text-3xl text-stone-600 leading-[1.3] max-w-2xl">
-              I build data systems that don&apos;t{' '}
-              <em className="not-italic text-stone-900 font-semibold">lie</em>
-              <br className="hidden md:block" />
-              {' '}to the people who rely on them.
+              I find where a product&apos;s data{' '}
+              <em className="not-italic text-stone-900 font-semibold">misleads</em>
+              {' '}people, and fix it.
+            </p>
+            <p className="mt-4 text-base md:text-lg text-stone-600 leading-relaxed max-w-2xl">
+              Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed, and which numbers to trust.
             </p>
           </div>
 
@@ -100,7 +102,7 @@ export const Hero: React.FC = () => {
               </a>
             </div>
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
-              <span className="font-medium text-accent">Open to roles</span> · Valencia · Remote · EU Auth
+              Valencia, Spain
             </p>
           </div>
         </div>

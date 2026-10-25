@@ -75,8 +75,6 @@ export const Resume: React.FC = () => {
         <div className="border-y border-stone-200 py-5 mb-16">
           <div className="flex flex-wrap gap-x-6 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
             <span>{profile.location}</span>
-            <span>{profile.hiringContext}</span>
-            <span>{profile.workAuthorization}</span>
             <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-900">LinkedIn</a>
             <a href={profile.telegram.url} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-900">{profile.telegram.handle}</a>
           </div>

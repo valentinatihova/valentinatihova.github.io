@@ -1,6 +1,6 @@
 # valentinatihova.com
 
-Personal portfolio and case-study site for Valentina Tihova — Senior Data & MarTech Engineer.
+Personal portfolio and case-study site for Valentina Tihova — Data & AI Analyst.
 
 ## What it is
 
