@@ -1,0 +1,46 @@
+---
+import { fixes, LEDGER_UPDATED } from '../../data/projects';
+
+// Backticks in the data mark inline code.
+const withCode = (s: string) =>
+  s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!).replace(/`([^`]+)`/g, '<code>$1</code>');
+const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<section id="work" aria-labelledby="ledger-h" class="scroll-mt-4 overflow-hidden rounded-xl border border-rule bg-white">
+  <div class="flex items-baseline justify-between gap-3 border-b border-rule px-[18px] py-3.5">
+    <h2 id="ledger-h" class="font-sans text-base font-semibold tracking-normal">{fixes.length} fixes shipped</h2>
+    <span class="text-sm text-stone-600">latest {updated}</span>
+  </div>
+  <ol>
+    {fixes.map((fix) => (
+      <li class="border-b border-rule px-[18px] pt-3 pb-3.5 last:border-b-0">
+        <div class="mb-1.5 flex items-baseline justify-between gap-3">
+          <h3 class="font-sans text-[15px] font-semibold tracking-normal">{fix.product}</h3>
+          <a
+            href={fix.proof.url}
+            class:list={['shrink-0 text-sm font-semibold underline', fix.status === 'review' ? 'text-review' : 'text-fixed']}
+          >
+            {fix.proof.label}
+          </a>
+        </div>
+        <p class="ledger-line bg-broke-bg"><span aria-label="Before:" class="text-broke">−</span><span set:html={withCode(fix.before)} /></p>
+        <p class="ledger-line bg-fixed-bg"><span aria-label="After:" class="text-fixed">+</span><span set:html={withCode(fix.after)} /></p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .ledger-line {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    margin-top: 2px;
+    padding: 4px 10px 4px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .ledger-line > span:first-child { font-family: var(--font-mono); font-weight: 600; }
+  .ledger-line :global(code) { font-size: 0.88em; }
+</style>

@@ -1,0 +1,32 @@
+---
+import { articles } from '../../data/articles';
+
+interface Props { currentId: string }
+const { currentId } = Astro.props;
+
+// Prefer articles that share tags; fall back to the newest. Never the current one.
+const current = articles.find((a) => a.id === currentId);
+const tags = new Set(current?.tags ?? []);
+const related = articles
+  .filter((a) => a.id !== currentId)
+  .map((a) => ({ a, overlap: a.tags.filter((t) => tags.has(t)).length }))
+  .sort((x, y) => y.overlap - x.overlap || y.a.date.localeCompare(x.a.date))
+  .slice(0, 2)
+  .map(({ a }) => a);
+---
+
+{related.length > 0 && (
+  <section aria-labelledby="next-h" class="border-t border-rule pt-10 pb-4">
+    <h2 id="next-h" class="text-[28px] leading-tight">Read next</h2>
+    <ul class="mt-4">
+      {related.map((a) => (
+        <li class="border-b border-rule py-5">
+          <h3 class="text-[24px] leading-[1.2]">
+            <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline">{a.title}</a>
+          </h3>
+          <p class="mt-1.5 text-stone-600">{a.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

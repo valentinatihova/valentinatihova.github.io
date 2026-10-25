@@ -3,7 +3,7 @@ import clsx from 'clsx';
 interface KeyMetricProps {
   /** The quantified value itself. Kept small: digit-led, ≤ 6 chars ideal. */
   value: React.ReactNode;
-  /** What the value measures. Mono uppercase eyebrow above the value. */
+  /** What the value measures. Mono eyebrow above the value. */
   label: string;
   /** Optional one-line interpretation printed below the value. */
   note?: React.ReactNode;
@@ -24,7 +24,7 @@ interface KeyMetricProps {
 export function KeyMetric({ value, label, note, accent = false }: KeyMetricProps) {
   return (
     <div className={clsx('flex flex-col gap-2', accent && 'md:col-span-1')}>
-      <span className="font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-stone-400">
+      <span className="font-sans text-[15px] font-semibold text-stone-400">
         {label}
       </span>
       <span
@@ -67,7 +67,7 @@ export function KeyMetrics({ children, label = 'Observed distribution' }: KeyMet
       aria-label={label}
       className="not-prose my-14 rounded-2xl border border-stone-200 bg-stone-50 p-8 md:p-10"
     >
-      <p className="mb-8 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-accent">
+      <p className="mb-8 font-sans text-[15px] font-semibold text-accent">
         {label}
       </p>
       <div className="grid gap-10 md:grid-cols-3 md:gap-0 md:[&>*]:px-8 md:[&>*:first-child]:pl-0 md:[&>*:last-child]:pr-0 md:[&>*:not(:first-child)]:border-l md:[&>*:not(:first-child)]:border-stone-200">

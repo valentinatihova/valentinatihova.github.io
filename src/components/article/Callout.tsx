@@ -65,7 +65,7 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
     >
       <div
         className={clsx(
-          'mb-3 flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.28em]',
+          'mb-3 flex items-center gap-2 font-sans text-[15px] font-semibold',
           meta.tone.split(' ')[1], // text color
         )}
       >

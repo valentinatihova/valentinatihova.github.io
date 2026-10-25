@@ -2,42 +2,46 @@
 /* Self-hosted fonts: no request to Google before first paint. */
 @import "@fontsource-variable/newsreader/opsz.css";
 @import "@fontsource-variable/newsreader/opsz-italic.css";
-@import "@fontsource/dm-mono/400.css";
-@import "@fontsource/dm-mono/500.css";
+@import "@fontsource/public-sans/400.css";
+@import "@fontsource/public-sans/500.css";
+@import "@fontsource/public-sans/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/600.css";
 @plugin "@tailwindcss/typography";
 
+/* Palette and type come from the "Schema drift, played back" animation, so the
+   site and its header visual read as one system. Stone is remapped to the same
+   sage-and-ink scale, which keeps older pages consistent without rewriting them. */
 @theme {
   --font-display: "Newsreader Variable", Georgia, serif;
   --font-serif: "Newsreader Variable", Georgia, serif;
-  --font-mono: "DM Mono", ui-monospace, monospace;
+  --font-sans: "Public Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-surface: #FFFFFF;
-  --color-text: #18181B;
+  --color-surface: #fbfcfa;
+  --color-text: #1d2b33;
+  --color-field: #f2f4f1;
+  --color-grid: #e4eae6;
+  --color-rule: #cfd8d3;
+  --color-broke: #a3242f;
+  --color-broke-bg: #f7e0e2;
+  --color-fixed: #1d5fa0;
+  --color-fixed-bg: #e3eef8;
+  --color-review: #9a4f00;
+  --color-review-bg: #f8ecdd;
+  --color-accent: #1d5fa0;
 
-  /* Editorial palette: warm paper + signature terracotta accent. */
-  --color-paper: oklch(94% 0.018 85);
-  --color-accent: oklch(58% 0.135 55);
-
-  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
-  --animate-spin-slow: spin 20s linear infinite;
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes fade-in-up {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
+  --color-stone-50: #f7f9f7;
+  --color-stone-100: #f2f4f1;
+  --color-stone-200: #e4eae6;
+  --color-stone-300: #cfd8d3;
+  --color-stone-400: #5f6f75;
+  --color-stone-500: #57676d;
+  --color-stone-600: #4f5f66;
+  --color-stone-700: #33444c;
+  --color-stone-800: #26363e;
+  --color-stone-900: #1d2b33;
+  --color-stone-950: #121c21;
 }
 
 @layer base {
@@ -46,27 +50,30 @@
   }
 
   ::selection {
-    background-color: color-mix(in oklch, var(--color-accent) 32%, transparent);
+    background-color: var(--color-fixed-bg);
     color: var(--color-text);
   }
 
   body {
     background-color: var(--color-surface);
     color: var(--color-text);
-    font-family: var(--font-serif);
-    font-variation-settings: "opsz" 14;
+    font-family: var(--font-sans);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-fixed);
+    outline-offset: 2px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-variation-settings: "opsz" 72;
+    font-weight: 400;
   }
-  h1 { letter-spacing: -0.025em; }
-  h2 { letter-spacing: -0.015em; }
-  h3 { letter-spacing: -0.005em; }
-  h4, h5, h6 { letter-spacing: 0; font-variation-settings: "opsz" 24; }
-  
+  h1 { letter-spacing: -0.02em; }
+  h2 { letter-spacing: -0.01em; }
+
+  a { text-underline-offset: 3px; }
+
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
@@ -78,13 +85,13 @@
 }
 
 /* Code blocks: highlighted at build time by rehype-pretty-code (one-dark-pro). */
-.prose figure[data-rehype-pretty-code-figure] {
+.article-prose figure[data-rehype-pretty-code-figure] {
   @apply my-10;
 }
-.prose figure[data-rehype-pretty-code-figure] pre {
-  @apply m-0 overflow-x-auto rounded-xl border border-stone-700 bg-[#292524] p-6 text-sm leading-relaxed;
+.article-prose figure[data-rehype-pretty-code-figure] pre {
+  @apply m-0 overflow-x-auto rounded-[10px] bg-stone-900 p-6 text-sm leading-relaxed;
 }
-.prose figure[data-rehype-pretty-code-figure] code {
+.article-prose figure[data-rehype-pretty-code-figure] code {
   @apply grid bg-transparent p-0 text-[0.875rem];
 }
 
@@ -158,3 +165,20 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* The field: the org-map grid from the article animation, behind the page header. */
+.field {
+  background-color: var(--color-field);
+  background-image: linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+/* Article body: Newsreader for reading, Public Sans for UI. */
+.article-prose { font-family: var(--font-serif); }
+.article-prose :not(pre) > code {
+  @apply rounded border border-rule bg-field px-[5px] py-px font-mono text-[0.8em] text-stone-900;
+}
+/* one-dark-pro comments (#7F848E) are too faint on the ink background; lift them to 4.5:1+. */
+.article-prose figure[data-rehype-pretty-code-figure] span[style*="#7F848E"] { color: #9aa7b0 !important; }

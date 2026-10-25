@@ -31,7 +31,7 @@ const last = SHOTS;
       <div class="sd-frame" data-frame set:html={renderShot(last)} />
     </div>
   </div>
-  <figcaption class="mt-3 font-serif text-[0.95rem] text-stone-600">
+  <figcaption class="mt-2.5 text-[15px] text-stone-600">
     A synthetic org, invented for this demo. Press Play to replay, or pick a shot.
   </figcaption>
 </figure>
@@ -152,7 +152,7 @@ const last = SHOTS;
     flex-direction: column;
     gap: 8px;
     color: #1d2b33;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans);
   }
   /* Once the script has measured the box, use the exact scale. */
   .sd-box[style*='--sd-scale'] .sd-stage { transform: scale(var(--sd-scale)); }
@@ -165,7 +165,7 @@ const last = SHOTS;
     gap: 12px;
     min-height: 44px;
     color: #1d2b33;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans);
     container-type: inline-size;
   }
   .sd-segs { display: flex; gap: 2px; }
