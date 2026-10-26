@@ -11,7 +11,7 @@ const SITE_URL = 'https://valentinatihova.com';
 export async function getStaticPaths() {
   const entries = await getCollection('articles');
   return articles.map((article) => {
-    const entry = entries.find((e) => e.slug === article.id);
+    const entry = entries.find((e) => e.id === article.id);
     // A typo in an id must fail the build, not ship an empty article.
     if (!entry) throw new Error(`No MDX file in src/content/articles for article "${article.id}"`);
     return { params: { slug: article.id }, props: { article, entry } };

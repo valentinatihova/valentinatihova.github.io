@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { unified } from '@astrojs/markdown-remark';
 import rehypePrettyCode from 'rehype-pretty-code';
 
 // https://docs.astro.build/en/reference/configuration-reference/
@@ -12,12 +13,7 @@ export default defineConfig({
 
   integrations: [
     react(),
-    mdx({
-      // rehype-pretty-code highlights code blocks in MDX at build time.
-      rehypePlugins: [
-        [rehypePrettyCode, { theme: 'one-dark-pro', keepBackground: false }],
-      ],
-    }),
+    mdx(),
     // Sitemap auto-generated from all static pages. Excludes /404 automatically.
     // The retired Apex article is only a browser redirect, keep it out of the sitemap.
     sitemap({ filter: (page) => !page.includes('/article/data-cloud-metadata-apex') }),
@@ -29,8 +25,11 @@ export default defineConfig({
     ],
   },
 
-  // Markdown / MDX options — keep rehype-pretty-code for syntax highlighting.
+  // MDX inherits this processor; rehype-pretty-code highlights code blocks at build time.
   markdown: {
-    syntaxHighlight: false, // handled by rehype-pretty-code in MDX
+    processor: unified({
+      rehypePlugins: [[rehypePrettyCode, { theme: 'one-dark-pro', keepBackground: false }]],
+    }),
+    syntaxHighlight: false,
   },
 });

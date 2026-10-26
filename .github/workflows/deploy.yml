@@ -19,12 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 22
+          # Astro 7 needs >=22.23.4; the runner cache can lag behind the latest 22.x
+          check-latest: true
           cache: npm
 
       - name: Install dependencies
@@ -44,9 +46,20 @@ jobs:
         env:
           BANNED_TERMS: ${{ secrets.BANNED_TERMS }}
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      # Budgets live in lighthouserc.json; performance only warns because the
+      # local static server does not compress files the way GitHub Pages does.
+      - name: Lighthouse budgets
+        run: npx --yes @lhci/cli@0.15.1 autorun
+
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
 
@@ -63,4 +76,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
