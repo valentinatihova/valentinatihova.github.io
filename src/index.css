@@ -100,6 +100,9 @@
 
 /* Article body: Newsreader for reading, Public Sans for UI. */
 .article-prose { font-family: var(--font-serif); }
+.article-prose img {
+  @apply mx-auto my-10 block h-auto max-w-full rounded-[10px] border border-rule;
+}
 .article-prose :not(pre) > code {
   @apply rounded border border-rule bg-field px-[5px] py-px font-mono text-[0.8em] text-stone-900;
 }
