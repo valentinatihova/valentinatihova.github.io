@@ -56,7 +56,7 @@ export const allArticles: Article[] = [
     tags: ["Data 360", "CI"],
     githubUrl: "https://github.com/valentinatihova/data360-autodoc",
     hero: "schema-drift",
-    cover: "/articles/data360-drift/cover.png",
+    cover: "/articles/data360-drift/cover.webp",
   },
   {
     id: "sfmc-false-opens",

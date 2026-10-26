@@ -5,6 +5,7 @@ import { Architecture, ArchitectureNode, ArchitectureEdge, ArchitectureStep } fr
 
 // Rendered at build time by Astro. Heading ids come from Astro's heading slugs,
 // code blocks are highlighted by rehype-pretty-code and styled in index.css.
+// Images are left to Astro, which emits WebP with width, height and lazy loading.
 const h2 = 'mt-12 mb-4 text-[28px] leading-[1.15] text-stone-900 sm:text-[34px] scroll-mt-6';
 
 export const MDXComponents = {
@@ -18,11 +19,6 @@ export const MDXComponents = {
   ol: (props: React.ComponentPropsWithoutRef<'ol'>) => <ol className="mb-[22px] list-decimal pl-6 text-[18px] leading-[1.65] text-stone-900 sm:text-[20px]" {...props} />,
   li: (props: React.ComponentPropsWithoutRef<'li'>) => <li className="mb-2 pl-1" {...props} />,
   a: (props: React.ComponentPropsWithoutRef<'a'>) => <a className="text-fixed underline decoration-1 underline-offset-[3px] hover:decoration-2" {...props} />,
-  img: (props: React.ComponentPropsWithoutRef<'img'>) => (
-    <span className="my-10 block">
-      <img className="mx-auto h-auto max-w-full rounded-[10px] border border-rule" {...props} />
-    </span>
-  ),
 
   // Editorial primitives available inside any .mdx file
   Callout,
