@@ -67,3 +67,37 @@ test('RSS feed lists every published article', async ({ request }) => {
   expect(xml).toContain('<link>https://valentinatihova.com/article/data360-schema-drift-ci/</link>');
   expect(xml).toContain('<link>https://valentinatihova.com/article/sfmc-false-opens/</link>');
 });
+
+test.describe('home scroll scene', () => {
+  // The scene is CSS scroll-driven on desktop: nothing to drive, only states to check.
+  test('tells the three beats as the page scrolls', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'phone', 'phones get the static layout');
+    await page.goto('/');
+    const l1 = page.locator('h1 .l1'), l2 = page.locator('h1 .l2'), l3 = page.locator('h1 .l3');
+    const span = await page.evaluate(() => {
+      const t = document.querySelector('.track')!.getBoundingClientRect();
+      return { top: t.top + scrollY, len: t.height - innerHeight };
+    });
+    expect(span.len).toBeGreaterThan(1000);
+    await expect(l1).toHaveCSS('opacity', '1');
+    await expect(l2).toHaveCSS('opacity', '0');
+    await expect(l3).toHaveCSS('opacity', '0');
+    await page.evaluate((y) => scrollTo(0, y), span.top + span.len * 0.5);
+    await expect(l2).toHaveCSS('opacity', '1');
+    await expect(l3).toHaveCSS('opacity', '0');
+    await page.evaluate((y) => scrollTo(0, y), span.top + span.len * 0.95);
+    await expect(l3).toHaveCSS('opacity', '1');
+    await expect(page.locator('.stats div').last()).toHaveCSS('opacity', '1');
+    await page.evaluate((y) => scrollTo(0, y), span.top + span.len + 600);
+    await expect(page.getByRole('heading', { name: /Four places I look/ })).toBeInViewport();
+  });
+
+  test('shows everything without scrolling under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await expect(page.locator('h1')).toBeVisible();
+    await expect(page.locator('h1 .l3')).toHaveCSS('opacity', '1');
+    await expect(page.getByRole('heading', { name: 'Data systems' })).toBeVisible();
+    expect(await page.evaluate(() => document.querySelector('.track')!.getBoundingClientRect().height / innerHeight)).toBeLessThan(2.5);
+  });
+});

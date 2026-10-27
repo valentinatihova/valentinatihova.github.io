@@ -23,6 +23,8 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
     ],
+    // The meta CSP has no 'unsafe-inline' for scripts, so small scripts must stay external files.
+    build: { assetsInlineLimit: (file) => (file.endsWith('.js') ? false : undefined) },
   },
 
   // MDX inherits this processor; rehype-pretty-code highlights code blocks at build time.
