@@ -1,12 +1,63 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Ledger from '../components/home/Ledger.astro';
+import ScrollScene from '../components/home/ScrollScene.astro';
 import { articles } from '../data/articles';
+import { fixes } from '../data/projects';
 
 const SITE_URL = 'https://valentinatihova.com';
-const [featured, ...rest] = [...articles].sort((a, b) => b.date.localeCompare(a.date));
-const longDate = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
 const monthYear = (d: string) => new Date(d).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+const fix = (product: string) => fixes.find((f) => f.product === product)!;
+
+// Four places I look, each with its proof. Wording as confirmed in PRODUCT.md.
+const places = [
+  { title: 'Data quality', text: 'Find inconsistencies, validate assumptions, and make data reliable enough to support decisions.', proof: 'data360-autodoc on PyPI', href: 'https://pypi.org/project/data360-autodoc/' },
+  { title: 'Analytics', text: 'Turn complex datasets into clear evidence, useful metrics, and actionable conclusions.', proof: 'Public SQL for suspicious opens', href: 'https://github.com/valentinatihova/sfmc-false-opens' },
+  { title: 'AI & automation', text: 'Build practical tools and workflows, with attention to output quality, verification, and limitations.', proof: 'MCP server fix, in review', href: 'https://github.com/forcedotcom/datacloud-mcp-query/pull/19' },
+  { title: 'Data systems', text: 'Understand how data moves across APIs, pipelines, integrations, and platforms.', proof: 'Merged into sfdx-hardis', href: 'https://github.com/hardisgroupcom/sfdx-hardis/pull/2360' },
+];
+
+// Selected work: real, public, each with the same four lines. Wording comes from the ledger and the repos.
+const work = [
+  {
+    kind: 'Open-source tool',
+    title: 'data360-autodoc',
+    problem: fix('Salesforce Data 360').before,
+    did: 'A CLI that generates the data dictionary, field mappings, ERD and a diffable JSON snapshot for any Data 360 org, and a GitHub Actions recipe that fails the build when a mapping drifts.',
+    role: 'Author and maintainer',
+    result: fix('Salesforce Data 360').after,
+    tech: ['Python', 'Data 360 Metadata API', 'GitHub Actions', 'Mermaid'],
+    links: [
+      { label: 'PyPI 0.4.1', href: 'https://pypi.org/project/data360-autodoc/' },
+      { label: 'GitHub', href: 'https://github.com/valentinatihova/data360-autodoc' },
+      { label: 'Read the recipe', href: '/article/data360-schema-drift-ci/' },
+    ],
+  },
+  {
+    kind: 'Analysis',
+    title: 'When open rate lies',
+    problem: fix('Marketing Cloud reporting').before,
+    did: 'SQL over SFMC Data Views that flags scanner and bot "instant" opens, so engagement reports count people, not security scanners.',
+    role: 'Analysis and SQL',
+    result: fix('Marketing Cloud reporting').after,
+    tech: ['SFMC Data Views', 'SQL'],
+    links: [
+      { label: 'Public SQL', href: 'https://github.com/valentinatihova/sfmc-false-opens' },
+      { label: 'Read the article', href: '/article/sfmc-false-opens/' },
+    ],
+  },
+  {
+    kind: 'Open-source tool',
+    title: 'Journey Builder change log',
+    problem: fix('Journey Builder').before,
+    did: 'An offline, single-file report over Journey Builder audit logs: launch history, pre-launch test coverage, and test journeys still running in production. Zero network.',
+    role: 'Author',
+    result: fix('Journey Builder').after,
+    tech: ['TypeScript', 'HTML', 'SFMC audit logs'],
+    links: [{ label: 'Public repo', href: 'https://github.com/valentinatihova/sfmc-journey-change-log' }],
+  },
+];
 ---
 
 <Layout
@@ -15,70 +66,125 @@ const monthYear = (d: string) => new Date(d).toLocaleDateString('en-GB', { month
   canonical={SITE_URL + '/'}
   ogImage={SITE_URL + '/og-image.png'}
 >
-  <div slot="field" class="mx-auto max-w-[1160px] px-4 sm:px-6">
-    <div class="grid items-start gap-9 pt-8 pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:pt-12 lg:pb-16">
-      <div>
-        <p class="mb-4 text-[15px] font-semibold text-stone-600">Data &amp; AI Analyst</p>
-        <h1 class="text-[42px] leading-[1.04] sm:text-[56px] lg:text-[76px] lg:leading-[1.02]">
-          I find where a product's data misleads people, and fix it.
-        </h1>
-        <p class="mt-6 max-w-[30em] text-[19px] leading-[1.55] text-stone-600">
-          Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed,
-          and which numbers to trust.
-        </p>
-        <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
-          {featured && (
-            <a
-              href={`/article/${featured.id}/`}
-              class="inline-flex min-h-11 items-center rounded-full bg-stone-900 px-5 font-semibold text-stone-100 no-underline hover:bg-stone-800"
-            >
-              Read the drift recipe
-            </a>
-          )}
-          <a href="https://github.com/valentinatihova/data360-autodoc" class="text-fixed underline">data360-autodoc on GitHub</a>
-        </div>
-      </div>
-      <Ledger />
+  <ScrollScene />
+
+  <div class="overflow-x-clip"><p class="band" aria-hidden="true">schema drift · false opens · untested launches · schema drift · false opens · untested launches</p></div>
+
+  <section id="places" aria-labelledby="places-h" class="grain grain-dark bg-graphite text-paper">
+    <div class="mx-auto max-w-[1160px] px-4 py-20 sm:px-6 sm:py-28">
+      <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[52px]">Four places I look, <em class="accent">and what came out of it.</em></h2>
+      <ol class="stairs mt-12 sm:mt-16">
+        {places.map((b, i) => (
+          <li class="reveal" style={`--i:${i}`}>
+            <span class="font-mono text-[13px] text-paper-dim">0{i + 1}</span>
+            <div>
+              <h3 class="text-[22px] leading-[1.1] sm:text-[26px]">{b.title}</h3>
+              <p class="mt-1 max-w-[46ch] text-[15px] leading-[1.5] text-paper-dim sm:text-[16px]">{b.text}</p>
+            </div>
+            <a href={b.href} class="font-mono text-[13px] text-accent-dark underline underline-offset-4">{b.proof}</a>
+          </li>
+        ))}
+      </ol>
     </div>
-  </div>
+  </section>
 
   <main class="mx-auto max-w-[1160px] px-4 sm:px-6">
-    <section id="writing" aria-labelledby="w-h" class="scroll-mt-4 pt-12 sm:pt-[72px]">
-      <div class="mb-7 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-        <h2 id="w-h" class="text-[32px] leading-[1.1] sm:text-[40px]">Writing</h2>
-        <p class="text-stone-600">How the fixes work and what they found.</p>
+    <section id="work" aria-labelledby="work-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
+      <div class="grid gap-4 border-b border-rule pb-6 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+        <h2 id="work-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Selected work</h2>
+        <p class="max-w-[38em] text-lg text-stone-600">
+          Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed, and which numbers to trust.
+          Everything below is public: a package, a repository or an article you can open.
+        </p>
       </div>
+      <ol class="divide-y divide-rule">
+        {work.map((w) => (
+          <li class="grid gap-5 py-9 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+            <div>
+              <p class="font-mono text-[12px] tracking-[0.14em] text-stone-600 uppercase">{w.kind}</p>
+              <h3 class="mt-2 text-[28px] leading-[1.08] sm:text-[34px]">{w.title}</h3>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {w.tech.map((t) => <li class="rounded-full border border-rule px-3 py-1 font-mono text-[12px] text-stone-700">{t}</li>)}
+              </ul>
+            </div>
+            <dl class="grid gap-x-6 gap-y-2 text-[17px] leading-[1.5] sm:grid-cols-[120px_1fr]">
+              <dt class="text-stone-600">Problem</dt><dd>{w.problem}</dd>
+              <dt class="text-stone-600">What I did</dt><dd>{w.did}</dd>
+              <dt class="text-stone-600">Role</dt><dd>{w.role}</dd>
+              <dt class="text-stone-600">Result</dt><dd><mark class="rounded bg-accent-fill/25 px-1 text-stone-900">{w.result}</mark></dd>
+              <dt class="text-stone-600">Links</dt>
+              <dd class="flex flex-wrap gap-x-5 gap-y-1">
+                {w.links.map((l) => <a href={l.href} class="font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent">{l.label}</a>)}
+              </dd>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-      {featured && (
-        <a href={`/article/${featured.id}/`} class="group grid items-center gap-5 text-inherit no-underline md:grid-cols-[1.25fr_1fr] md:gap-10">
-          {featured.cover && (
-            <img src={featured.cover} alt="" width="862" height="484" loading="lazy" class="block h-auto w-full rounded-xl border border-rule" />
-          )}
-          <div>
-            <p class="mb-3 text-sm text-stone-600">{longDate(featured.date)}, {featured.readTime}</p>
-            <h3 class="text-[28px] leading-[1.12] text-stone-900 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-[6px] sm:text-[34px]">
-              {featured.title}
-            </h3>
-            <p class="mt-3.5 text-lg text-stone-600">{featured.summary}</p>
-          </div>
-        </a>
-      )}
+    <section aria-labelledby="changed-h" class="reveal grid items-start gap-6 pt-10 sm:pt-16 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+      <div>
+        <h2 id="changed-h" class="text-[34px] leading-[1.05] sm:text-[44px]">What changed because of it</h2>
+        <p class="mt-3 text-lg text-stone-600">Each line is a merged pull request or a release, written as a diff: what the product said before, what it says now.</p>
+      </div>
+      <Ledger />
+    </section>
 
-      {rest.length > 0 && (
-        <ul class="mt-10 border-t border-rule">
-          {rest.map((a) => (
-            <li class="grid gap-1 border-b border-rule py-5 sm:grid-cols-[180px_1fr] sm:gap-6">
-              <time datetime={a.date} class="text-[15px] text-stone-600">{monthYear(a.date)}</time>
-              <div>
-                <h3 class="text-[26px] leading-[1.2]">
-                  <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline">{a.title}</a>
-                </h3>
-                <p class="mt-1.5 text-stone-600">{a.summary}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+    <section id="writing" aria-labelledby="w-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
+      <div class="mb-6 flex flex-col gap-1 border-b border-rule pb-6 sm:flex-row sm:items-baseline sm:justify-between">
+        <h2 id="w-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Writing</h2>
+        <p class="text-lg text-stone-600">How the fixes work and what they found.</p>
+      </div>
+      <ul class="divide-y divide-rule">
+        {sorted.map((a) => (
+          <li class="grid gap-1 py-6 sm:grid-cols-[180px_1fr] sm:gap-6">
+            <p class="font-mono text-[13px] text-stone-600"><time datetime={a.date}>{monthYear(a.date)}</time> · {a.readTime}</p>
+            <div>
+              <h3 class="text-[26px] leading-[1.15] sm:text-[30px]">
+                <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline hover:decoration-accent hover:decoration-[3px] hover:underline-offset-[6px]">{a.title}</a>
+              </h3>
+              <p class="mt-2 max-w-[60ch] text-[17px] text-stone-600">{a.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="about" aria-labelledby="about-h" class="reveal grid gap-4 pt-14 pb-16 sm:pt-20 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+      <h2 id="about-h" class="text-[34px] leading-[1.05] sm:text-[44px]">About</h2>
+      <div class="max-w-[38em] text-[17px] leading-[1.55]">
+        <p>Data and AI analyst in Valencia, Spain. Eight years in fintech, retail and telecom, now working on Salesforce customer data platforms: what the schema is, what changed, and which numbers to trust.</p>
+        <p class="mt-4 flex flex-wrap gap-x-5 gap-y-1">
+          <a href="/resume/" class="font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent">Resume</a>
+          <a href="https://github.com/valentinatihova" class="font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent">GitHub</a>
+          <a href="https://www.linkedin.com/in/valentina-tihova/" class="font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent">LinkedIn</a>
+          <a href="mailto:valentina.tikhova1@gmail.com" class="font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent">Email</a>
+        </p>
+      </div>
     </section>
   </main>
 </Layout>
+
+<style>
+  .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 400 clamp(72px, 10vw, 150px)/1 var(--font-accent); font-style: italic; letter-spacing: -0.02em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
+  .accent { font: 400 1em/1 var(--font-accent); font-style: italic; color: var(--color-accent-dark); }
+  .stairs { list-style: none; margin: 0; padding: 0; }
+  .stairs li { display: grid; grid-template-columns: 40px 1fr; gap: 8px 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid color-mix(in oklab, var(--color-paper) 22%, transparent); max-width: 840px; }
+  .stairs li a { grid-column: 2; }
+  @media (min-width: 768px) {
+    .stairs li { grid-template-columns: 56px 1fr auto; gap: 24px; }
+    .stairs li a { grid-column: auto; white-space: nowrap; }
+    .stairs li:nth-child(2) { margin-left: 8%; }
+    .stairs li:nth-child(3) { margin-left: 16%; }
+    .stairs li:nth-child(4) { margin-left: 24%; }
+  }
+  /* Reveal on entering the viewport: CSS view timelines, desktop, motion allowed. */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+      .reveal { animation-name: reveal; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: view(); animation-range: entry 0% entry calc(45% + var(--i, 0) * 8%); }
+      .band { animation-name: drift; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+    }
+  }
+  @keyframes reveal { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes drift { from { transform: rotate(-3deg) translate(0, 10px); } to { transform: rotate(-3deg) translate(-12vw, 10px); } }
+</style>

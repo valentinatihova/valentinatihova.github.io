@@ -17,16 +17,16 @@ const MAP_LABELS: Record<number, string> = {
   5: 'Map of the org: the scheduled drift check fails on the removed field mapping and alerts the team',
 };
 
-const COL_X = [0, 179, 358, 537, 716];
-const ROW_Y = [34, 104, 174, 244, 314];
-const W = 140;
-const H = 46;
+export const COL_X = [0, 179, 358, 537, 716];
+export const ROW_Y = [34, 104, 174, 244, 314];
+export const W = 140;
+export const H = 46;
 
 type State = 'path' | 'changed' | 'broken' | 'quiet' | 'safe' | 'hidden';
-interface Node { id: string; label: string; c: number; r: number; s?: Record<number, [string, State]> }
+export interface Node { id: string; label: string; c: number; r: number; s?: Record<number, [string, State]> }
 
 // Nodes without an entry for a shot are faded context.
-const NODES: Node[] = [
+export const NODES: Node[] = [
   { id: 's_web', label: 'Web Engagement', c: 0, r: 0 },
   { id: 's_crm', label: 'CRM Contacts', c: 0, r: 1 },
   { id: 's_ord', label: 'Orders file', c: 0, r: 2, s: { 3: ['Nightly upload', 'path'], 4: ['Nightly upload', 'path'], 5: ['Nightly upload', 'path'] } },
@@ -44,7 +44,7 @@ const NODES: Node[] = [
   { id: 'r_dash', label: 'Dashboard', c: 4, r: 1, s: { 3: ['Shows CLV €0', 'path'], 4: ['Shows CLV €0', 'broken'], 5: ['Fix before review', 'safe'] } },
 ];
 // [from, to, kind, draw delay in seconds for shot 4]
-const EDGES: [string, string, ('path' | 'chain')?, number?][] = [
+export const EDGES: [string, string, ('path' | 'chain')?, number?][] = [
   ['s_web', 'd_web'], ['s_crm', 'd_contact'], ['s_ord', 'd_ord', 'path'], ['s_email', 'd_email'],
   ['d_contact', 'm_ind'], ['d_contact', 'm_cpe'], ['d_web', 'm_eng'], ['d_email', 'm_eng'],
   ['d_ord', 'm_so', 'path'], ['m_ind', 'c_clv'], ['m_eng', 'c_churn'],

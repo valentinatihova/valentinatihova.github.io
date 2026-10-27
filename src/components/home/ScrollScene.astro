@@ -1,0 +1,183 @@
+---
+// Home hero: one sticky scene driven by normal page scrolling, in three beats.
+// 1. Data accumulates: a branching network grows from the centre (diffusion-like growth).
+// 2. Something misleads: a set of branch tips turns brick; "misleads people," appears.
+// 3. Fixed: the tips turn mustard, the growth fades and the org schema from the drift
+//    article resolves out of it; "and fix it." appears.
+// Everything is CSS scroll-driven animation (no JavaScript). Without scroll timelines,
+// on phones, and under reduced motion the base styles already are the final frame.
+import { COL_X, EDGES, NODES, ROW_Y } from '../article/schemaDriftStory';
+import { articles } from '../../data/articles';
+import { fixes, LEDGER_UPDATED } from '../../data/projects';
+
+// Deterministic "random" so the build is reproducible.
+let seed = 20261027;
+const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+
+const VW = 1200, VH = 700;
+
+// Growth: each new segment attaches to the nearest existing point, so the tree branches
+// like a diffusion process. Order of creation = order of drawing on scroll.
+const CX = 860, CY = 330;
+const pts: { x: number; y: number; p: number }[] = [{ x: CX, y: CY, p: -1 }];
+for (let i = 0; i < 230; i++) {
+  const a = rnd() * Math.PI * 2, r = 70 + rnd() * 300;
+  const x = CX + Math.cos(a) * r * 1.15, y = CY + Math.sin(a) * r * 0.95;
+  let best = 0, bd = Infinity;
+  pts.forEach((q, j) => { const d = (q.x - x) ** 2 + (q.y - y) ** 2; if (d < bd) { bd = d; best = j; } });
+  const b = pts[best], dx = x - b.x, dy = y - b.y, L = Math.hypot(dx, dy) || 1, len = 24 + rnd() * 30;
+  pts.push({ x: b.x + (dx / L) * len, y: b.y + (dy / L) * len, p: best });
+}
+const segs = pts.slice(1).map((q, i) => ({ a: pts[q.p], b: q, g: i / (pts.length - 2) }));
+const hasChild = new Set(pts.map((q) => q.p));
+const tips = pts.map((q, i) => ({ ...q, i })).filter((q) => !hasChild.has(q.i) && q.i > 0);
+// Beat 2: the latest-grown tips are the ones that mislead.
+const driftTips = new Set(tips.filter((t) => t.i / pts.length > 0.45).map((t) => t.i));
+
+// Beat 3: the schema resolves where the growth was. Each node starts at a branch tip.
+const tx = (c: number) => 560 + (COL_X[c] / 716) * 470;
+const ty = (r: number) => 90 + (ROW_Y[r] / 314) * 400;
+const schema = NODES.map((n, i) => {
+  const t = tips[(i * 7) % tips.length];
+  return { id: n.id, label: n.label, x: tx(n.c), y: ty(n.r), sx: t.x, sy: t.y };
+});
+const byId = (id: string) => schema.find((p) => p.id === id)!;
+const DRIFT = new Set(['s_ord/d_ord', 'd_ord/m_so', 'm_so/c_clv', 'm_so/c_churn', 'c_clv/r_dash']);
+const PATH_NODES = new Set(['s_ord', 'd_ord', 'm_so', 'c_clv', 'c_churn', 'r_dash']);
+
+const stats = [
+  { n: fixes.length, label: 'fixes in the ledger' },
+  { n: fixes.filter((f) => f.status === 'shipped').length, label: 'shipped' },
+  { n: fixes.filter((f) => f.status === 'review').length, label: 'in review' },
+  { n: articles.length, label: 'articles' },
+];
+const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+---
+
+<section class="hero grain" aria-label="Introduction">
+  <div class="track">
+    <div class="scene">
+      <svg class="net" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <g class="growth">
+          {segs.map((s) => <line x1={s.a.x.toFixed(0)} y1={s.a.y.toFixed(0)} x2={s.b.x.toFixed(0)} y2={s.b.y.toFixed(0)} pathLength="1" style={`--g:${s.g.toFixed(3)}`} />)}
+          {tips.map((t) => <circle cx={t.x.toFixed(0)} cy={t.y.toFixed(0)} r="3" class:list={[driftTips.has(t.i) && 'is-drift']} style={`--g:${((t.i - 1) / (pts.length - 2)).toFixed(3)};--j:${(rnd() * 2 - 1).toFixed(2)}`} />)}
+        </g>
+        <g class="edges">
+          {EDGES.map(([a, b]) => {
+            const A = byId(a), B = byId(b);
+            return <line x1={A.x.toFixed(0)} y1={A.y.toFixed(0)} x2={B.x.toFixed(0)} y2={B.y.toFixed(0)} pathLength="1" class:list={[DRIFT.has(`${a}/${b}`) && 'is-drift']} />;
+          })}
+        </g>
+        {schema.map((p, i) => (
+          <g class:list={['node', PATH_NODES.has(p.id) && 'is-path']} style={`--sx:${(p.sx - p.x).toFixed(0)}px;--sy:${(p.sy - p.y).toFixed(0)}px;--a:${58 + (i % 5) * 2}%;--b:${74 + (i % 4) * 3}%`}>
+            <circle cx={p.x.toFixed(0)} cy={p.y.toFixed(0)} r="5" />
+            <text x={p.x.toFixed(0)} y={(p.y + 20).toFixed(0)} text-anchor="middle">{p.label}</text>
+          </g>
+        ))}
+      </svg>
+
+      <p class="who">Valentina Tihova <span>Data &amp; AI Analyst</span></p>
+      <p class="meta" aria-hidden="true">Updated {updated}</p>
+      <p class="hint" aria-hidden="true">Scroll</p>
+
+      <h1 class="hl">
+        <span class="l1">I find where a product's data</span>
+        <span class="l2">misleads people,</span>
+        <em class="l3">and fix it.</em>
+      </h1>
+
+      <dl class="stats">
+        {stats.map((s, i) => <div style={`--i:${i}`}><dd>{s.n}</dd><dt>{s.label}</dt></div>)}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---- Base = final frame, normal flow. Works with no JS, no scroll timelines, reduced motion. */
+  .hero { background: var(--color-surface); color: var(--color-text); }
+  .scene { position: relative; max-width: 1160px; margin: 0 auto; padding: 20px 16px 48px; }
+  .net { display: block; width: 100%; height: auto; aspect-ratio: 12 / 7; max-height: 56vh; }
+  .growth line { stroke: var(--color-text); stroke-opacity: 0.18; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .growth circle { fill: var(--color-text); fill-opacity: 0.25; }
+  .growth circle.is-drift { fill: var(--color-accent-fill); fill-opacity: 1; }
+  .edges line { stroke: var(--color-text); stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .edges line.is-drift { stroke: var(--color-accent-fill); stroke-opacity: 1; stroke-width: 2.4; }
+  .node circle { fill: var(--color-text); }
+  .node.is-path circle { fill: var(--color-accent-fill); r: 6; }
+  .node text { font: 500 11px/1 var(--font-mono); fill: var(--color-text); fill-opacity: 0.85; }
+  .who, .meta { margin: 0; font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .who span::before { content: ' · '; }
+  .meta { color: var(--color-stone-600); }
+  .hint { display: none; }
+  .hl { margin: 20px 0 0; max-width: 14ch; font-size: clamp(2.6rem, 7.2vw, 7rem); line-height: 0.92; letter-spacing: -0.035em; }
+  .hl span, .hl em { display: inline; }
+  .l2 { color: var(--color-stone-600); }
+  .l3 { font: 400 1.05em/0.92 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
+  .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--color-rule); }
+  .stats div { display: flex; flex-direction: column; }
+  .stats dd { margin: 0; font: 600 36px/1 var(--font-display); letter-spacing: -0.03em; }
+  .stats dt { margin-top: 4px; font-size: 13px; color: var(--color-stone-600); }
+
+  /* ---- Scroll-driven scene: desktop, with scroll timelines, motion allowed. */
+  @supports (animation-timeline: scroll()) {
+    @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+      .track { height: 320vh; view-timeline: --hero block; }
+      .scene { position: sticky; top: 0; height: 100vh; max-width: none; padding: 0; overflow: hidden; }
+      .net { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; aspect-ratio: auto; }
+
+      /* Beat 1: growth draws in creation order over the first third. */
+      .growth line {
+        animation-name: draw; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero;
+        animation-range: contain calc(var(--g) * 30%) contain calc(var(--g) * 30% + 5%);
+      }
+      .growth circle {
+        animation-name: fade-in; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero;
+        animation-range: contain calc(var(--g) * 30% + 3%) contain calc(var(--g) * 30% + 6%);
+      }
+      /* Beat 2: tips turn brick and shiver once; beat 3: mustard, and the growth recedes. */
+      .growth circle.is-drift {
+        fill: var(--color-text); fill-opacity: 0.25;
+        animation-name: fade-in, brick, wobble, mustard; animation-timing-function: linear, linear, ease-out, linear; animation-fill-mode: both, both, both, forwards;
+        animation-timeline: --hero, --hero, --hero, --hero;
+        animation-range: contain calc(var(--g) * 30% + 3%) contain calc(var(--g) * 30% + 6%), contain 34% contain 44%, contain 36% contain 48%, contain 66% contain 76%;
+      }
+      .growth { animation-name: recede; animation-timing-function: linear; animation-fill-mode: forwards; animation-timeline: --hero; animation-range: contain 60% contain 78%; }
+      /* Beat 3: schema settles out of the growth, edges draw, the drift path lights up. */
+      .node { animation-name: settle; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain var(--a) contain var(--b); }
+      .node text { animation-name: fade-in; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 86% contain 94%; }
+      .edges line { animation-name: draw; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 66% contain 84%; }
+      .edges line.is-drift { animation-range: contain 84% contain 94%; }
+      .node.is-path circle { fill: var(--color-text); animation-name: settle, mustard; animation-timing-function: linear, linear; animation-fill-mode: both, forwards; animation-timeline: --hero, --hero; animation-range: contain var(--a) contain var(--b), contain 84% contain 94%; }
+
+      .who { position: absolute; left: 40px; top: 28px; z-index: 2; }
+      .meta { position: absolute; right: 40px; top: 28px; z-index: 2; }
+      .hint {
+        display: block; position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 2;
+        margin: 0; font: 500 11px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
+        animation-name: fade-out; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 8%;
+      }
+      .hint::after { content: ''; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: currentColor; }
+
+      .hl { position: absolute; z-index: 2; left: 40px; bottom: 150px; margin: 0; width: min(50vw, 15ch); max-width: none; font-size: clamp(2.8rem, 6.4vw, 6.4rem); }
+      .hl span, .hl em { display: inline-block; }
+      /* Line 1 rises once on load; lines 2 and 3 are story beats on scroll. */
+      .l1 { animation-name: rise; animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); animation-fill-mode: both; }
+      .l2 { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 32% contain 42%; }
+      .l3 { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 72% contain 82%; }
+
+      .stats { position: absolute; z-index: 2; left: 40px; right: 40px; bottom: 36px; margin: 0; gap: 0 56px; }
+      .stats div { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain calc(44% + var(--i) * 2%) contain calc(52% + var(--i) * 2%); }
+    }
+  }
+
+  @keyframes fade-out { to { opacity: 0; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes brick { to { fill: var(--color-brick); fill-opacity: 1; r: 4; } }
+  @keyframes mustard { to { fill: var(--color-accent-fill); fill-opacity: 1; } }
+  @keyframes wobble { 0% { transform: none; } 30% { transform: translate(calc(var(--j, 1) * 4px), 2px); } 60% { transform: translate(calc(var(--j, 1) * -3px), -1px); } 100% { transform: none; } }
+  @keyframes recede { to { opacity: 0.18; } }
+  @keyframes settle { from { transform: translate(var(--sx), var(--sy)); opacity: 0; } 30% { opacity: 1; } to { transform: none; opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(0.35em); } to { opacity: 1; transform: none; } }
+</style>

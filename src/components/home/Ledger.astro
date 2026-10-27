@@ -7,14 +7,14 @@ const withCode = (s: string) =>
 const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
-<section id="work" aria-labelledby="ledger-h" class="scroll-mt-4 overflow-hidden rounded-xl border border-rule bg-white">
-  <div class="flex items-baseline justify-between gap-3 border-b border-rule px-[18px] py-3.5">
-    <h2 id="ledger-h" class="font-sans text-base font-semibold tracking-normal">{fixes.length} fixes shipped</h2>
-    <span class="text-sm text-stone-600">latest {updated}</span>
+<div class="border-t border-text">
+  <div class="flex items-baseline justify-between gap-3 border-b border-rule py-3">
+    <h3 id="ledger-h" class="font-mono text-[11px] font-medium tracking-[0.06em] uppercase">{fixes.length} fixes</h3>
+    <span class="font-mono text-[11px] tracking-[0.06em] text-stone-600 uppercase">latest {updated}</span>
   </div>
   <ol>
     {fixes.map((fix) => (
-      <li class="border-b border-rule px-[18px] pt-3 pb-3.5 last:border-b-0">
+      <li class="border-b border-rule pt-3 pb-3.5">
         <div class="mb-1.5 flex items-baseline justify-between gap-3">
           <h3 class="font-sans text-[15px] font-semibold tracking-normal">{fix.product}</h3>
           <a
@@ -24,20 +24,19 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { day: 'num
             {fix.proof.label}
           </a>
         </div>
-        <p class="ledger-line bg-broke-bg"><span aria-label="Before:" class="text-broke">−</span><span set:html={withCode(fix.before)} /></p>
-        <p class="ledger-line bg-fixed-bg"><span aria-label="After:" class="text-fixed">+</span><span set:html={withCode(fix.after)} /></p>
+        <p class="ledger-line"><span aria-label="Before:" class="text-broke">−</span><span set:html={withCode(fix.before)} /></p>
+        <p class="ledger-line"><span aria-label="After:" class="text-fixed">+</span><span set:html={withCode(fix.after)} /></p>
       </li>
     ))}
   </ol>
-</section>
+</div>
 
 <style>
   .ledger-line {
     display: grid;
     grid-template-columns: 18px minmax(0, 1fr);
     margin-top: 2px;
-    padding: 4px 10px 4px 6px;
-    border-radius: 4px;
+    padding: 2px 0;
     font-size: 15px;
     line-height: 1.45;
   }
