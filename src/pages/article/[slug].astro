@@ -98,7 +98,7 @@ const articleJsonLd = {
 
       {toc.length >= 2 && (
         <aside class="hidden lg:block" aria-label="Table of contents">
-          <nav class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto text-[16px]">
+          <nav class="sticky top-6 max-h-[calc(100vh/var(--z)-3rem)] overflow-y-auto text-[16px]">
             <p class="mb-2.5 font-semibold">On this page</p>
             <ol>
               {toc.map((h) => (

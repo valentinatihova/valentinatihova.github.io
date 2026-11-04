@@ -54,9 +54,20 @@
 }
 
 @layer base {
+  /* Past 1440px the whole page scales up with the window instead of sitting in a strip in the middle.
+     zoom also scales vh/vw, so viewport-sized pieces divide by --z. */
   html {
+    --z: 1;
+    zoom: var(--z);
     scroll-behavior: smooth;
   }
+  @media (min-width: 1600px) { html { --z: 1.1; } }
+  @media (min-width: 1760px) { html { --z: 1.2; } }
+  @media (min-width: 1920px) { html { --z: 1.3; } }
+  @media (min-width: 2080px) { html { --z: 1.4; } }
+  @media (min-width: 2240px) { html { --z: 1.5; } }
+  @media (min-width: 2560px) { html { --z: 1.7; } }
+  @media (min-width: 2880px) { html { --z: 1.9; } }
 
   ::selection {
     background-color: var(--color-fixed-bg);
