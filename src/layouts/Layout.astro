@@ -1,6 +1,9 @@
 ---
 import '../index.css';
 import SiteNav from '../components/layout/SiteNav.astro';
+// Above-the-fold faces, preloaded so headings don't reflow when they arrive (Lighthouse CLS on Linux).
+import headingFont from '@fontsource/inter-tight/files/inter-tight-latin-600-normal.woff2?url';
+import bodyFont from '@fontsource/public-sans/files/public-sans-latin-400-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -39,6 +42,8 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
         content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'"
       />
     )}
+    <link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
