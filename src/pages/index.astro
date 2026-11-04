@@ -71,7 +71,7 @@ const work = [
   <div class="overflow-x-clip"><p class="band" aria-hidden="true">schema drift · false opens · untested launches · schema drift · false opens · untested launches</p></div>
 
   <section id="places" aria-labelledby="places-h" class="grain grain-dark bg-graphite text-paper">
-    <div class="mx-auto max-w-[1160px] px-4 py-20 sm:px-6 sm:py-28">
+    <div class="mx-auto max-w-page px-4 py-20 sm:px-6 sm:py-28">
       <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[52px]">Four places I look, <em class="accent">and what came out of it.</em></h2>
       <ol class="stairs mt-12 sm:mt-16">
         {places.map((b, i) => (
@@ -79,7 +79,7 @@ const work = [
             <span class="font-mono text-[13px] text-paper-dim">0{i + 1}</span>
             <div>
               <h3 class="text-[22px] leading-[1.1] sm:text-[26px]">{b.title}</h3>
-              <p class="mt-1 max-w-[46ch] text-[15px] leading-[1.5] text-paper-dim sm:text-[16px]">{b.text}</p>
+              <p class="mt-1 max-w-[60ch] text-[15px] leading-[1.5] text-paper-dim sm:text-[16px]">{b.text}</p>
             </div>
             <a href={b.href} class="font-mono text-[13px] text-accent-dark underline underline-offset-4">{b.proof}</a>
           </li>
@@ -88,7 +88,7 @@ const work = [
     </div>
   </section>
 
-  <main class="mx-auto max-w-[1160px] px-4 sm:px-6">
+  <main class="mx-auto max-w-page px-4 sm:px-6">
     <section id="work" aria-labelledby="work-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
       <div class="grid gap-4 border-b border-rule pb-6 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
         <h2 id="work-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Selected work</h2>
@@ -169,7 +169,7 @@ const work = [
   .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 400 clamp(72px, 10vw, 150px)/1 var(--font-accent); font-style: italic; letter-spacing: -0.02em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
   .accent { font: 400 1em/1 var(--font-accent); font-style: italic; color: var(--color-accent-dark); }
   .stairs { list-style: none; margin: 0; padding: 0; }
-  .stairs li { display: grid; grid-template-columns: 40px 1fr; gap: 8px 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid color-mix(in oklab, var(--color-paper) 22%, transparent); max-width: 840px; }
+  .stairs li { display: grid; grid-template-columns: 40px 1fr; gap: 8px 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid color-mix(in oklab, var(--color-paper) 22%, transparent); }
   .stairs li a { grid-column: 2; }
   @media (min-width: 768px) {
     .stairs li { grid-template-columns: 56px 1fr auto; gap: 24px; }

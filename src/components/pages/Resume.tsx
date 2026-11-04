@@ -25,7 +25,7 @@ export const Resume: React.FC = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 pt-16 pb-24 max-w-5xl">
+      <div className="mx-auto max-w-page px-4 pt-16 pb-24 sm:px-6">
 
         {/* ── Page header ── */}
         <div className="mb-16">

@@ -27,7 +27,7 @@ const last = SHOTS;
   </div>
   <div class="sd-box" data-box>
     <div class="sd-stage">
-      <p class="sd-caption" aria-live="polite" data-caption>{CAPTIONS[last - 1]}</p>
+      <p class="sd-caption is-resolved" aria-live="polite" data-caption>{CAPTIONS[last - 1]}</p>
       <div class="sd-frame" data-frame set:html={renderShot(last)} />
     </div>
   </div>
@@ -59,6 +59,7 @@ const last = SHOTS;
       shot = n;
       frame.innerHTML = renderShot(n);
       caption.textContent = CAPTIONS[n - 1];
+      caption.classList.toggle('is-resolved', n === SHOTS);
       // Restart the caption fade on every shot.
       caption.style.animation = 'none';
       void caption.offsetWidth;
@@ -124,9 +125,9 @@ const last = SHOTS;
     max-width: 960px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border: 1px solid #cfd8d3;
-    border-radius: 12px;
-    background: #f2f4f1;
+    border: 1px solid var(--color-rule);
+    border-radius: 10px;
+    background: var(--color-surface);
     container-type: inline-size;
     /* Stepped fallback before the script measures the box; never wider than the box. */
     --sd-scale: 0.35;
@@ -151,7 +152,7 @@ const last = SHOTS;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    color: #1d2b33;
+    color: var(--color-text);
     font-family: var(--font-sans);
   }
   /* Once the script has measured the box, use the exact scale. */
@@ -164,7 +165,7 @@ const last = SHOTS;
     align-items: center;
     gap: 12px;
     min-height: 44px;
-    color: #1d2b33;
+    color: var(--color-text);
     font-family: var(--font-sans);
     container-type: inline-size;
   }
@@ -185,9 +186,9 @@ const last = SHOTS;
     justify-content: center;
     border-radius: 4px;
   }
-  .sd-seg-bar { display: block; width: 36px; height: 4px; border-radius: 2px; background: #c3cfca; }
-  .sd-seg-bar.is-done { background: #1d2b33; }
-  .sd-count { font-size: 14px; color: #4f5f66; }
+  .sd-seg-bar { display: block; width: 36px; height: 4px; border-radius: 2px; background: var(--color-rule); }
+  .sd-seg-bar.is-done { background: var(--color-text); }
+  .sd-count { font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-stone-600); }
   @container (max-width: 400px) { .sd-count { display: none; } }
   .sd-play {
     margin-left: auto;
@@ -195,26 +196,27 @@ const last = SHOTS;
     min-width: 96px;
     padding: 0 16px;
     background: transparent;
-    border: 1px solid #9db0a8;
+    border: 1px solid var(--color-stone-400);
     border-radius: 22px;
     font-weight: 600;
   }
   .sd-seg:focus-visible,
   .sd-play:focus-visible,
-  .sd-frame a:focus-visible { outline: 3px solid #1d5fa0; outline-offset: 2px; }
+  .sd-frame a:focus-visible { outline: 3px solid var(--color-fixed); outline-offset: 2px; }
   .sd-caption {
-    font-family: var(--font-serif);
-    font-size: 44px;
-    line-height: 1.1;
-    animation: sd-fade 0.35s ease-out both;
+    font: 600 44px/1.05 var(--font-display);
+    letter-spacing: -0.035em;
+    animation: sd-fade 0.45s ease-out both;
   }
+  /* The last shot resolves the story: the site's one serif accent, as in the home hero. */
+  .sd-caption.is-resolved { font: 400 50px/1.05 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
   .sd-frame { display: contents; }
   @keyframes sd-fade { from { opacity: 0; } }
   @keyframes sd-strike { from { transform: scaleX(0); } }
   @keyframes sd-drop { from { opacity: 0; transform: translateY(-14px); } }
   @keyframes sd-pull { from { transform: scale(1.7); } }
   @keyframes sd-draw { from { transform: scaleX(0); } }
-  @keyframes sd-red { from { background-color: #ffffff; border-color: #7e938b; } }
+  @keyframes sd-red { from { background-color: var(--color-paper); border-color: var(--color-stone-400); } }
   @keyframes sd-stamp { from { opacity: 0; transform: rotate(-3deg) scale(1.35); } }
   @media (prefers-reduced-motion: reduce) {
     .sd-box * { animation: none !important; }

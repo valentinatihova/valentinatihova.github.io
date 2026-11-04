@@ -15,6 +15,9 @@
    one serif accent in Instrument Serif italic, body in Public Sans, mono for metadata.
    Stone is remapped to the same warm scale so older pages stay consistent. */
 @theme {
+  /* Page width for every section; body text keeps its own measure (.article-prose). */
+  --container-page: 1360px;
+
   --font-display: "Inter Tight", "Public Sans", system-ui, sans-serif;
   --font-accent: "Instrument Serif", Georgia, serif;
   --font-serif: "Newsreader Variable", Georgia, serif;
@@ -123,3 +126,6 @@
 }
 /* one-dark-pro comments (#7F848E) are too faint on the ink background; lift them to 4.5:1+. */
 .article-prose figure[data-rehype-pretty-code-figure] span[style*="#7F848E"] { color: #9aa7b0 !important; }
+
+/* Running text keeps a reading measure; code, figures and diagrams use the full column. */
+.article-prose > :is(p, ul, ol, h1, h2, h3, h4, blockquote) { max-width: 70ch; }
