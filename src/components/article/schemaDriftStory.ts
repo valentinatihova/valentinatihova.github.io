@@ -86,7 +86,7 @@ ${box('Orders file', 'Nightly upload')}${line}${box('Sales Order', 'Unified orde
 
 function map(shot: number) {
   const regions = ['Sources', 'Data lake', 'Data model', 'Insights', 'Reports']
-    .map((label, i) => `<p aria-hidden="true" style="position:absolute;left:${COL_X[i]}px;top:0;margin:0;font-family:var(--font-accent);font-style:italic;font-size:22px;color:var(--color-stone-600)">${label}</p>`)
+    .map((label, i) => `<p aria-hidden="true" style="position:absolute;left:${COL_X[i]}px;top:0;margin:0;font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--color-stone-600)">${label}</p>`)
     .join('');
 
   const edges = EDGES.map(([from, to, kind, delay]) => {
@@ -131,7 +131,7 @@ function map(shot: number) {
 
 const CTA = `<div style="position:absolute;right:52px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;animation:sd-fade .45s ease-out .9s both">
 <a href="https://github.com/valentinatihova/data360-autodoc" style="min-height:44px;display:inline-flex;align-items:center;padding:0 20px;border-radius:22px;background:var(--color-graphite);color:var(--color-paper);text-decoration:none;font-weight:600">See it on GitHub</a>
-<code style="font-family:var(--font-mono);font-size:13px;color:var(--color-text);background:var(--color-paper);border:1px solid var(--color-rule);border-radius:6px;padding:4px 8px">pip install data360-autodoc</code></div>`;
+<code style="font-family:var(--font-mono);font-size:13px;color:var(--color-text);background:var(--color-field);border-radius:6px;padding:4px 8px">pip install data360-autodoc</code></div>`;
 
 /** Everything under the caption for one shot (1–5). */
 export function renderShot(shot: number): string {

@@ -24,12 +24,9 @@ interface KeyMetricProps {
 export function KeyMetric({ value, label, note, accent = false }: KeyMetricProps) {
   return (
     <div className={clsx('flex flex-col gap-2', accent && 'md:col-span-1')}>
-      <span className="font-sans text-[15px] font-semibold text-stone-400">
-        {label}
-      </span>
       <span
         className={clsx(
-          'font-serif leading-[1.05]',
+          'font-display leading-[1.05]',
           accent
             ? 'text-[2.5rem] font-semibold text-accent md:text-[3rem]'
             : 'text-[2rem] font-medium text-stone-900 md:text-[2.25rem]',
@@ -37,8 +34,11 @@ export function KeyMetric({ value, label, note, accent = false }: KeyMetricProps
       >
         {value}
       </span>
+      <span className="font-sans text-[16px] font-semibold text-stone-600">
+        {label}
+      </span>
       {note && (
-        <span className="max-w-[28ch] font-serif text-[0.95rem] leading-[1.5] text-stone-400">
+        <span className="max-w-[28ch] text-[16px] leading-[1.5] text-stone-600">
           {note}
         </span>
       )}
@@ -52,12 +52,12 @@ export function KeyMetric({ value, label, note, accent = false }: KeyMetricProps
  * Used for "here are the three observations that anchored my decision" —
  * replaces prose bullet lists when the underlying structure is quantified.
  *
- * Visual contract: dividers between metrics mirror the caseStudyFrame
- * three-column pattern at the top of the article (repetition = identity).
+ * Visual contract: one filled panel, metrics separated by space, like the caseStudyFrame
+ * three-column pattern at the top of the article.
  */
 interface KeyMetricsProps {
   children: React.ReactNode;
-  /** Section heading printed above the grid. Mono eyebrow, not an H2. */
+  /** Section heading printed above the grid, not an H2. */
   label?: string;
 }
 
@@ -65,12 +65,12 @@ export function KeyMetrics({ children, label = 'Observed distribution' }: KeyMet
   return (
     <section
       aria-label={label}
-      className="not-prose my-14 rounded-2xl border border-stone-200 bg-stone-50 p-8 md:p-10"
+      className="not-prose my-14 rounded-2xl bg-field p-8 md:p-10"
     >
       <p className="mb-8 font-sans text-[15px] font-semibold text-accent">
         {label}
       </p>
-      <div className="grid gap-10 md:grid-cols-3 md:gap-0 md:[&>*]:px-8 md:[&>*:first-child]:pl-0 md:[&>*:last-child]:pr-0 md:[&>*:not(:first-child)]:border-l md:[&>*:not(:first-child)]:border-stone-200">
+      <div className="grid gap-10 md:grid-cols-3 md:gap-0 md:[&>*]:px-8 md:[&>*:first-child]:pl-0 md:[&>*:last-child]:pr-0">
         {children}
       </div>
     </section>

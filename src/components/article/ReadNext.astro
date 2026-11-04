@@ -16,11 +16,11 @@ const related = articles
 ---
 
 {related.length > 0 && (
-  <section aria-labelledby="next-h" class="border-t border-rule pt-10 pb-4">
+  <section aria-labelledby="next-h" class="pt-10 pb-4">
     <h2 id="next-h" class="text-[28px] leading-tight">Read next</h2>
     <ul class="mt-4">
       {related.map((a) => (
-        <li class="border-b border-rule py-5">
+        <li class="py-5">
           <h3 class="text-[24px] leading-[1.2]">
             <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline">{a.title}</a>
           </h3>

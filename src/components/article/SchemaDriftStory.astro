@@ -6,7 +6,8 @@ import { CAPTIONS, SHOTS, renderShot } from './schemaDriftStory';
 const last = SHOTS;
 ---
 
-<figure class="sd not-prose mb-14" data-sd>
+<!-- data-ui: the map is an interface fragment; its boxes and lines are the product's, not page ornament. -->
+<figure class="sd not-prose mb-14" data-sd data-ui>
   <!-- Controls sit outside the scaled stage, so the buttons keep their 44px size on phones. -->
   <div class="sd-bar">
     <div role="group" aria-label="Shots" class="sd-segs">
@@ -27,7 +28,7 @@ const last = SHOTS;
   </div>
   <div class="sd-box" data-box>
     <div class="sd-stage">
-      <p class="sd-caption is-resolved" aria-live="polite" data-caption>{CAPTIONS[last - 1]}</p>
+      <p class="sd-caption" aria-live="polite" data-caption>{CAPTIONS[last - 1]}</p>
       <div class="sd-frame" data-frame set:html={renderShot(last)} />
     </div>
   </div>
@@ -59,7 +60,6 @@ const last = SHOTS;
       shot = n;
       frame.innerHTML = renderShot(n);
       caption.textContent = CAPTIONS[n - 1];
-      caption.classList.toggle('is-resolved', n === SHOTS);
       // Restart the caption fade on every shot.
       caption.style.animation = 'none';
       void caption.offsetWidth;
@@ -125,8 +125,6 @@ const last = SHOTS;
     max-width: 1200px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border: 1px solid var(--color-rule);
-    border-radius: 10px;
     background: var(--color-surface);
     container-type: inline-size;
     /* Stepped fallback before the script measures the box; never wider than the box. */
@@ -191,15 +189,16 @@ const last = SHOTS;
   }
   .sd-seg-bar { display: block; width: 36px; height: 4px; border-radius: 2px; background: var(--color-rule); }
   .sd-seg-bar.is-done { background: var(--color-text); }
-  .sd-count { font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-stone-600); }
+  .sd-count { font-size: 14px; color: var(--color-stone-600); font-variant-numeric: tabular-nums; }
   @container (max-width: 400px) { .sd-count { display: none; } }
   .sd-play {
     margin-left: auto;
     min-height: 44px;
     min-width: 96px;
     padding: 0 16px;
-    background: transparent;
-    border: 1px solid var(--color-stone-400);
+    background: var(--color-text);
+    color: var(--color-paper);
+    border: 0;
     border-radius: 22px;
     font-weight: 600;
   }
@@ -211,8 +210,6 @@ const last = SHOTS;
     letter-spacing: -0.035em;
     animation: sd-fade 0.45s ease-out both;
   }
-  /* The last shot resolves the story: the site's one serif accent, as in the home hero. */
-  .sd-caption.is-resolved { font: 400 50px/1.05 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
   .sd-frame { display: contents; }
   @keyframes sd-fade { from { opacity: 0; } }
   @keyframes sd-strike { from { transform: scaleX(0); } }

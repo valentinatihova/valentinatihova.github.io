@@ -4,6 +4,8 @@ import Ledger from '../components/home/Ledger.astro';
 import ScrollScene from '../components/home/ScrollScene.astro';
 import { articles } from '../data/articles';
 import { fixes } from '../data/projects';
+import { Image } from 'astro:assets';
+import sampleReport from '../content/articles/images/data360-sample-report.png';
 
 const SITE_URL = 'https://valentinatihova.com';
 const sorted = [...articles].sort((a, b) => b.date.localeCompare(a.date));
@@ -28,6 +30,7 @@ const work = [
     role: 'Author and maintainer',
     result: fix('Salesforce Data 360').after,
     tech: ['Python', 'Data 360 Metadata API', 'GitHub Actions', 'Mermaid'],
+    image: { src: sampleReport, alt: 'data360-autodoc output: the DLO to DMO mapping graph and a DMO field table' },
     links: [
       { label: 'PyPI 0.4.1', href: 'https://pypi.org/project/data360-autodoc/' },
       { label: 'GitHub', href: 'https://github.com/valentinatihova/data360-autodoc' },
@@ -72,16 +75,15 @@ const work = [
 
   <section id="places" aria-labelledby="places-h" class="grain grain-dark bg-graphite text-paper">
     <div class="mx-auto max-w-page px-4 py-20 sm:px-6 sm:py-28">
-      <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[44px]">Four places I look, <em class="accent">and what came out of it.</em></h2>
+      <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[44px]">Four places I look, and what came out of it.</h2>
       <ol class="stairs mt-12 sm:mt-16">
         {places.map((b, i) => (
           <li class="reveal" style={`--i:${i}`}>
-            <span class="font-mono text-[13px] text-paper-dim">0{i + 1}</span>
             <div>
               <h3 class="text-[22px] leading-[1.1] sm:text-[26px]">{b.title}</h3>
               <p class="mt-1 max-w-[60ch] text-[16px] leading-[1.5] text-paper-dim">{b.text}</p>
             </div>
-            <a href={b.href} class="font-mono text-[13px] text-accent-dark underline underline-offset-4">{b.proof}</a>
+            <a href={b.href} class="text-[16px] font-semibold text-accent-dark underline underline-offset-4">{b.proof}</a>
           </li>
         ))}
       </ol>
@@ -90,22 +92,23 @@ const work = [
 
   <main class="mx-auto max-w-page px-4 sm:px-6">
     <section id="work" aria-labelledby="work-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
-      <div class="grid gap-4 border-b border-rule pb-6 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+      <div class="grid gap-4 pb-4 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
         <h2 id="work-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Selected work</h2>
         <p class="max-w-[38em] text-[17px] text-stone-600">
           Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed, and which numbers to trust.
           Everything below is public: a package, a repository or an article you can open.
         </p>
       </div>
-      <ol class="divide-y divide-rule">
+      <ol>
         {work.map((w) => (
-          <li class="grid gap-5 py-9 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+          <li class="grid gap-5 py-12 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
             <div>
-              <p class="font-mono text-[13px] tracking-[0.14em] text-stone-600 uppercase">{w.kind}</p>
-              <h3 class="mt-2 text-[28px] leading-[1.08] sm:text-[34px]">{w.title}</h3>
+              <h3 class="text-[28px] leading-[1.08] sm:text-[34px]">{w.title}</h3>
+              <p class="mt-1 text-[17px] text-stone-600">{w.kind}</p>
               <ul class="mt-4 flex flex-wrap gap-2">
-                {w.tech.map((t) => <li class="rounded-full border border-rule px-3 py-1 font-mono text-[13px] text-stone-700">{t}</li>)}
+                {w.tech.map((t) => <li class="rounded-full bg-field px-3 py-1 text-[13px] text-stone-700">{t}</li>)}
               </ul>
+              {w.image && <Image src={w.image.src} alt={w.image.alt} widths={[480, 720, 960]} sizes="(min-width: 1024px) 520px, 100vw" class="mt-8 h-auto w-full" />}
             </div>
             <dl class="grid gap-x-6 gap-y-2 text-[17px] leading-[1.5] sm:grid-cols-[120px_1fr]">
               <dt class="text-stone-600">Problem</dt><dd>{w.problem}</dd>
@@ -131,14 +134,14 @@ const work = [
     </section>
 
     <section id="writing" aria-labelledby="w-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
-      <div class="mb-6 flex flex-col gap-1 border-b border-rule pb-6 sm:flex-row sm:items-baseline sm:justify-between">
+      <div class="mb-2 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 id="w-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Writing</h2>
         <p class="text-[17px] text-stone-600">How the fixes work and what they found.</p>
       </div>
-      <ul class="divide-y divide-rule">
+      <ul>
         {sorted.map((a) => (
-          <li class="grid gap-1 py-6 sm:grid-cols-[180px_1fr] sm:gap-6">
-            <p class="font-mono text-[13px] text-stone-600"><time datetime={a.date}>{monthYear(a.date)}</time> · {a.readTime}</p>
+          <li class="grid gap-1 py-7 sm:grid-cols-[180px_1fr] sm:gap-6">
+            <p class="text-[16px] text-stone-600 tabular-nums"><time datetime={a.date}>{monthYear(a.date)}</time> · {a.readTime}</p>
             <div>
               <h3 class="text-[26px] leading-[1.15]">
                 <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline hover:decoration-accent hover:decoration-[3px] hover:underline-offset-[6px]">{a.title}</a>
@@ -166,14 +169,12 @@ const work = [
 </Layout>
 
 <style>
-  .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 400 clamp(72px, 10vw, 150px)/1 var(--font-accent); font-style: italic; letter-spacing: -0.02em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
-  .accent { font: 400 1em/1 var(--font-accent); font-style: italic; color: var(--color-accent-dark); }
+  .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 600 clamp(72px, 10vw, 150px)/1 var(--font-display); letter-spacing: -0.035em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
   .stairs { list-style: none; margin: 0; padding: 0; }
-  .stairs li { display: grid; grid-template-columns: 40px 1fr; gap: 8px 20px; align-items: baseline; padding: 22px 0; border-top: 1px solid color-mix(in oklab, var(--color-paper) 22%, transparent); }
-  .stairs li a { grid-column: 2; }
+  .stairs li { display: grid; gap: 8px; align-items: baseline; padding: 28px 0; }
   @media (min-width: 768px) {
-    .stairs li { grid-template-columns: 56px 1fr auto; gap: 24px; }
-    .stairs li a { grid-column: auto; white-space: nowrap; }
+    .stairs li { grid-template-columns: 1fr auto; gap: 24px; }
+    .stairs li a { white-space: nowrap; }
     .stairs li:nth-child(2) { margin-left: 8%; }
     .stairs li:nth-child(3) { margin-left: 16%; }
     .stairs li:nth-child(4) { margin-left: 24%; }

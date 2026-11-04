@@ -4,8 +4,8 @@
  * Produces /public/og-image.png (root) and /public/og/<article-id>.png for each article.
  * Uses satori (JSX -> SVG) + @resvg/resvg-js (SVG -> PNG). Works on any static host.
  *
- * Same look as the site hero: paper card, ink text, Inter Tight headings, one
- * Instrument Serif italic accent, Public Sans for meta and mustard as the only accent (see src/index.css).
+ * Same look as the site hero: bone card, chocolate ink, Inter Tight headings,
+ * Public Sans for meta and green as the only accent (see src/index.css).
  * Satori reads static woff only, so the fonts come from the static @fontsource packages.
  *
  * Run: npm run og
@@ -25,17 +25,15 @@ const font = (pkg: string, file: string) => readFileSync(resolve(root, 'node_mod
 
 const fonts = [
   { name: 'Inter Tight', data: font('inter-tight', 'inter-tight-latin-600-normal.woff'), weight: 600 as const, style: 'normal' as const },
-  { name: 'Instrument Serif', data: font('instrument-serif', 'instrument-serif-latin-400-italic.woff'), weight: 400 as const, style: 'italic' as const },
   { name: 'Public Sans', data: font('public-sans', 'public-sans-latin-400-normal.woff'), weight: 400 as const, style: 'normal' as const },
   { name: 'Public Sans', data: font('public-sans', 'public-sans-latin-600-normal.woff'), weight: 600 as const, style: 'normal' as const },
 ];
 
 // Tokens from src/index.css
-const INK = '#1e1611';
-const MUTED = '#6e675c';
-const FIELD = '#efeae0';
-const RULE = '#d6cfbf';
-const FIXED = '#c9951e';
+const INK = '#2a1d17';
+const MUTED = '#5e5047';
+const FIELD = '#e5e1d8';
+const FIXED = '#3d6333';
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
@@ -63,7 +61,6 @@ function Footer({ left }: { left: string }) {
       style={{
         marginTop: 'auto',
         paddingTop: 24,
-        borderTop: `1px solid ${RULE}`,
         display: 'flex',
         justifyContent: 'space-between',
         fontSize: 24,
@@ -81,7 +78,7 @@ function RootTemplate() {
     <Card>
       <div style={{ fontSize: 26, fontWeight: 600 }}>Data &amp; AI Analyst</div>
       <div style={{ marginTop: 28, fontFamily: 'Inter Tight', fontWeight: 600, fontSize: 84, lineHeight: 1.0, letterSpacing: -3, display: 'flex' }}>
-        <span>I find where a product&apos;s data misleads people,&nbsp;</span><span style={{ fontFamily: 'Instrument Serif', fontStyle: 'italic', fontWeight: 400, color: FIXED, letterSpacing: -1 }}>and fix it.</span>
+        <span>I find where a product&apos;s data misleads people, and fix it.</span>
       </div>
       <Footer left="Valentina Tihova · Valencia, Spain" />
     </Card>

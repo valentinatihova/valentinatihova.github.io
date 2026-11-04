@@ -80,7 +80,7 @@ const articleJsonLd = {
         {article.githubUrl && <a href={article.githubUrl} class="text-fixed underline">Code on GitHub</a>}
       </p>
       {article.caseStudyFrame && (
-        <dl class="mt-8 grid max-w-3xl grid-cols-1 gap-x-6 gap-y-1 border-t border-rule pt-5 text-[16px] sm:grid-cols-[140px_1fr]">
+        <dl class="mt-8 grid max-w-3xl grid-cols-1 gap-x-6 gap-y-1 pt-5 text-[16px] sm:grid-cols-[140px_1fr]">
           <dt class="text-stone-600">My role</dt><dd class="mb-2 sm:mb-0">{article.caseStudyFrame.role}</dd>
           <dt class="text-stone-600">Scope</dt><dd class="mb-2 sm:mb-0">{article.caseStudyFrame.scope}</dd>
           <dt class="text-stone-600">Why it matters</dt><dd>{article.caseStudyFrame.outcome}</dd>
@@ -100,14 +100,14 @@ const articleJsonLd = {
         <aside class="hidden lg:block" aria-label="Table of contents">
           <nav class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto text-[16px]">
             <p class="mb-2.5 font-semibold">On this page</p>
-            <ol class="border-l border-rule">
+            <ol>
               {toc.map((h) => (
                 <li>
                   <a
                     href={`#${h.slug}`}
                     class:list={[
-                      '-ml-px block border-l-2 border-transparent py-1.5 pl-3.5 leading-snug text-stone-600 no-underline hover:border-stone-400 hover:text-stone-900',
-                      h.depth === 3 && 'pl-6',
+                      'block py-1.5 leading-snug text-stone-600 no-underline hover:text-stone-900 hover:underline',
+                      h.depth === 3 && 'pl-4',
                     ]}
                   >
                     {h.text}

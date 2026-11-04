@@ -51,7 +51,7 @@ export function Architecture({
   const vertical = orientation === 'vertical';
 
   return (
-    <figure className="not-prose my-14 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
+    <figure data-ui className="not-prose my-14 overflow-hidden rounded-2xl border border-stone-200 bg-stone-50">
       <figcaption className="border-b border-stone-200 bg-white px-6 py-4 font-sans text-[15px] font-semibold text-accent">
         {caption}
       </figcaption>

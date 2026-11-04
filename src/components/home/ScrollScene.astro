@@ -28,7 +28,11 @@ for (let i = 0; i < 230; i++) {
   const b = pts[best], dx = x - b.x, dy = y - b.y, L = Math.hypot(dx, dy) || 1, len = 24 + rnd() * 30;
   pts.push({ x: b.x + (dx / L) * len, y: b.y + (dy / L) * len, p: best });
 }
-const segs = pts.slice(1).map((q, i) => ({ a: pts[q.p], b: q, g: i / (pts.length - 2) }));
+// The first SEED of the growth is already drawn when the page opens, so the first screen
+// is never empty; the rest grows on scroll, its order remapped to 0..1.
+const SEED = 0.4;
+const grow = (g: number) => (g < SEED ? null : (g - SEED) / (1 - SEED));
+const segs = pts.slice(1).map((q, i) => ({ a: pts[q.p], b: q, g: grow(i / (pts.length - 2)) }));
 const hasChild = new Set(pts.map((q) => q.p));
 const tips = pts.map((q, i) => ({ ...q, i })).filter((q) => !hasChild.has(q.i) && q.i > 0);
 // Beat 2: the latest-grown tips are the ones that mislead.
@@ -59,8 +63,11 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
     <div class="scene">
       <svg class="net" viewBox={`0 0 ${VW} ${VH}`} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <g class="growth">
-          {segs.map((s) => <line x1={s.a.x.toFixed(0)} y1={s.a.y.toFixed(0)} x2={s.b.x.toFixed(0)} y2={s.b.y.toFixed(0)} pathLength="1" style={`--g:${s.g.toFixed(3)}`} />)}
-          {tips.map((t) => <circle cx={t.x.toFixed(0)} cy={t.y.toFixed(0)} r="3" class:list={[driftTips.has(t.i) && 'is-drift']} style={`--g:${((t.i - 1) / (pts.length - 2)).toFixed(3)};--j:${(rnd() * 2 - 1).toFixed(2)}`} />)}
+          {segs.map((s) => <line x1={s.a.x.toFixed(0)} y1={s.a.y.toFixed(0)} x2={s.b.x.toFixed(0)} y2={s.b.y.toFixed(0)} pathLength="1" class:list={[s.g === null && 'seed']} style={s.g === null ? undefined : `--g:${s.g.toFixed(3)}`} />)}
+          {tips.map((t) => {
+            const g = grow((t.i - 1) / (pts.length - 2));
+            return <circle cx={t.x.toFixed(0)} cy={t.y.toFixed(0)} r="3" class:list={[driftTips.has(t.i) && 'is-drift', g === null && 'seed']} style={`${g === null ? '' : `--g:${g.toFixed(3)};`}--j:${(rnd() * 2 - 1).toFixed(2)}`} />;
+          })}
         </g>
         <g class="edges">
           {EDGES.map(([a, b]) => {
@@ -77,18 +84,19 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       </svg>
 
       <p class="who">Valentina Tihova <span>Data &amp; AI Analyst</span></p>
-      <p class="meta" aria-hidden="true">Updated {updated}</p>
       <p class="hint" aria-hidden="true">Scroll</p>
 
       <h1 class="hl">
         <span class="l1">I find where a product's data</span>
         <span class="l2">misleads people,</span>
-        <em class="l3">and fix it.</em>
+        <span class="l3">and fix it.</span>
       </h1>
 
       <dl class="stats">
         {stats.map((s, i) => <div style={`--i:${i}`}><dd>{s.n}</dd><dt>{s.label}</dt></div>)}
       </dl>
+      <!-- After the stats so that on phones it reads as a footnote, not a label above the headline. -->
+      <p class="meta" aria-hidden="true">Updated {updated}</p>
     </div>
   </div>
 </section>
@@ -98,23 +106,21 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   .hero { background: var(--color-surface); color: var(--color-text); }
   .scene { position: relative; max-width: var(--container-page); margin: 0 auto; padding: 20px 16px 48px; }
   .net { display: block; width: 100%; height: auto; aspect-ratio: 12 / 7; max-height: 56vh; }
-  .growth line { stroke: var(--color-text); stroke-opacity: 0.18; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; }
-  .growth circle { fill: var(--color-text); fill-opacity: 0.25; }
+  .growth line { stroke: var(--color-text); stroke-opacity: 0.3; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .growth circle { fill: var(--color-text); fill-opacity: 0.4; }
   .growth circle.is-drift { fill: var(--color-accent-fill); fill-opacity: 1; }
   .edges line { stroke: var(--color-text); stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 0; }
   .edges line.is-drift { stroke: var(--color-accent-fill); stroke-opacity: 1; stroke-width: 2.4; }
   .node circle { fill: var(--color-text); }
   .node.is-path circle { fill: var(--color-accent-fill); r: 6; }
-  .node text { font: 500 11px/1 var(--font-mono); fill: var(--color-text); fill-opacity: 0.85; }
-  .who, .meta { margin: 0; font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .node text { font: 500 13px/1 var(--font-sans); fill: var(--color-text); fill-opacity: 0.85; }
+  .who, .meta { margin: 0; font: 500 14px/1.4 var(--font-sans); }
   .who span::before { content: ' · '; }
-  .meta { color: var(--color-stone-600); }
+  .meta { margin-top: 16px; color: var(--color-stone-600); }
   .hint { display: none; }
   .hl { margin: 20px 0 0; max-width: 14ch; font-size: clamp(2.6rem, 7.2vw, 7rem); line-height: 0.92; letter-spacing: -0.035em; }
   .hl span, .hl em { display: inline; }
-  .l2 { color: var(--color-stone-600); }
-  .l3 { font: 400 1.05em/0.92 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
-  .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--color-rule); }
+  .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; }
   .stats div { display: flex; flex-direction: column; }
   .stats dd { margin: 0; font: 600 34px/1 var(--font-display); letter-spacing: -0.03em; }
   .stats dt { margin-top: 4px; font-size: 13px; color: var(--color-stone-600); }
@@ -123,15 +129,18 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   @supports (animation-timeline: scroll()) {
     @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
       .track { height: 320vh; view-timeline: --hero block; }
-      .scene { position: sticky; top: 0; height: 100svh; max-width: none; padding: 0; overflow: hidden; }
+      /* Minus the 64px nav, so the stats are on screen before the scene pins. */
+      /* Same left and right edge as the nav's max-w-page container (24px padding). */
+      .scene { --edge: max(24px, calc((100% - var(--container-page)) / 2 + 24px)); }
+      .scene { position: sticky; top: 0; height: calc(100svh - 64px); max-width: none; padding: 0; overflow: hidden; }
       .net { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; aspect-ratio: auto; }
 
-      /* Beat 1: growth draws in creation order over the first third. */
-      .growth line {
+      /* Beat 1: growth (past the seed) draws in creation order over the first third. */
+      .growth line:not(.seed) {
         animation-name: draw; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero;
         animation-range: contain calc(var(--g) * 30%) contain calc(var(--g) * 30% + 5%);
       }
-      .growth circle {
+      .growth circle:not(.seed) {
         animation-name: fade-in; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero;
         animation-range: contain calc(var(--g) * 30% + 3%) contain calc(var(--g) * 30% + 6%);
       }
@@ -150,24 +159,23 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       .edges line.is-drift { animation-range: contain 84% contain 94%; }
       .node.is-path circle { fill: var(--color-text); animation-name: settle, mustard; animation-timing-function: linear, linear; animation-fill-mode: both, forwards; animation-timeline: --hero, --hero; animation-range: contain var(--a) contain var(--b), contain 84% contain 94%; }
 
-      .who { position: absolute; left: 40px; top: 28px; z-index: 2; }
-      .meta { position: absolute; right: 40px; top: 28px; z-index: 2; }
+      .who { position: absolute; left: var(--edge); top: 28px; z-index: 2; }
+      .meta { position: absolute; right: var(--edge); top: 28px; z-index: 2; margin: 0; }
       .hint {
         display: block; position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 2;
-        margin: 0; font: 500 13px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
+        margin: 0; font: 500 14px/1 var(--font-sans); opacity: 0.7;
         animation-name: fade-out; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 8%;
       }
       .hint::after { content: ''; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: currentColor; }
 
-      .hl { position: absolute; z-index: 2; left: 40px; bottom: 150px; margin: 0; width: min(50vw, 15ch); max-width: none; font-size: clamp(2.8rem, 6.4vw, 6.4rem); }
+      .hl { position: absolute; z-index: 2; left: var(--edge); bottom: max(150px, 22vh); margin: 0; width: min(50vw, 15ch); max-width: none; font-size: clamp(2.8rem, 6.4vw, 6.4rem); }
       .hl span, .hl em { display: inline-block; }
       /* Line 1 rises once on load; lines 2 and 3 are story beats on scroll. */
       .l1 { animation-name: rise; animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); animation-fill-mode: both; }
       .l2 { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 32% contain 42%; }
       .l3 { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 72% contain 82%; }
 
-      .stats { position: absolute; z-index: 2; left: 40px; right: 40px; bottom: 36px; margin: 0; gap: 0 56px; }
-      .stats div { animation-name: rise; animation-timing-function: ease-out; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain calc(44% + var(--i) * 2%) contain calc(52% + var(--i) * 2%); }
+      .stats { position: absolute; z-index: 2; left: var(--edge); right: var(--edge); bottom: 36px; margin: 0; gap: 0 56px; }
     }
   }
 
