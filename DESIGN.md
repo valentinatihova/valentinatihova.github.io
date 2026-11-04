@@ -23,7 +23,7 @@ A quiet technical paper with one warm accent: data that grew into a structure, r
 
 ## Layout and spacing
 
-- One column of content up to 1160px, 40px gutters on desktop, 16px on phones.
+- One column of content up to 1360px (`max-w-page`); running text capped at about 70ch, 40px gutters on desktop, 16px on phones.
 - Thin 1px rules and tables instead of cards. Numbered lists step down the page (stairs).
 - Negative space is the hierarchy: one large object per screen.
 - Microtext in the corners: name, role, updated date.

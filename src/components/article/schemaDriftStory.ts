@@ -53,40 +53,40 @@ export const EDGES: [string, string, ('path' | 'chain')?, number?][] = [
 // Shot 4: each broken node turns red when its incoming line arrives.
 const RED_DELAY: Record<string, number> = { c_clv: 0.65, c_churn: 0.65, r_dash: 1.2 };
 const LOOK: Record<string, { bg: string; border: string; sub: string; bold: boolean }> = {
-  path: { bg: '#FFFFFF', border: '1px solid #7E938B', sub: '#4F5F66', bold: false },
-  changed: { bg: '#F8ECDD', border: '2px solid #9A4F00', sub: '#9A4F00', bold: true },
-  broken: { bg: '#F7E0E2', border: '2px solid #A3242F', sub: '#A3242F', bold: true },
-  quiet: { bg: '#F7E0E2', border: '1px solid #A3242F', sub: '#A3242F', bold: false },
-  safe: { bg: '#E3EEF8', border: '2px solid #1D5FA0', sub: '#1D5FA0', bold: true },
+  path: { bg: 'var(--color-paper)', border: '1px solid var(--color-stone-400)', sub: 'var(--color-stone-600)', bold: false },
+  changed: { bg: 'var(--color-review-bg)', border: '2px solid var(--color-accent-fill)', sub: 'var(--color-review)', bold: true },
+  broken: { bg: 'var(--color-broke-bg)', border: '2px solid var(--color-brick)', sub: 'var(--color-brick)', bold: true },
+  quiet: { bg: 'var(--color-broke-bg)', border: '1px solid var(--color-brick)', sub: 'var(--color-brick)', bold: false },
+  safe: { bg: 'var(--color-fixed-bg)', border: '2px solid var(--color-fixed)', sub: 'var(--color-fixed)', bold: true },
 };
-const FADED = { bg: '#FFFFFF', border: '1px solid #B9C6C0', sub: '#4F5F66', bold: false };
+const FADED = { bg: 'var(--color-paper)', border: '1px solid var(--color-rule)', sub: 'var(--color-stone-600)', bold: false };
 const byId = (id: string) => NODES.find((n) => n.id === id)!;
 
 function shot1() {
-  return `<div style="align-self:center;margin-top:28px;width:460px;box-sizing:border-box;background:#FFFFFF;border:2px solid #A3242F;border-radius:12px;padding:28px 36px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .35s ease-out both">
-<p style="margin:0;font-size:14px;color:#4F5F66">Dashboard</p>
+  return `<div style="align-self:center;margin-top:28px;width:460px;box-sizing:border-box;background:var(--color-paper);border:2px solid var(--color-brick);border-radius:12px;padding:28px 36px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .45s ease-out both">
+<p style="margin:0;font-size:14px;color:var(--color-stone-600)">Dashboard</p>
 <p style="margin:0;font-size:18px;font-weight:600">CLV, Customer Lifetime Value</p>
 <div style="display:flex;align-items:baseline;gap:20px;margin-top:16px">
-<p style="margin:0;font-size:96px;font-weight:600;line-height:1;color:#A3242F;animation:sd-drop .45s cubic-bezier(.2,.8,.2,1) .7s both">€0</p>
-<p style="position:relative;margin:0;font-size:28px;color:#6B7A80">€1,240<span aria-hidden="true" style="position:absolute;left:-2px;right:-2px;top:52%;border-top:2px solid #6B7A80;transform-origin:left;animation:sd-strike .35s ease-out .35s both"></span></p>
+<p style="margin:0;font-size:96px;font-weight:600;line-height:1;color:var(--color-brick);animation:sd-drop .45s cubic-bezier(.2,.7,.2,1) .7s both">€0</p>
+<p style="position:relative;margin:0;font-size:28px;color:var(--color-stone-600)">€1,240<span aria-hidden="true" style="position:absolute;left:-2px;right:-2px;top:52%;border-top:2px solid var(--color-stone-600);transform-origin:left;animation:sd-strike .45s ease-out .35s both"></span></p>
 </div>
-<p style="margin:14px 0 0;font-size:14px;color:#A3242F;font-weight:600;animation:sd-fade .3s ease-out 1.1s both">Down 100% since last week</p>
+<p style="margin:14px 0 0;font-size:14px;color:var(--color-brick);font-weight:600;animation:sd-fade .4s ease-out 1.1s both">Down 100% since last week</p>
 </div>`;
 }
 
 function shot2() {
   const box = (title: string, sub: string) =>
-    `<div style="width:170px;box-sizing:border-box;background:#FFFFFF;border:1px solid #B9C6C0;border-radius:8px;padding:14px 16px"><p style="margin:0;font-weight:600;font-size:16px">${title}</p><p style="margin:2px 0 0;font-size:14px;color:#4F5F66">${sub}</p></div>`;
-  const line = '<div aria-hidden="true" style="flex:1;border-top:2px solid #9DB0A8"></div>';
-  return `<div style="margin-top:110px;display:flex;align-items:center;transform-origin:right center;animation:sd-pull .9s cubic-bezier(.2,.8,.2,1) both">
+    `<div style="width:170px;box-sizing:border-box;background:var(--color-paper);border:1px solid var(--color-rule);border-radius:8px;padding:14px 16px"><p style="margin:0;font-weight:600;font-size:16px">${title}</p><p style="margin:2px 0 0;font-size:14px;color:var(--color-stone-600)">${sub}</p></div>`;
+  const line = '<div aria-hidden="true" style="flex:1;border-top:2px solid var(--color-stone-400)"></div>';
+  return `<div style="margin-top:110px;display:flex;align-items:center;transform-origin:right center;animation:sd-pull .9s cubic-bezier(.2,.7,.2,1) both">
 ${box('Orders file', 'Nightly upload')}${line}${box('Sales Order', 'Unified order table')}${line}${box('CLV metric', 'Calculated nightly')}${line}
-<div style="width:170px;box-sizing:border-box;background:#FFFFFF;border:2px solid #A3242F;border-radius:12px;padding:12px 16px"><p style="margin:0;font-size:13px;color:#4F5F66">Dashboard</p><p style="margin:0;font-weight:600;font-size:16px">CLV <span style="color:#A3242F">€0</span></p></div>
+<div style="width:170px;box-sizing:border-box;background:var(--color-paper);border:2px solid var(--color-brick);border-radius:12px;padding:12px 16px"><p style="margin:0;font-size:13px;color:var(--color-stone-600)">Dashboard</p><p style="margin:0;font-weight:600;font-size:16px">CLV <span style="color:var(--color-brick)">€0</span></p></div>
 </div>`;
 }
 
 function map(shot: number) {
   const regions = ['Sources', 'Data lake', 'Data model', 'Insights', 'Reports']
-    .map((label, i) => `<p aria-hidden="true" style="position:absolute;left:${COL_X[i]}px;top:0;margin:0;font-family:var(--font-serif);font-style:italic;font-size:20px;color:#5E716A">${label}</p>`)
+    .map((label, i) => `<p aria-hidden="true" style="position:absolute;left:${COL_X[i]}px;top:0;margin:0;font-family:var(--font-accent);font-style:italic;font-size:22px;color:var(--color-stone-600)">${label}</p>`)
     .join('');
 
   const edges = EDGES.map(([from, to, kind, delay]) => {
@@ -95,12 +95,12 @@ function map(shot: number) {
     const x2 = COL_X[b.c], y2 = ROW_Y[b.r] + H / 2;
     const len = Math.hypot(x2 - x1, y2 - y1);
     const deg = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
-    let line = '1px solid #B9C6C0', faded = true, anim = '';
-    if (kind === 'path') { line = '2px solid #7E938B'; faded = false; }
+    let line = '1px solid var(--color-rule)', faded = true, anim = '';
+    if (kind === 'path') { line = '2px solid var(--color-stone-400)'; faded = false; }
     if (kind === 'chain') {
       faded = false;
-      line = shot === 3 ? '2px solid #7E938B' : shot === 4 ? '4px solid #A3242F' : '2px solid #C98A90';
-      if (shot === 4) anim = `;transform-origin:left;animation:sd-draw .45s cubic-bezier(.2,.8,.2,1) ${delay}s both`;
+      line = shot === 3 ? '2px solid var(--color-stone-400)' : shot === 4 ? '4px solid var(--color-brick)' : '2px solid color-mix(in oklab, var(--color-brick) 50%, transparent)';
+      if (shot === 4) anim = `;transform-origin:left;animation:sd-draw .45s cubic-bezier(.2,.7,.2,1) ${delay}s both`;
     }
     return `<div aria-hidden="true" style="position:absolute;left:${x1}px;top:${y1}px;width:${len.toFixed(1)}px;height:4px;transform-origin:0 0;transform:rotate(${deg.toFixed(2)}deg)${faded ? ';opacity:.5' : ''}"><div style="width:100%;border-top:${line}${anim}"></div></div>`;
   }).join('');
@@ -109,29 +109,29 @@ function map(shot: number) {
     const [sub, state] = n.s?.[shot] ?? ['', null];
     if (state === 'hidden') return '';
     const look = (state && LOOK[state]) || FADED;
-    const anim = shot === 4 && state === 'broken' ? `;animation:sd-red .3s ease-out ${RED_DELAY[n.id]}s both` : '';
+    const anim = shot === 4 && state === 'broken' ? `;animation:sd-red .4s ease-out ${RED_DELAY[n.id]}s both` : '';
     return `<div aria-hidden="true" style="position:absolute;left:${COL_X[n.c]}px;top:${ROW_Y[n.r]}px;width:${W}px;height:${H}px;box-sizing:border-box;padding:5px 8px;border-radius:6px;background:${look.bg};border:${look.border};display:flex;flex-direction:column;justify-content:center;gap:1px${state ? '' : ';opacity:.4'}${anim}">
 <span style="font-weight:600;font-size:14px;line-height:1.2">${n.label}</span><span style="font-size:13px;line-height:1.2;color:${look.sub}${look.bold ? ';font-weight:600' : ''}">${sub}</span></div>`;
   }).join('');
 
-  const s3 = shot !== 3 ? '' : `<div aria-hidden="true" style="position:absolute;left:312px;top:226px;width:236px;box-sizing:border-box;background:#FFFFFF;border:2px solid #9A4F00;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .35s ease-out .15s both">
+  const s3 = shot !== 3 ? '' : `<div aria-hidden="true" style="position:absolute;left:312px;top:226px;width:236px;box-sizing:border-box;background:var(--color-paper);border:2px solid var(--color-accent-fill);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .45s ease-out .15s both">
 <p style="margin:0;font-weight:600;font-size:15px">Sales Order mappings</p>
-<div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:5px;background:#F2F4F1;font-size:13px"><span>Order_Id</span><span style="color:#4F5F66">← Id</span></div>
-<div style="display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:5px;background:#F8ECDD;border:2px solid #9A4F00;font-size:13px">
-<span style="display:flex;justify-content:space-between"><span style="font-weight:600">Total_Amount</span><span style="position:relative;color:#6B7A80">← Amount<span style="position:absolute;left:-1px;right:-1px;top:55%;border-top:1.5px solid #6B7A80;transform-origin:left;animation:sd-strike .35s ease-out .8s both"></span></span></span>
-<span style="color:#9A4F00;font-weight:600;animation:sd-fade .3s ease-out 1.2s both">No mapping, value is empty</span>
+<div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:5px;background:var(--color-surface);font-size:13px"><span>Order_Id</span><span style="color:var(--color-stone-600)">← Id</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:5px;background:var(--color-review-bg);border:2px solid var(--color-accent-fill);font-size:13px">
+<span style="display:flex;justify-content:space-between"><span style="font-weight:600">Total_Amount</span><span style="position:relative;color:var(--color-stone-600)">← Amount<span style="position:absolute;left:-1px;right:-1px;top:55%;border-top:1.5px solid var(--color-stone-600);transform-origin:left;animation:sd-strike .45s ease-out .8s both"></span></span></span>
+<span style="color:var(--color-review);font-weight:600;animation:sd-fade .4s ease-out 1.2s both">No mapping, value is empty</span>
 </div></div>`;
-  const s4 = shot !== 4 ? '' : `<div aria-hidden="true" style="position:absolute;left:537px;top:362px;display:flex;align-items:center;gap:8px;font-size:13px;color:#33444C;animation:sd-fade .3s ease-out 1.4s both"><span style="width:28px;border-top:4px solid #A3242F"></span>blank values travel down</div>`;
-  const s5 = shot !== 5 ? '' : `<div aria-hidden="true" style="position:absolute;left:270px;top:300px;width:248px;box-sizing:border-box;background:#1D2B33;color:#F2F4F1;border-radius:8px;padding:9px 14px;transform:rotate(-3deg);animation:sd-stamp .4s cubic-bezier(.2,.8,.2,1) .35s both">
-<p style="margin:0;font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:4px;background:#E8806F;margin-right:6px"></span>Schema drift: 1 change</p>
-<p style="margin:0;font-size:13px;color:#C9D6D0">Mapping removed: Total_Amount</p></div>`;
+  const s4 = shot !== 4 ? '' : `<div aria-hidden="true" style="position:absolute;left:537px;top:362px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text);animation:sd-fade .4s ease-out 1.4s both"><span style="width:28px;border-top:4px solid var(--color-brick)"></span>blank values travel down</div>`;
+  const s5 = shot !== 5 ? '' : `<div aria-hidden="true" style="position:absolute;left:270px;top:300px;width:248px;box-sizing:border-box;background:var(--color-graphite);color:var(--color-paper);border-radius:8px;padding:9px 14px;transform:rotate(-3deg);animation:sd-stamp .4s cubic-bezier(.2,.7,.2,1) .35s both">
+<p style="margin:0;font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--color-accent-fill);margin-right:6px"></span>Schema drift: 1 change</p>
+<p style="margin:0;font-size:13px;color:var(--color-paper-dim)">Mapping removed: Total_Amount</p></div>`;
 
-  return `<div role="img" aria-label="${MAP_LABELS[shot]}" style="position:relative;margin-top:6px;width:856px;height:380px;background-image:linear-gradient(#E4EAE6 1px,transparent 1px),linear-gradient(90deg,#E4EAE6 1px,transparent 1px);background-size:32px 32px">${regions}${edges}${nodes}${s3}${s4}${s5}</div>`;
+  return `<div role="img" aria-label="${MAP_LABELS[shot]}" style="position:relative;margin-top:6px;width:856px;height:380px">${regions}${edges}${nodes}${s3}${s4}${s5}</div>`;
 }
 
-const CTA = `<div style="position:absolute;right:52px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;animation:sd-fade .35s ease-out .9s both">
-<a href="https://github.com/valentinatihova/data360-autodoc" style="min-height:44px;display:inline-flex;align-items:center;padding:0 20px;border-radius:22px;background:#1D2B33;color:#F2F4F1;text-decoration:none;font-weight:600">See it on GitHub</a>
-<code style="font-family:var(--font-mono);font-size:13px;color:#33444C;background:#FFFFFF;border:1px solid #CFD8D3;border-radius:6px;padding:4px 8px">pip install data360-autodoc</code></div>`;
+const CTA = `<div style="position:absolute;right:52px;bottom:18px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;animation:sd-fade .45s ease-out .9s both">
+<a href="https://github.com/valentinatihova/data360-autodoc" style="min-height:44px;display:inline-flex;align-items:center;padding:0 20px;border-radius:22px;background:var(--color-graphite);color:var(--color-paper);text-decoration:none;font-weight:600">See it on GitHub</a>
+<code style="font-family:var(--font-mono);font-size:13px;color:var(--color-text);background:var(--color-paper);border:1px solid var(--color-rule);border-radius:6px;padding:4px 8px">pip install data360-autodoc</code></div>`;
 
 /** Everything under the caption for one shot (1–5). */
 export function renderShot(shot: number): string {

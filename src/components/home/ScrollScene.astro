@@ -96,7 +96,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
 <style>
   /* ---- Base = final frame, normal flow. Works with no JS, no scroll timelines, reduced motion. */
   .hero { background: var(--color-surface); color: var(--color-text); }
-  .scene { position: relative; max-width: 1160px; margin: 0 auto; padding: 20px 16px 48px; }
+  .scene { position: relative; max-width: var(--container-page); margin: 0 auto; padding: 20px 16px 48px; }
   .net { display: block; width: 100%; height: auto; aspect-ratio: 12 / 7; max-height: 56vh; }
   .growth line { stroke: var(--color-text); stroke-opacity: 0.18; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; }
   .growth circle { fill: var(--color-text); fill-opacity: 0.25; }
