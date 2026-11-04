@@ -2,12 +2,12 @@ import React from 'react';
 import { profile } from '../../data/profile';
 
 // Same system as the home page: Inter Tight headings, Public Sans body in full ink,
-// mono only for dates, and the 1fr / 1.4fr split that "Selected work" uses.
+// space instead of rules, and the 1fr / 1.4fr split that "Selected work" uses.
 const link = 'font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent';
 const split = 'grid gap-4 lg:grid-cols-[1fr_1.4fr] lg:gap-12';
 
 const Section = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
-  <section aria-labelledby={id} className={`${split} border-t border-rule pt-10 pb-14 sm:pt-14`}>
+  <section aria-labelledby={id} className={`${split} pt-10 pb-14 sm:pt-14`}>
     <h2 id={id} className="text-[34px] leading-[1.05] sm:text-[44px]">{title}</h2>
     <div className="min-w-0">{children}</div>
   </section>
@@ -44,10 +44,10 @@ export const Resume: React.FC = () => (
         From analytics and finance reports into orchestration, live decisioning, martech, QA automation, and migration
         work, mostly banking, telecom, and retail.
       </p>
-      <ol className="mt-8 divide-y divide-rule border-t border-rule">
+      <ol className="mt-4">
         {profile.experience.map((exp, index) => (
           <li key={index} className="py-8">
-            <p className="font-mono text-[13px] text-stone-600">{exp.period}</p>
+            <p className="text-[16px] text-stone-600 tabular-nums">{exp.period}</p>
             <h3 className="mt-2 text-[26px] leading-[1.15]">{exp.role}</h3>
             <p className="mt-1 text-[17px] text-stone-600">{exp.company}</p>
             <p className="mt-4 max-w-[62ch] text-[17px] leading-[1.55]">{exp.description}</p>
@@ -59,7 +59,7 @@ export const Resume: React.FC = () => (
             {exp.tools && (
               <ul className="mt-5 flex flex-wrap gap-2" aria-label="Tools">
                 {exp.tools.map((tool, i) => (
-                  <li key={i} className="rounded-full border border-rule px-3 py-1 font-mono text-[13px] text-stone-700">{tool}</li>
+                  <li key={i} className="rounded-full bg-field px-3 py-1 text-[13px] text-stone-700">{tool}</li>
                 ))}
               </ul>
             )}
@@ -69,7 +69,7 @@ export const Resume: React.FC = () => (
     </Section>
 
     <Section id="certs-h" title="Certifications">
-      <ul className="divide-y divide-rule border-t border-rule">
+      <ul>
         {profile.certifications?.map((cert, index) => (
           <li key={index} className="py-6">
             <h3 className="text-[22px] leading-[1.2]">
@@ -77,7 +77,7 @@ export const Resume: React.FC = () => (
                 {cert.name}
               </a>
             </h3>
-            <p className="mt-1 text-[16px] text-stone-600">{cert.issuer} · <span className="font-mono text-[13px]">{cert.date}</span></p>
+            <p className="mt-1 text-[16px] text-stone-600">{cert.issuer} · <span className="tabular-nums">{cert.date}</span></p>
             {cert.details && <p className="mt-2 max-w-[62ch] text-[17px] leading-[1.55]">{cert.details}</p>}
           </li>
         ))}
@@ -85,10 +85,10 @@ export const Resume: React.FC = () => (
     </Section>
 
     <Section id="education-h" title="Education">
-      <ul className="divide-y divide-rule border-t border-rule">
+      <ul>
         {profile.education.map((edu, index) => (
           <li key={index} className="grid gap-1 py-6 sm:grid-cols-[180px_1fr] sm:gap-6">
-            <p className="font-mono text-[13px] text-stone-600">{edu.period}</p>
+            <p className="text-[16px] text-stone-600 tabular-nums">{edu.period}</p>
             <div>
               <h3 className="text-[22px] leading-[1.2]">{edu.degree}</h3>
               <p className="mt-1 text-[16px] text-stone-600">{edu.school}</p>

@@ -77,18 +77,19 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       </svg>
 
       <p class="who">Valentina Tihova <span>Data &amp; AI Analyst</span></p>
-      <p class="meta" aria-hidden="true">Updated {updated}</p>
       <p class="hint" aria-hidden="true">Scroll</p>
 
       <h1 class="hl">
         <span class="l1">I find where a product's data</span>
         <span class="l2">misleads people,</span>
-        <em class="l3">and fix it.</em>
+        <span class="l3">and fix it.</span>
       </h1>
 
       <dl class="stats">
         {stats.map((s, i) => <div style={`--i:${i}`}><dd>{s.n}</dd><dt>{s.label}</dt></div>)}
       </dl>
+      <!-- After the stats so that on phones it reads as a footnote, not a label above the headline. -->
+      <p class="meta" aria-hidden="true">Updated {updated}</p>
     </div>
   </div>
 </section>
@@ -105,16 +106,14 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   .edges line.is-drift { stroke: var(--color-accent-fill); stroke-opacity: 1; stroke-width: 2.4; }
   .node circle { fill: var(--color-text); }
   .node.is-path circle { fill: var(--color-accent-fill); r: 6; }
-  .node text { font: 500 11px/1 var(--font-mono); fill: var(--color-text); fill-opacity: 0.85; }
-  .who, .meta { margin: 0; font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .node text { font: 500 13px/1 var(--font-sans); fill: var(--color-text); fill-opacity: 0.85; }
+  .who, .meta { margin: 0; font: 500 14px/1.4 var(--font-sans); }
   .who span::before { content: ' · '; }
-  .meta { color: var(--color-stone-600); }
+  .meta { margin-top: 16px; color: var(--color-stone-600); }
   .hint { display: none; }
   .hl { margin: 20px 0 0; max-width: 14ch; font-size: clamp(2.6rem, 7.2vw, 7rem); line-height: 0.92; letter-spacing: -0.035em; }
   .hl span, .hl em { display: inline; }
-  .l2 { color: var(--color-stone-600); }
-  .l3 { font: 400 1.05em/0.92 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
-  .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--color-rule); }
+  .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; }
   .stats div { display: flex; flex-direction: column; }
   .stats dd { margin: 0; font: 600 34px/1 var(--font-display); letter-spacing: -0.03em; }
   .stats dt { margin-top: 4px; font-size: 13px; color: var(--color-stone-600); }
@@ -151,10 +150,10 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       .node.is-path circle { fill: var(--color-text); animation-name: settle, mustard; animation-timing-function: linear, linear; animation-fill-mode: both, forwards; animation-timeline: --hero, --hero; animation-range: contain var(--a) contain var(--b), contain 84% contain 94%; }
 
       .who { position: absolute; left: 40px; top: 28px; z-index: 2; }
-      .meta { position: absolute; right: 40px; top: 28px; z-index: 2; }
+      .meta { position: absolute; right: 40px; top: 28px; z-index: 2; margin: 0; }
       .hint {
         display: block; position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 2;
-        margin: 0; font: 500 13px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
+        margin: 0; font: 500 14px/1 var(--font-sans); opacity: 0.7;
         animation-name: fade-out; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 8%;
       }
       .hint::after { content: ''; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: currentColor; }

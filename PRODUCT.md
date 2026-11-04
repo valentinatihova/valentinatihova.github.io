@@ -36,7 +36,7 @@ Static Astro site deployed from GitHub Pages behind Cloudflare, custom domain va
 
 ## Brand Commitments
 
-Name: Valentina Tihova. Title in use: Data & AI Analyst. Voice: plain, specific, numbers over adjectives, no marketing fluff. Current fonts (Newsreader, Public Sans, JetBrains Mono) are the incumbent choice, not a binding constraint.
+Name: Valentina Tihova. Title in use: Data & AI Analyst. Voice: plain, specific, numbers over adjectives, no marketing fluff. Fonts: Inter Tight and Public Sans; JetBrains Mono for code only (see DESIGN.md).
 
 ## Evidence on Hand
 

@@ -1,59 +1,56 @@
 @import "tailwindcss";
-/* Self-hosted fonts: no request to Google before first paint. */
-@import "@fontsource-variable/newsreader/opsz.css";
-@import "@fontsource-variable/newsreader/opsz-italic.css";
+/* Self-hosted fonts: no request to Google before first paint. Two faces; mono is for code only. */
 @import "@fontsource/inter-tight/500.css";
 @import "@fontsource/inter-tight/600.css";
-@import "@fontsource/instrument-serif/400-italic.css";
 @import "@fontsource/public-sans/400.css";
 @import "@fontsource/public-sans/500.css";
 @import "@fontsource/public-sans/600.css";
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/600.css";
 
-/* Paper, chocolate and one mustard accent (DESIGN.md). Headlines in Inter Tight,
-   one serif accent in Instrument Serif italic, body in Public Sans, mono for metadata.
-   Stone is remapped to the same warm scale so older pages stay consistent. */
+/* "Bone, green, chocolate" (DESIGN.md): bone ground, chocolate ink and dark field, one green accent.
+   Brick stays for wrong states only. Stone is remapped to the same warm scale so older pages stay consistent. */
 @theme {
   /* Page width for every section; body text keeps its own measure (.article-prose). */
   --container-page: 1360px;
 
   --font-display: "Inter Tight", "Public Sans", system-ui, sans-serif;
-  --font-accent: "Instrument Serif", Georgia, serif;
-  --font-serif: "Newsreader Variable", Georgia, serif;
   --font-sans: "Public Sans", system-ui, sans-serif;
+  /* Legacy roles map onto the two faces. */
+  --font-accent: var(--font-display);
+  --font-serif: var(--font-sans);
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-surface: #efeae0;
-  --color-text: #1e1611;
-  --color-graphite: #2a1a10;
-  --color-paper: #f3ede2;
-  --color-accent: #7d5a0b;
-  --color-accent-fill: #c9951e;
+  --color-surface: #e5e1d8;
+  --color-text: #2a1d17;
+  --color-graphite: #2a1d17;
+  --color-paper: #ece9e2;
+  --color-accent: #3d6333;
+  --color-accent-fill: #456f3a;
   --color-paper-dim: #a89c8a;
-  --color-accent-dark: #e3b52e;
+  --color-accent-dark: #a9cc98;
   --color-brick: #a8402a;
-  --color-field: #e6e0d2;
-  --color-grid: #e0d9c9;
-  --color-rule: #d6cfbf;
+  --color-field: #dad5ca;
+  --color-grid: #d3cec3;
+  --color-rule: #c9c3b6;
   --color-broke: #a8402a;
-  --color-broke-bg: #f1dcd2;
-  --color-fixed: #4e6b2e;
-  --color-fixed-bg: #e3e5d2;
+  --color-broke-bg: #f0dcd3;
+  --color-fixed: #3d6333;
+  --color-fixed-bg: #d3dbc8;
   --color-review: #6f4f0a;
-  --color-review-bg: #efe3c6;
+  --color-review-bg: #e6dcc4;
 
-  --color-stone-50: #f6f2ea;
-  --color-stone-100: #e6e0d2;
-  --color-stone-200: #e0d9c9;
-  --color-stone-300: #d6cfbf;
-  --color-stone-400: #675f53;
-  --color-stone-500: #5f584d;
-  --color-stone-600: #5f584d;
+  --color-stone-50: #ece9e2;
+  --color-stone-100: #dad5ca;
+  --color-stone-200: #d3cec3;
+  --color-stone-300: #c9c3b6;
+  --color-stone-400: #6b5b51;
+  --color-stone-500: #5e5047;
+  --color-stone-600: #5e5047;
   --color-stone-700: #4a3f36;
-  --color-stone-800: #2a1a10;
-  --color-stone-900: #1e1611;
-  --color-stone-950: #1a110b;
+  --color-stone-800: #2a1d17;
+  --color-stone-900: #2a1d17;
+  --color-stone-950: #1f1510;
 }
 
 @layer base {
@@ -113,19 +110,21 @@
 /* Page header band for articles and 404: a quiet off-white field, no grid. */
 .field {
   background-color: var(--color-field);
-  border-bottom: 1px solid var(--color-rule);
 }
 
-/* Article body: Newsreader for reading, Public Sans for UI. */
+/* Article body in the text face. */
 .article-prose { font-family: var(--font-serif); }
 .article-prose img {
-  @apply mx-auto my-10 block h-auto max-w-full rounded-[10px] border border-rule;
+  @apply mx-auto my-10 block h-auto max-w-full;
 }
 .article-prose :not(pre) > code {
-  @apply rounded border border-rule bg-field px-[5px] py-px font-mono text-[0.8em] text-stone-900;
+  @apply rounded bg-field px-[5px] py-px font-mono text-[0.8em] text-stone-900;
 }
 /* one-dark-pro comments (#7F848E) are too faint on the ink background; lift them to 4.5:1+. */
 .article-prose figure[data-rehype-pretty-code-figure] span[style*="#7F848E"] { color: #9aa7b0 !important; }
+
+/* Section breaks are space, not a rule. */
+.article-prose hr { border: 0; height: 2.5rem; }
 
 /* Running text keeps a reading measure; code, figures and diagrams use the full column. */
 .article-prose > :is(p, ul, ol, h1, h2, h3, h4, blockquote) { max-width: 70ch; }

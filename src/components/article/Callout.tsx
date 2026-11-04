@@ -14,28 +14,28 @@ const TYPE_META: Record<CalloutType, { label: string; Icon: typeof Info; tone: s
   info: {
     label: 'Note',
     Icon: Info,
-    // Info uses the neutral stone rail — it's context, not emphasis.
-    tone: 'border-stone-300 text-stone-500',
+    // Info uses the neutral stone label: it's context, not emphasis.
+    tone: 'text-stone-600',
   },
   tip: {
     label: 'Heuristic',
     Icon: Lightbulb,
     // Tips earn the accent — they're the “here's why I chose X” moment.
-    tone: 'border-accent/45 text-accent',
+    tone: 'text-accent',
   },
   warning: {
     label: 'Watch out',
     Icon: AlertTriangle,
     // Warnings also use accent because amber is the only non-neutral in P28.
     // Differentiation vs. tip comes from icon + label, not hue.
-    tone: 'border-accent/60 text-accent',
+    tone: 'text-accent',
   },
   caveat: {
     label: 'Caveat',
     Icon: ShieldAlert,
-    // Same accent rail as tip/warning so boundary framing reads as first-class,
+    // Same accent label as tip/warning so boundary framing reads as first-class,
     // not a footnote; icon + title still distinguish intent from “watch out”.
-    tone: 'border-accent/45 text-accent',
+    tone: 'text-accent',
   },
 };
 
@@ -48,7 +48,7 @@ const TYPE_META: Record<CalloutType, { label: string; Icon: typeof Info; tone: s
  *   - warning — "this will bite you if you copy blindly"
  *   - caveat  — boundary condition / what this case does NOT claim
  *
- * Visual contract: accent rail for tip, warning, and caveat (editorial emphasis).
+ * Visual contract: a filled panel; accent label for tip, warning, and caveat.
  * Info stays on the stone ladder for neutral asides.
  */
 export function Callout({ type = 'info', title, children }: CalloutProps) {
@@ -58,21 +58,18 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
   return (
     <aside
       role="note"
-      className={clsx(
-        'not-prose my-10 rounded-xl border-l-2 bg-stone-50 py-5 pl-5 pr-5',
-        meta.tone.split(' ')[0], // border color
-      )}
+      className="not-prose my-10 rounded-xl bg-field py-5 pl-5 pr-5"
     >
       <div
         className={clsx(
           'mb-3 flex items-center gap-2 font-sans text-[15px] font-semibold',
-          meta.tone.split(' ')[1], // text color
+          meta.tone,
         )}
       >
         <Icon className="h-3.5 w-3.5" strokeWidth={2.2} />
         <span>{label}</span>
       </div>
-      <div className="max-w-[62ch] space-y-3 font-serif text-[1rem] leading-[1.65] text-stone-600 md:text-[1.05rem] [&_strong]:text-stone-900 [&_code]:rounded [&_code]:border [&_code]:border-stone-200 [&_code]:bg-stone-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em] [&_code]:text-stone-800">
+      <div className="max-w-[62ch] space-y-3 text-[17px] leading-[1.6] text-stone-900 [&_strong]:text-stone-900 [&_code]:rounded [&_code]:bg-surface [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em] [&_code]:text-stone-800">
         {children}
       </div>
     </aside>
