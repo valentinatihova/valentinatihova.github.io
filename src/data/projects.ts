@@ -13,7 +13,7 @@ export interface Fix {
   status: FixStatus;
 }
 
-export const LEDGER_UPDATED = '2026-10-25';
+export const LEDGER_UPDATED = '2026-11-04';
 
 export const fixes: Fix[] = [
   {
@@ -41,8 +41,15 @@ export const fixes: Fix[] = [
     product: 'OpenMetadata',
     before: 'The Data 360 connector re-read the full metadata listing on every page.',
     after: 'One listing call; each table is processed once.',
-    proof: { label: 'In review', url: 'https://github.com/open-metadata/OpenMetadata/pull/36000' },
-    status: 'review',
+    proof: { label: 'Merged', url: 'https://github.com/open-metadata/OpenMetadata/pull/36000' },
+    status: 'shipped',
+  },
+  {
+    product: 'OpenMetadata',
+    before: 'Data 360 date-time columns were ingested with an unknown type.',
+    after: 'They are typed as DATETIME.',
+    proof: { label: 'Merged', url: 'https://github.com/open-metadata/OpenMetadata/pull/36002' },
+    status: 'shipped',
   },
   {
     product: 'Accenture sfmc-devtools',
