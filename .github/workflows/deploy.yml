@@ -57,6 +57,11 @@ jobs:
       - name: Lighthouse budgets
         run: npx --yes @lhci/cli@0.15.1 autorun
 
+      - name: Debug layout shifts
+        if: always()
+        run: |
+          for f in .lighthouseci/lhr-*.json; do jq -r '"\(.finalDisplayedUrl) CLS=\(.audits["cumulative-layout-shift"].numericValue)", (.audits["layout-shifts"].details.items[]? | "  \(.score) \(.node.selector) \(.node.snippet[0:160])"), "  fonts: \(.audits["font-display"].score)", "  vp: \(.configSettings.screenEmulation.width)x\(.configSettings.screenEmulation.height)"' "$f"; done
+
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
