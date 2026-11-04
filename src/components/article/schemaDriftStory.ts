@@ -17,9 +17,10 @@ const MAP_LABELS: Record<number, string> = {
   5: 'Map of the org: the scheduled drift check fails on the removed field mapping and alerts the team',
 };
 
-export const COL_X = [0, 179, 358, 537, 716];
+export const COL_X = [0, 175, 350, 525, 700];
 export const ROW_Y = [34, 104, 174, 244, 314];
-export const W = 140;
+// Wide enough for the longest label with room to spare: Safari sets Public Sans a little wider than Chrome.
+export const W = 156;
 export const H = 46;
 
 type State = 'path' | 'changed' | 'broken' | 'quiet' | 'safe' | 'hidden';
@@ -114,15 +115,15 @@ function map(shot: number) {
 <span style="font-weight:600;font-size:14px;line-height:1.2">${n.label}</span><span style="font-size:13px;line-height:1.2;color:${look.sub}${look.bold ? ';font-weight:600' : ''}">${sub}</span></div>`;
   }).join('');
 
-  const s3 = shot !== 3 ? '' : `<div aria-hidden="true" style="position:absolute;left:312px;top:226px;width:236px;box-sizing:border-box;background:var(--color-paper);border:2px solid var(--color-accent-fill);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .45s ease-out .15s both">
+  const s3 = shot !== 3 ? '' : `<div aria-hidden="true" style="position:absolute;left:304px;top:226px;width:236px;box-sizing:border-box;background:var(--color-paper);border:2px solid var(--color-accent-fill);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:sd-fade .45s ease-out .15s both">
 <p style="margin:0;font-weight:600;font-size:15px">Sales Order mappings</p>
 <div style="display:flex;justify-content:space-between;padding:5px 8px;border-radius:5px;background:var(--color-surface);font-size:13px"><span>Order_Id</span><span style="color:var(--color-stone-600)">← Id</span></div>
 <div style="display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:5px;background:var(--color-review-bg);border:2px solid var(--color-accent-fill);font-size:13px">
 <span style="display:flex;justify-content:space-between"><span style="font-weight:600">Total_Amount</span><span style="position:relative;color:var(--color-stone-600)">← Amount<span style="position:absolute;left:-1px;right:-1px;top:55%;border-top:1.5px solid var(--color-stone-600);transform-origin:left;animation:sd-strike .45s ease-out .8s both"></span></span></span>
 <span style="color:var(--color-review);font-weight:600;animation:sd-fade .4s ease-out 1.2s both">No mapping, value is empty</span>
 </div></div>`;
-  const s4 = shot !== 4 ? '' : `<div aria-hidden="true" style="position:absolute;left:537px;top:362px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text);animation:sd-fade .4s ease-out 1.4s both"><span style="width:28px;border-top:4px solid var(--color-brick)"></span>blank values travel down</div>`;
-  const s5 = shot !== 5 ? '' : `<div aria-hidden="true" style="position:absolute;left:270px;top:300px;width:248px;box-sizing:border-box;background:var(--color-graphite);color:var(--color-paper);border-radius:8px;padding:9px 14px;transform:rotate(-3deg);animation:sd-stamp .4s cubic-bezier(.2,.7,.2,1) .35s both">
+  const s4 = shot !== 4 ? '' : `<div aria-hidden="true" style="position:absolute;left:525px;top:362px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text);animation:sd-fade .4s ease-out 1.4s both"><span style="width:28px;border-top:4px solid var(--color-brick)"></span>blank values travel down</div>`;
+  const s5 = shot !== 5 ? '' : `<div aria-hidden="true" style="position:absolute;left:270px;top:300px;width:max-content;white-space:nowrap;box-sizing:border-box;background:var(--color-graphite);color:var(--color-paper);border-radius:8px;padding:9px 14px;transform:rotate(-3deg);animation:sd-stamp .4s cubic-bezier(.2,.7,.2,1) .35s both">
 <p style="margin:0;font-size:15px;font-weight:600"><span style="display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--color-accent-fill);margin-right:6px"></span>Schema drift: 1 change</p>
 <p style="margin:0;font-size:13px;color:var(--color-paper-dim)">Mapping removed: Total_Amount</p></div>`;
 
