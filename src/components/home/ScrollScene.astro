@@ -105,7 +105,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   /* ---- Base = final frame, normal flow. Works with no JS, no scroll timelines, reduced motion. */
   .hero { background: var(--color-surface); color: var(--color-text); }
   .scene { position: relative; max-width: var(--container-page); margin: 0 auto; padding: 20px 16px 48px; }
-  .net { display: block; width: 100%; height: auto; aspect-ratio: 12 / 7; max-height: 56vh; }
+  .net { display: block; width: 100%; height: auto; aspect-ratio: 12 / 7; max-height: calc(56vh / var(--z)); }
   .growth line { stroke: var(--color-text); stroke-opacity: 0.3; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; }
   .growth circle { fill: var(--color-text); fill-opacity: 0.4; }
   .growth circle.is-drift { fill: var(--color-accent-fill); fill-opacity: 1; }
@@ -118,7 +118,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   .who span::before { content: ' · '; }
   .meta { margin-top: 16px; color: var(--color-stone-600); }
   .hint { display: none; }
-  .hl { margin: 20px 0 0; max-width: 14ch; font-size: clamp(2.6rem, 7.2vw, 7rem); line-height: 0.92; letter-spacing: -0.035em; }
+  .hl { margin: 20px 0 0; max-width: 14ch; font-size: clamp(2.6rem, calc(7.2vw / var(--z)), 7rem); line-height: 0.92; letter-spacing: -0.035em; }
   .hl span, .hl em { display: inline; }
   .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; }
   .stats div { display: flex; flex-direction: column; }
@@ -128,11 +128,11 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   /* ---- Scroll-driven scene: desktop, with scroll timelines, motion allowed. */
   @supports (animation-timeline: scroll()) {
     @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-      .track { height: 320vh; view-timeline: --hero block; }
+      .track { height: calc(320vh / var(--z)); view-timeline: --hero block; }
       /* Minus the 64px nav, so the stats are on screen before the scene pins. */
       /* Same left and right edge as the nav's max-w-page container (24px padding). */
       .scene { --edge: max(24px, calc((100% - var(--container-page)) / 2 + 24px)); }
-      .scene { position: sticky; top: 0; height: calc(100svh - 64px); max-width: none; padding: 0; overflow: hidden; }
+      .scene { position: sticky; top: 0; height: calc(100svh / var(--z) - 64px); max-width: none; padding: 0; overflow: hidden; }
       .net { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; aspect-ratio: auto; }
 
       /* Beat 1: growth (past the seed) draws in creation order over the first third. */
@@ -168,7 +168,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       }
       .hint::after { content: ''; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: currentColor; }
 
-      .hl { position: absolute; z-index: 2; left: var(--edge); bottom: max(150px, 22vh); margin: 0; width: min(50vw, 15ch); max-width: none; font-size: clamp(2.8rem, 6.4vw, 6.4rem); }
+      .hl { position: absolute; z-index: 2; left: var(--edge); bottom: max(150px, calc(22vh / var(--z))); margin: 0; width: min(calc(50vw / var(--z)), 15ch); max-width: none; font-size: clamp(2.8rem, calc(6.4vw / var(--z)), 6.4rem); }
       .hl span, .hl em { display: inline-block; }
       /* Line 1 rises once on load; lines 2 and 3 are story beats on scroll. */
       .l1 { animation-name: rise; animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); animation-fill-mode: both; }

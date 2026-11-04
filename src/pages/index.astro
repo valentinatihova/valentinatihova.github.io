@@ -169,7 +169,7 @@ const work = [
 </Layout>
 
 <style>
-  .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 600 clamp(72px, 10vw, 150px)/1 var(--font-display); letter-spacing: -0.035em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
+  .band { margin: 0; padding: 0; overflow: hidden; white-space: nowrap; font: 600 clamp(72px, calc(10vw / var(--z)), 150px)/1 var(--font-display); letter-spacing: -0.035em; color: var(--color-text); opacity: 0.12; transform: rotate(-3deg) translateY(10px); pointer-events: none; }
   .stairs { list-style: none; margin: 0; padding: 0; }
   .stairs li { display: grid; gap: 8px; align-items: baseline; padding: 28px 0; }
   @media (min-width: 768px) {
@@ -187,5 +187,5 @@ const work = [
     }
   }
   @keyframes reveal { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes drift { from { transform: rotate(-3deg) translate(0, 10px); } to { transform: rotate(-3deg) translate(-12vw, 10px); } }
+  @keyframes drift { from { transform: rotate(-3deg) translate(0, 10px); } to { transform: rotate(-3deg) translate(calc(-12vw / var(--z)), 10px); } }
 </style>
