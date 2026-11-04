@@ -31,7 +31,7 @@ const last = SHOTS;
       <div class="sd-frame" data-frame set:html={renderShot(last)} />
     </div>
   </div>
-  <figcaption class="mt-2.5 text-[15px] text-stone-600">
+  <figcaption class="mt-2.5 text-[16px] text-stone-600">
     A synthetic org, invented for this demo. Press Play to replay, or pick a shot.
   </figcaption>
 </figure>
@@ -50,9 +50,9 @@ const last = SHOTS;
     let playing = false;
     let timer: number | undefined;
 
-    // Scale the 960x540 stage to the box width, never above 1:1.
+    // Scale the 960x540 stage to the box width, up to 1.25 on wide screens.
     new ResizeObserver(([entry]) => {
-      box.style.setProperty('--sd-scale', String(Math.min(1, entry.contentRect.width / 960)));
+      box.style.setProperty('--sd-scale', String(Math.min(1.25, entry.contentRect.width / 960)));
     }).observe(box);
 
     const show = (n: number) => {
@@ -122,7 +122,7 @@ const last = SHOTS;
 <style is:global>
   .sd-box {
     position: relative;
-    max-width: 960px;
+    max-width: 1200px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 1px solid var(--color-rule);
@@ -139,6 +139,9 @@ const last = SHOTS;
   @container (min-width: 768px) { .sd-stage { --sd-step: 0.8; } }
   @container (min-width: 864px) { .sd-stage { --sd-step: 0.9; } }
   @container (min-width: 958px) { .sd-stage { --sd-step: 1; } }
+  @container (min-width: 1056px) { .sd-stage { --sd-step: 1.1; } }
+  @container (min-width: 1152px) { .sd-stage { --sd-step: 1.2; } }
+  @container (min-width: 1198px) { .sd-stage { --sd-step: 1.25; } }
   .sd-stage {
     position: absolute;
     left: 0;
@@ -159,7 +162,7 @@ const last = SHOTS;
   .sd-box[style*='--sd-scale'] .sd-stage { transform: scale(var(--sd-scale)); }
   .sd-stage p { margin: 0; }
   .sd-bar {
-    max-width: 960px;
+    max-width: 1200px;
     margin-bottom: 8px;
     display: flex;
     align-items: center;
@@ -188,7 +191,7 @@ const last = SHOTS;
   }
   .sd-seg-bar { display: block; width: 36px; height: 4px; border-radius: 2px; background: var(--color-rule); }
   .sd-seg-bar.is-done { background: var(--color-text); }
-  .sd-count { font: 500 12px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-stone-600); }
+  .sd-count { font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-stone-600); }
   @container (max-width: 400px) { .sd-count { display: none; } }
   .sd-play {
     margin-left: auto;

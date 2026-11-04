@@ -106,7 +106,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   .node circle { fill: var(--color-text); }
   .node.is-path circle { fill: var(--color-accent-fill); r: 6; }
   .node text { font: 500 11px/1 var(--font-mono); fill: var(--color-text); fill-opacity: 0.85; }
-  .who, .meta { margin: 0; font: 500 11px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .who, .meta { margin: 0; font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
   .who span::before { content: ' · '; }
   .meta { color: var(--color-stone-600); }
   .hint { display: none; }
@@ -116,14 +116,14 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
   .l3 { font: 400 1.05em/0.92 var(--font-accent); font-style: italic; letter-spacing: -0.01em; color: var(--color-accent); }
   .stats { display: flex; flex-wrap: wrap; gap: 20px 48px; margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--color-rule); }
   .stats div { display: flex; flex-direction: column; }
-  .stats dd { margin: 0; font: 600 36px/1 var(--font-display); letter-spacing: -0.03em; }
+  .stats dd { margin: 0; font: 600 34px/1 var(--font-display); letter-spacing: -0.03em; }
   .stats dt { margin-top: 4px; font-size: 13px; color: var(--color-stone-600); }
 
   /* ---- Scroll-driven scene: desktop, with scroll timelines, motion allowed. */
   @supports (animation-timeline: scroll()) {
     @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
       .track { height: 320vh; view-timeline: --hero block; }
-      .scene { position: sticky; top: 0; height: 100vh; max-width: none; padding: 0; overflow: hidden; }
+      .scene { position: sticky; top: 0; height: 100svh; max-width: none; padding: 0; overflow: hidden; }
       .net { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; aspect-ratio: auto; }
 
       /* Beat 1: growth draws in creation order over the first third. */
@@ -154,7 +154,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { month: 's
       .meta { position: absolute; right: 40px; top: 28px; z-index: 2; }
       .hint {
         display: block; position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 2;
-        margin: 0; font: 500 11px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
+        margin: 0; font: 500 13px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7;
         animation-name: fade-out; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: --hero; animation-range: contain 0% contain 8%;
       }
       .hint::after { content: ''; display: block; width: 1px; height: 36px; margin: 10px auto 0; background: currentColor; }

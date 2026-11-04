@@ -72,9 +72,9 @@ const articleJsonLd = {
 >
   <div slot="field" class="mx-auto max-w-page px-4 sm:px-6">
     <header class="pt-8 pb-12 lg:pt-10 lg:pb-14">
-      <h1 class="max-w-[17ch] text-[38px] leading-[1.06] sm:text-[52px] lg:text-[64px] lg:leading-[1.04]">{article.title}</h1>
+      <h1 class="max-w-[24ch] text-[38px] leading-[1.06] sm:text-[52px] lg:text-[64px] lg:leading-[1.04]">{article.title}</h1>
       <p class="mt-5 max-w-[34em] text-[19px] leading-[1.5] text-stone-600 sm:text-xl">{article.summary}</p>
-      <p class="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-[15px] text-stone-600">
+      <p class="mt-5 flex flex-wrap gap-x-5 gap-y-1.5 text-[16px] text-stone-600">
         <time datetime={article.date}>{formattedDate}</time>
         <span>{article.readTime}</span>
         {article.githubUrl && <a href={article.githubUrl} class="text-fixed underline">Code on GitHub</a>}
@@ -98,7 +98,7 @@ const articleJsonLd = {
 
       {toc.length >= 2 && (
         <aside class="hidden lg:block" aria-label="Table of contents">
-          <nav class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto text-[15px]">
+          <nav class="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto text-[16px]">
             <p class="mb-2.5 font-semibold">On this page</p>
             <ol class="border-l border-rule">
               {toc.map((h) => (

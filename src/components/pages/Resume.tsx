@@ -1,206 +1,101 @@
 import React from 'react';
-import { ExternalLink, Send } from 'lucide-react';
 import { profile } from '../../data/profile';
 
-/* ── shared editorial section-header ── */
-const SectionHeader = ({ num, label }: { num: string; label: string }) => (
-  <div className="flex items-center gap-6 mb-10 border-t border-stone-200 pt-10">
-    <div className="shrink-0">
-      <p className="font-mono text-[10px] tracking-[0.22em] text-stone-500 mb-1">{num}</p>
-      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-stone-600">{label}</p>
-    </div>
-    <div className="flex items-center gap-3 flex-1">
-      <div className="h-0.5 w-6 bg-stone-900 shrink-0" />
-      <div className="h-px flex-1 bg-stone-200" />
-      <div
-        aria-hidden="true"
-        className="w-1.5 h-1.5 border border-stone-400 shrink-0"
-        style={{ transform: 'rotate(45deg)' }}
-      />
-    </div>
-  </div>
+// Same system as the home page: Inter Tight headings, Public Sans body in full ink,
+// mono only for dates, and the 1fr / 1.4fr split that "Selected work" uses.
+const link = 'font-semibold text-stone-900 underline decoration-2 underline-offset-[5px] hover:decoration-accent';
+const split = 'grid gap-4 lg:grid-cols-[1fr_1.4fr] lg:gap-12';
+
+const Section = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
+  <section aria-labelledby={id} className={`${split} border-t border-rule pt-10 pb-14 sm:pt-14`}>
+    <h2 id={id} className="text-[34px] leading-[1.05] sm:text-[44px]">{title}</h2>
+    <div className="min-w-0">{children}</div>
+  </section>
 );
 
-export const Resume: React.FC = () => {
-
-  return (
-    <>
-      <div className="mx-auto max-w-page px-4 pt-16 pb-24 sm:px-6">
-
-        {/* ── Page header ── */}
-        <div className="mb-16">
-          {/* Eyebrow */}
-          <div className="flex items-center gap-4 mb-10">
-            <span className="h-px w-6 bg-stone-400" aria-hidden="true" />
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-500">01 — Resume / CV</p>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
-            <div>
-              <h1
-                className="font-serif font-bold text-stone-900 leading-[0.9] mb-4"
-                style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', letterSpacing: '-0.03em' }}
-              >
-                {profile.name}
-              </h1>
-              <p className="font-serif italic text-xl md:text-2xl text-stone-500 leading-snug">
-                {profile.title}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3 shrink-0">
-              <a
-                href="/Valentina_Tihova_CV.html"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 border border-stone-900 bg-stone-900 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.15em] text-white transition-all hover:bg-white hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-                Open CV
-              </a>
-              <a
-                href={profile.telegram.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 border border-stone-300 bg-transparent px-6 py-3 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-600 transition-all hover:border-stone-900 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                <Send className="w-3.5 h-3.5" />
-                Telegram
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Metadata strip ── */}
-        <div className="border-y border-stone-200 py-5 mb-16">
-          <div className="flex flex-wrap gap-x-6 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500">
-            <span>{profile.location}</span>
-            <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-900">LinkedIn</a>
-            <a href={profile.telegram.url} target="_blank" rel="noreferrer" className="transition-colors hover:text-stone-900">{profile.telegram.handle}</a>
-          </div>
-        </div>
-
-        {/* ── Role intro ── */}
-        <section className="mb-16">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-stone-500 mb-4">
-            Role &amp; responsibilities
-          </p>
-          <p className="font-serif italic text-xl text-stone-600 leading-[1.5] max-w-[62ch] border-l-2 border-stone-900 pl-5">
-            I build and run data-heavy systems: decisioning, analytics, customer lifecycle, and reporting.
-            Most of the job is between design and go-live — turn a requirement into something you can
-            deploy, then keep it testable and observable in production.
-          </p>
-        </section>
-
-        {/* ── Summary ── */}
-        <section className="mb-16">
-          <SectionHeader num="02" label="Summary" />
-          <p className="max-w-[62ch] font-serif text-stone-600 leading-relaxed">
-            {profile.about}
-          </p>
-        </section>
-
-        {/* ── Experience ── */}
-        <section className="mb-16">
-          <SectionHeader num="03" label="Experience" />
-          <p className="mb-10 max-w-[62ch] font-serif text-sm text-stone-500 leading-relaxed">
-            From analytics and finance reports into orchestration, live decisioning, martech, QA automation, and migration
-            work — mostly banking, telecom, and retail.
-          </p>
-
-          <div className="divide-y divide-stone-200 border-t border-stone-200">
-            {profile.experience.map((exp, index) => (
-              <article
-                key={index}
-                className="grid gap-6 py-10 md:grid-cols-[9rem_1fr] md:gap-10"
-              >
-                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-500 md:pt-1">
-                  {exp.period}
-                </div>
-                <div>
-                  <h4 className="font-serif text-xl text-stone-900 md:text-2xl mb-1">
-                    {exp.role}
-                  </h4>
-                  <div className="font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500 mb-4">
-                    {exp.company}
-                  </div>
-                  <p className="max-w-[62ch] font-serif text-base leading-[1.7] text-stone-600 mb-5">
-                    {exp.description}
-                  </p>
-                  {exp.achievements.length > 0 && (
-                    <ul className="space-y-2 max-w-[62ch] mb-5">
-                      {exp.achievements.map((ach, i) => (
-                        <li key={i} className="relative pl-5 font-serif text-[0.95rem] leading-[1.65] text-stone-600">
-                          <span className="absolute left-0 top-[0.7em] h-px w-3 bg-accent" />
-                          {ach}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {exp.tools && (
-                    <div className="flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500">
-                      {exp.tools.map((tool, i) => (
-                        <span key={i}>
-                          {tool}
-                          {i < (exp.tools?.length ?? 0) - 1 && <span className="ml-3 text-stone-200">/</span>}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Certifications ── */}
-        <section className="mb-16">
-          <SectionHeader num="04" label="Certifications" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {profile.certifications?.map((cert, index) => (
-              <a
-                key={index}
-                href={cert.previewUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group border border-stone-200 p-6 text-left transition-colors hover:border-stone-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h4 className="font-serif text-base text-stone-900 leading-snug pr-4">{cert.name}</h4>
-                  <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500">{cert.date}</span>
-                </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-stone-500 mb-3">{cert.issuer}</div>
-                {cert.details && (
-                  <p className="font-serif text-sm text-stone-500 border-t border-stone-100 pt-3 leading-relaxed">
-                    {cert.details}
-                  </p>
-                )}
-                <div className="mt-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-stone-500 transition-colors group-hover:text-stone-900">
-                  Open certificate (PDF)
-                  <ExternalLink className="w-3 h-3" />
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* ── Education ── */}
-        <section>
-          <SectionHeader num="05" label="Education" />
-          <div className="divide-y divide-stone-200 border-t border-stone-200">
-            {profile.education.map((edu, index) => (
-              <div key={index} className="grid gap-3 py-7 md:grid-cols-[9rem_1fr] md:gap-10">
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-stone-500">{edu.period}</span>
-                <div>
-                  <h4 className="font-serif text-lg text-stone-900">{edu.degree}</h4>
-                  <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.15em] text-stone-500">{edu.school}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+export const Resume: React.FC = () => (
+  <div className="mx-auto max-w-page px-4 pt-12 pb-10 sm:px-6 sm:pt-16">
+    <header className={`${split} pb-14 sm:pb-20`}>
+      <div>
+        <h1 className="text-[44px] leading-[0.92] sm:text-[64px] lg:text-[88px]">{profile.name}</h1>
+        <p className="mt-4 text-[22px] leading-[1.2] text-stone-600">{profile.title}</p>
       </div>
+      <div className="max-w-[38em] lg:pt-3">
+        <p className="text-[22px] leading-[1.4]">
+          I build and run data-heavy systems: decisioning, analytics, customer lifecycle, and reporting.
+          Most of the job is between design and go-live: turn a requirement into something you can
+          deploy, then keep it testable and observable in production.
+        </p>
+        <p className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-[17px]">
+          <a href="/Valentina_Tihova_CV.html" target="_blank" rel="noreferrer" className={link}>Open CV</a>
+          <a href={profile.socials.linkedin} target="_blank" rel="noreferrer" className={link}>LinkedIn</a>
+          <a href={profile.telegram.url} target="_blank" rel="noreferrer" className={link}>Telegram {profile.telegram.handle}</a>
+        </p>
+        <p className="mt-3 text-[16px] text-stone-600">{profile.location}</p>
+      </div>
+    </header>
 
-    </>
-  );
-};
+    <Section id="summary-h" title="Summary">
+      <p className="max-w-[62ch] text-[17px] leading-[1.55]">{profile.about}</p>
+    </Section>
+
+    <Section id="experience-h" title="Experience">
+      <p className="max-w-[62ch] text-[17px] leading-[1.55] text-stone-600">
+        From analytics and finance reports into orchestration, live decisioning, martech, QA automation, and migration
+        work, mostly banking, telecom, and retail.
+      </p>
+      <ol className="mt-8 divide-y divide-rule border-t border-rule">
+        {profile.experience.map((exp, index) => (
+          <li key={index} className="py-8">
+            <p className="font-mono text-[13px] text-stone-600">{exp.period}</p>
+            <h3 className="mt-2 text-[26px] leading-[1.15]">{exp.role}</h3>
+            <p className="mt-1 text-[17px] text-stone-600">{exp.company}</p>
+            <p className="mt-4 max-w-[62ch] text-[17px] leading-[1.55]">{exp.description}</p>
+            {exp.achievements.length > 0 && (
+              <ul className="mt-4 max-w-[62ch] list-disc space-y-1.5 pl-5 text-[17px] leading-[1.55] marker:text-accent-fill">
+                {exp.achievements.map((ach, i) => <li key={i}>{ach}</li>)}
+              </ul>
+            )}
+            {exp.tools && (
+              <ul className="mt-5 flex flex-wrap gap-2" aria-label="Tools">
+                {exp.tools.map((tool, i) => (
+                  <li key={i} className="rounded-full border border-rule px-3 py-1 font-mono text-[13px] text-stone-700">{tool}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ol>
+    </Section>
+
+    <Section id="certs-h" title="Certifications">
+      <ul className="divide-y divide-rule border-t border-rule">
+        {profile.certifications?.map((cert, index) => (
+          <li key={index} className="py-6">
+            <h3 className="text-[22px] leading-[1.2]">
+              <a href={cert.previewUrl} target="_blank" rel="noreferrer" className="text-stone-900 no-underline hover:underline hover:decoration-accent hover:decoration-[3px] hover:underline-offset-[6px]">
+                {cert.name}
+              </a>
+            </h3>
+            <p className="mt-1 text-[16px] text-stone-600">{cert.issuer} · <span className="font-mono text-[13px]">{cert.date}</span></p>
+            {cert.details && <p className="mt-2 max-w-[62ch] text-[17px] leading-[1.55]">{cert.details}</p>}
+          </li>
+        ))}
+      </ul>
+    </Section>
+
+    <Section id="education-h" title="Education">
+      <ul className="divide-y divide-rule border-t border-rule">
+        {profile.education.map((edu, index) => (
+          <li key={index} className="grid gap-1 py-6 sm:grid-cols-[180px_1fr] sm:gap-6">
+            <p className="font-mono text-[13px] text-stone-600">{edu.period}</p>
+            <div>
+              <h3 className="text-[22px] leading-[1.2]">{edu.degree}</h3>
+              <p className="mt-1 text-[16px] text-stone-600">{edu.school}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  </div>
+);

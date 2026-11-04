@@ -72,14 +72,14 @@ const work = [
 
   <section id="places" aria-labelledby="places-h" class="grain grain-dark bg-graphite text-paper">
     <div class="mx-auto max-w-page px-4 py-20 sm:px-6 sm:py-28">
-      <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[52px]">Four places I look, <em class="accent">and what came out of it.</em></h2>
+      <h2 id="places-h" class="max-w-[18ch] text-[34px] leading-[1] sm:text-[44px]">Four places I look, <em class="accent">and what came out of it.</em></h2>
       <ol class="stairs mt-12 sm:mt-16">
         {places.map((b, i) => (
           <li class="reveal" style={`--i:${i}`}>
             <span class="font-mono text-[13px] text-paper-dim">0{i + 1}</span>
             <div>
               <h3 class="text-[22px] leading-[1.1] sm:text-[26px]">{b.title}</h3>
-              <p class="mt-1 max-w-[60ch] text-[15px] leading-[1.5] text-paper-dim sm:text-[16px]">{b.text}</p>
+              <p class="mt-1 max-w-[60ch] text-[16px] leading-[1.5] text-paper-dim">{b.text}</p>
             </div>
             <a href={b.href} class="font-mono text-[13px] text-accent-dark underline underline-offset-4">{b.proof}</a>
           </li>
@@ -92,7 +92,7 @@ const work = [
     <section id="work" aria-labelledby="work-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
       <div class="grid gap-4 border-b border-rule pb-6 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
         <h2 id="work-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Selected work</h2>
-        <p class="max-w-[38em] text-lg text-stone-600">
+        <p class="max-w-[38em] text-[17px] text-stone-600">
           Now: Salesforce customer data platforms, made legible to data engineers. What the schema is, what changed, and which numbers to trust.
           Everything below is public: a package, a repository or an article you can open.
         </p>
@@ -101,10 +101,10 @@ const work = [
         {work.map((w) => (
           <li class="grid gap-5 py-9 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
             <div>
-              <p class="font-mono text-[12px] tracking-[0.14em] text-stone-600 uppercase">{w.kind}</p>
+              <p class="font-mono text-[13px] tracking-[0.14em] text-stone-600 uppercase">{w.kind}</p>
               <h3 class="mt-2 text-[28px] leading-[1.08] sm:text-[34px]">{w.title}</h3>
               <ul class="mt-4 flex flex-wrap gap-2">
-                {w.tech.map((t) => <li class="rounded-full border border-rule px-3 py-1 font-mono text-[12px] text-stone-700">{t}</li>)}
+                {w.tech.map((t) => <li class="rounded-full border border-rule px-3 py-1 font-mono text-[13px] text-stone-700">{t}</li>)}
               </ul>
             </div>
             <dl class="grid gap-x-6 gap-y-2 text-[17px] leading-[1.5] sm:grid-cols-[120px_1fr]">
@@ -125,7 +125,7 @@ const work = [
     <section aria-labelledby="changed-h" class="reveal grid items-start gap-6 pt-10 sm:pt-16 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
       <div>
         <h2 id="changed-h" class="text-[34px] leading-[1.05] sm:text-[44px]">What changed because of it</h2>
-        <p class="mt-3 text-lg text-stone-600">Each line is a merged pull request or a release, written as a diff: what the product said before, what it says now.</p>
+        <p class="mt-3 text-[17px] text-stone-600">Each line is a merged pull request or a release, written as a diff: what the product said before, what it says now.</p>
       </div>
       <Ledger />
     </section>
@@ -133,14 +133,14 @@ const work = [
     <section id="writing" aria-labelledby="w-h" class="reveal scroll-mt-4 pt-14 sm:pt-20">
       <div class="mb-6 flex flex-col gap-1 border-b border-rule pb-6 sm:flex-row sm:items-baseline sm:justify-between">
         <h2 id="w-h" class="text-[34px] leading-[1.05] sm:text-[44px]">Writing</h2>
-        <p class="text-lg text-stone-600">How the fixes work and what they found.</p>
+        <p class="text-[17px] text-stone-600">How the fixes work and what they found.</p>
       </div>
       <ul class="divide-y divide-rule">
         {sorted.map((a) => (
           <li class="grid gap-1 py-6 sm:grid-cols-[180px_1fr] sm:gap-6">
             <p class="font-mono text-[13px] text-stone-600"><time datetime={a.date}>{monthYear(a.date)}</time> · {a.readTime}</p>
             <div>
-              <h3 class="text-[26px] leading-[1.15] sm:text-[30px]">
+              <h3 class="text-[26px] leading-[1.15]">
                 <a href={`/article/${a.id}/`} class="text-stone-900 no-underline hover:underline hover:decoration-accent hover:decoration-[3px] hover:underline-offset-[6px]">{a.title}</a>
               </h3>
               <p class="mt-2 max-w-[60ch] text-[17px] text-stone-600">{a.summary}</p>
