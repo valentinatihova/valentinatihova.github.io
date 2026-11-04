@@ -172,8 +172,10 @@ A few choices keep the diff quiet:
 3. **Paging is not uniform across endpoints.** Some listings page with `limit` and `offset`, some
    ignore them. While testing on my Developer Edition org I found that `/ssot/metadata` returns the
    full list whatever `limit` and `offset` say, which also affected a connector in another
-   open-source project. I reported it there with a fix
-   ([open-metadata/OpenMetadata#35999](https://github.com/open-metadata/OpenMetadata/issues/35999)).
+   open-source project. I reported it there
+   ([open-metadata/OpenMetadata#35999](https://github.com/open-metadata/OpenMetadata/issues/35999)),
+   and my fix was merged in October 2026
+   ([#36000](https://github.com/open-metadata/OpenMetadata/pull/36000)).
 4. **An expired token must stop the run.** An early version treated a `401` on one DMO like any
    other per-DMO error and skipped it, so an expired session could produce an empty snapshot. Now a
    `401` stops the run with a one-line hint (`sf org login web --alias my-org`).
