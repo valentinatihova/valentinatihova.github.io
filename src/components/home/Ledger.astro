@@ -9,17 +9,17 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { day: 'num
 
 <div class="border-t border-text">
   <div class="flex items-baseline justify-between gap-3 border-b border-rule py-3">
-    <h3 id="ledger-h" class="font-mono text-[11px] font-medium tracking-[0.06em] uppercase">{fixes.length} fixes</h3>
-    <span class="font-mono text-[11px] tracking-[0.06em] text-stone-600 uppercase">latest {updated}</span>
+    <h3 id="ledger-h" class="font-mono text-[13px] font-medium tracking-[0.06em] uppercase">{fixes.length} fixes</h3>
+    <span class="font-mono text-[13px] tracking-[0.06em] text-stone-600 uppercase">latest {updated}</span>
   </div>
   <ol>
     {fixes.map((fix) => (
       <li class="border-b border-rule pt-3 pb-3.5">
         <div class="mb-1.5 flex items-baseline justify-between gap-3">
-          <h3 class="font-sans text-[15px] font-semibold tracking-normal">{fix.product}</h3>
+          <h3 class="font-sans text-[16px] font-semibold tracking-normal">{fix.product}</h3>
           <a
             href={fix.proof.url}
-            class:list={['shrink-0 text-sm font-semibold underline', fix.status === 'review' ? 'text-review' : 'text-fixed']}
+            class:list={['shrink-0 text-[16px] font-semibold underline', fix.status === 'review' ? 'text-review' : 'text-fixed']}
           >
             {fix.proof.label}
           </a>
@@ -37,7 +37,7 @@ const updated = new Date(LEDGER_UPDATED).toLocaleDateString('en-GB', { day: 'num
     grid-template-columns: 18px minmax(0, 1fr);
     margin-top: 2px;
     padding: 2px 0;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.45;
   }
   .ledger-line > span:first-child { font-family: var(--font-mono); font-weight: 600; }
