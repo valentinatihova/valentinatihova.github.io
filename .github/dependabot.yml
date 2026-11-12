@@ -8,6 +8,10 @@ updates:
       # One pull request a week for minor and patch bumps instead of one per package
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # typescript-eslint and @astrojs/check don't support TypeScript 7 yet; drop this once they do
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
   - package-ecosystem: github-actions
     directory: /
     schedule:
